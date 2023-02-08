@@ -1,5 +1,4 @@
 -- Example of schema 
--- The schema does not include any indexes ( except PK's )
 
 -- Users
 DROP TABLE IF EXISTS users;
