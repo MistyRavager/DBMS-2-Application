@@ -117,3 +117,4 @@ CREATE TABLE tags (
 	tag_name VARCHAR(255) NOT NULL,
 	count INT DEFAULT 0
 );
+	
