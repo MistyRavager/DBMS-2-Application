@@ -2,6 +2,14 @@
 
 -- Create all tables
 
+--Login
+CREATE TABLE login (
+	id INT NOT NULL PRIMARY KEY,
+	password VARCHAR(255) NOT NULL,
+	email VARCHAR(255) NOT NULL,
+	FOREIGN KEY (id) REFERENCES users(id)
+);
+
 -- users
 CREATE TABLE users (
 	id INT NOT NULL PRIMARY KEY,
