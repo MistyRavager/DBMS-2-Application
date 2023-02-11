@@ -207,7 +207,7 @@ export const upvoteQuestion = async (req, res) => {
                 }
             });
 
-            res.status(200).json(vote);
+            res.status(200).json("Upvote Question");
         } else {
             res.status(404).json("Post not found");
         }
@@ -250,7 +250,7 @@ export const downvoteQuestion = async (req, res) => {
                 }
             });
 
-            res.status(200).json(vote);
+            res.status(200).json("question downvoted");
         } else {
             res.status(404).json("Post not found");
         }
@@ -259,3 +259,30 @@ export const downvoteQuestion = async (req, res) => {
     }
 }
 
+export const closeQuestion = async (req, res) => {
+    try {
+        let post_id = req.body.post_id;
+
+        const post = await Post.findOne({
+            where: {
+                id: post_id
+            }
+        });
+
+        if (post) {
+            const npostU = await Post.update({
+                closed_date: new Date()
+            }, {
+                where: {
+                    id: post_id
+                }
+            });
+
+            res.status(200).json("question closed");
+        } else {
+            res.status(404).json("Post not found");
+        }
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
