@@ -38,9 +38,7 @@ def transform(file):
 # we will get the variable names from the user
 # in this format in a file called names.txt
 
-# +--------------------------+--------------+------+-----+---------+-------+
-# | Field                    | Type         | Null | Key | Default | Extra |
-# +--------------------------+--------------+------+-----+---------+-------+
+
 # | id                       | int          | NO   | PRI | NULL    |       |
 # | owner_user_id            | int          | YES  |     | NULL    |       |
 # | last_editor_user_id      | int          | YES  |     | NULL    |       |
@@ -63,7 +61,7 @@ def transform(file):
 # | closed_date              | timestamp(3) | YES  |     | NULL    |       |
 # | last_edit_date           | timestamp(3) | YES  |     | NULL    |       |
 # | last_activity_date       | timestamp(3) | YES  |     | NULL    |       |
-# +--------------------------+--------------+------+-----+---------+-------+
+
 # now the first column is the variable name in camel case
 
 def get_variable_names():
