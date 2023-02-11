@@ -9,6 +9,8 @@ DELETE FROM tags;
 DELETE FROM users;
 DELETE FROM votes;
 
+-- Put the absolute path of the xml files not relative path
+
 LOAD XML LOCAL INFILE '/Users/suryanshjain/Desktop/xml/PostHistory1.xml'
 INTO TABLE post_history
 ROWS IDENTIFIED BY '<row>';
