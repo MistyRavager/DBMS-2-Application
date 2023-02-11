@@ -1,0 +1,13 @@
+Get User by Id
+Get Uder by Display Name
+Auto Complete User
+Auto Complete Tag
+Upvote a question -- This also upvotes the answerer
+Downvote a question -- This also downvotes the answerer
+Upvote an answer -- This also upvotes the answerer
+Downvote an answer -- This also downvotes the answerer
+Ask a question
+Answer a question
+Close a question
+Edit a question
+Edit an answer
