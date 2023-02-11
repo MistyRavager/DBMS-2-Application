@@ -3,6 +3,24 @@ import db from "./conn.js";
 
 const { DataTypes } = Sequelize;
 
+export const Credential = db.define("credentials", {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+    },
+    user_name : {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    password : {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+},{
+    freezeTableName: true,
+});
+
 export const User = db.define("users", {
     id: {
         type: DataTypes.INTEGER,
