@@ -1,19 +1,19 @@
-Get User by Id
-Get User by Display Name
-Auto Complete User
-Auto Complete Tag
+Get User by Id (Done)
+Get User by Display Name (Done)
+Auto Complete User (Done but might need indexing, should test with frontend)
+Auto Complete Tag (Done but might need indexing, should test with frontend)
 
 
-Upvote a question -- This also upvotes the answerer
-Downvote a question -- This also downvotes the answerer
+Upvote a question -- This also upvotes the answerer (Done)
+Downvote a question -- This also downvotes the answerer (Done)
 Upvote an answer -- This also upvotes the answerer
 Downvote an answer -- This also downvotes the answerer 
-Close a question
+Close a question (Done)
 
-Ask a question
-Answer a question
+Ask a question 
+Answer a question (Done)
 
 
 Edit a question
 Edit an answer
-Login and auth
+Login and auth (Done)
