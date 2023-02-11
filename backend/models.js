@@ -347,3 +347,4 @@ export const Tag = db.define("tags", {
 },{
     freezeTableName: true,
 });
+

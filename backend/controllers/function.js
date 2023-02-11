@@ -10,6 +10,25 @@ import {
     Tag
 } from "../models.js";
 
+export const authenticateUser = async (user_id, password) => {
+    try {
+        let res = await Credential.findOne({
+            where: {
+                user_name: user_id,
+                password: password
+            }
+        });
+
+        if (res) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        return false;
+    }
+};
+
 export const getUserByID = async (req, res) => {
     try {
         let user_id = req.body.id;
