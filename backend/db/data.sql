@@ -7,7 +7,7 @@ LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
 
-LOAD DATA LOCAL INFILE './csv/Comments.csv' 
+LOAD DATA LOCAL INFILE '/Users/suryanshjain/Desktop/DBMS-2-Application_local/csv/Comments.csv' 
 INTO TABLE comments 
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n'
@@ -42,7 +42,7 @@ LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
 
-LOAD DATA LOCAL INFILE './csv/Users.csv' 
+LOAD DATA LOCAL INFILE '/Users/suryanshjain/Desktop/DBMS-2-Application_local/csv/Users.csv' 
 INTO TABLE users 
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n'

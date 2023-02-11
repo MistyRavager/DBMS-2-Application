@@ -63,6 +63,7 @@ CREATE TABLE post_links (
 );
 
 -- PostHistory
+-- <row Id="1" post_history_type_id="2" PostId="1" RevisionGUID="09047374-2b75-4102-9a0d-44204a8e5eb0" CreationDate="2010-09-01T19:34:48.000" UserId="6" Text="A coworker of mine believes that there *any* use of in-code comments (ie, not javadoc style method or class comments) is a [code smell](http://en.wikipedia.org/wiki/Code_smell).  What do you think?" ContentLicense="CC BY-SA 2.5" />
 CREATE TABLE post_history (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	post_id INT NOT NULL,
