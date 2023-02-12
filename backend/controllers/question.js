@@ -31,7 +31,6 @@ export const upvoteQuestion = async (req, res) => {
 
             const nuserU = await User.update({
                 reputation: owner.reputation + 10,
-                up_vote: owner.up_vote + 1
             }, {
                 where: {
                     id: owner.id
@@ -74,8 +73,7 @@ export const downvoteQuestion = async (req, res) => {
             });
 
             const nuserU = await User.update({
-                reputation: owner.reputation - 10,
-                up_vote: owner.up_vote - 1
+                reputation: owner.reputation - 2,
             }, {
                 where: {
                     id: owner.id
@@ -119,4 +117,4 @@ export const closeQuestion = async (req, res) => {
     } catch (error) { 
         res.status(500).json(error);
     }
-}
+}   
