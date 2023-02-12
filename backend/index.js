@@ -2,7 +2,7 @@ import db from "./conn.js";
 import express from "express";
 import cors from "cors";
 import productRoutes from "./routes/index.js";
-import { authenticateUser } from "./controllers/function.js";
+import { authenticateUser } from "./controllers/auth.js";
 
 const app = express();
 
