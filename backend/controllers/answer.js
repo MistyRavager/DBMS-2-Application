@@ -1,5 +1,5 @@
 import { Sequelize, where } from "sequelize";
-import { Post, PostHistory } from "../models";
+import { Post, PostHistory, User } from "../models";
 
 
 
@@ -19,7 +19,8 @@ export const answerQuestion = async (req, res) => {
         if (post) {
             const  user = await User.findOne({
                 where: {
-                    id: user_id
+                    id: user_id,
+                    post_type_id: 1
                 }
             });
 
