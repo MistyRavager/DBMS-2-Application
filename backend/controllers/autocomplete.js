@@ -11,7 +11,7 @@ export const AutocompleteTag = async (req, res) => {
         const tag = await Tag.findAll({ // Finds all tags with tag_name in tags (Looks for the tag_name as a substring in tags)
             where: {
                 tag_name: {
-                    [Sequelize.Op.like]: "%" + tag_name + "%" 
+                    [Sequelize.Op.like]: tag_name + "%" 
                 }
             }
         });
@@ -31,7 +31,7 @@ export const AutocompleteUser = async (req, res) => {
         const user = await User.findAll({ // Finds all users with display_name in display_name (Looks for the display_name as a substring in display_name)
             where: {
                 display_name: {
-                    [Sequelize.Op.like]: "%" + display_name + "%"
+                    [Sequelize.Op.like]: display_name + "%"
                 }
             }
         });
