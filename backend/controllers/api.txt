@@ -4,10 +4,10 @@ Auto Complete User (Done but might need indexing, should test with frontend)
 Auto Complete Tag (Done but might need indexing, should test with frontend)
 
 
-Upvote a question -- This also upvotes the answerer (Done)
-Downvote a question -- This also downvotes the answerer (Done)
-Upvote an answer -- This also upvotes the answerer
-Downvote an answer -- This also downvotes the answerer 
+Upvote a question -- This increments upvote count of upvoter, reputation of question asker += 5 (Done)
+Downvote a question -- This increments downvote count of downvoter, reputation of question asker -=2, of downvoter -=1 (Done)
+Upvote an answer -- This increments upvote count of upvoter, reputation of answerer += 10 (Done)
+Downvote an answer -- This increments downvote count of downvoter, reputation of answerer -=2, of downvoter -=1 (Done)
 Close a question (Done)
 
 Ask a question 

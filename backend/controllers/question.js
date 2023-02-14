@@ -4,42 +4,59 @@ import { Post, User, Vote } from "../models";
 
 
 
-// upvote question will also upvote the owner of the question
+// upvote question will also add to the upvote count of the upvoter, and increase reputation of owner of question by 5
 export const upvoteQuestion = async (req, res) => {
     try {
-        let post_id = req.body.post_id;
-        let user_id = req.body.user_id;
+        let post_id = req.body.post_id; // Expects "post_id" in body of request (post_id of question)
+        let user_id = req.body.user_id; // Expects "user_id" in body of request (user_id of upvoter)
 
-        const post = await Post.findOne({
+        const post = await Post.findOne({ // Find post
             where: {
-                id: post_id
+                id: post_id 
             }
         });
 
-        const owner = await User.findOne({
+        const owner = await User.findOne({ // Find owner of post
             where: {
                 id: post.owner_user_id
             }
         });
 
-        if (post && owner) {
-            const vote = await Vote.create({
+        const user = await User.findOne({ // Find user
+            where: {
+                id: user_id
+            }
+        })
+
+        if (post && owner) { // If both post and owner exist
+            const vote = await Vote.create({ // Create a vote
+                id: null, //ID is auto-incremented
                 post_id: post_id,
                 user_id: user_id,
-                vote_type_id: 2
+                vote_type_id: 2, // 2 is upvote
+                bounty_amount: null,
+                creation_date: new Date()
             });
 
-            const nuserU = await User.update({
-                reputation: owner.reputation + 10,
+            const nuserU = await User.update({ // Update owner's reputation
+                reputation: owner.reputation + 5,
             }, {
                 where: {
                     id: owner.id
                 }
             });
 
+            const nuserU2 = await User.update({ // Update user's upvote count
+                up_votes: user.up_votes + 1
+            }, {
+                where: {
+                    id: user.id
+                }
+            });
+
             res.status(200).json("Upvote Question");
         } else {
-            res.status(404).json("Post not found");
+            res.status(404).json("Post or owner not found");
         }
     } catch (error) {
         res.status(500).json(error);
@@ -47,36 +64,52 @@ export const upvoteQuestion = async (req, res) => {
 }
 
 
-// downvote question will also downvote the owner of the question
+// downvote question will also add to the downvote count of the downvoter, and decrease reputation of owner of question by 2. It also decreases the reputation of the downvoter by 1
 export const downvoteQuestion = async (req, res) => {
     try {
-        let post_id = req.body.post_id;
-        let user_id = req.body.user_id;
+        let post_id = req.body.post_id; // Expects "post_id" in body of request (post_id of question)
+        let user_id = req.body.user_id; // Expects "user_id" in body of request (user_id of downvoter)
 
-        const post = await Post.findOne({
+        const post = await Post.findOne({ // Find post
             where: {
                 id: post_id
             }
         });
 
-        const owner = await User.findOne({
+        const owner = await User.findOne({ // Find owner of post
             where: {
                 id: post.owner_user_id
             }
         });
 
-        if (post && owner) {
-            const vote = await Vote.create({
+        const user = await User.findOne({ // Find user
+            where: {
+                id: user_id
+            }
+        })
+
+
+        if (post && owner) { // If both post and owner exist
+            const vote = await Vote.create({ // Create a vote
                 post_id: post_id,
                 user_id: user_id,
-                vote_type_id: 1
+                vote_type_id: 3 // 3 is downvote
             });
 
-            const nuserU = await User.update({
-                reputation: owner.reputation - 2,
+            const nuserU = await User.update({ // Update owner's reputation
+                reputation: owner.reputation - 2, 
             }, {
                 where: {
                     id: owner.id
+                }
+            });
+
+            const nuserU2 = await User.update({ // Update user's downvote count and decrease reputation by 1
+                down_votes: user.down_votes + 1,
+                reputation: user.reputation - 1
+            }, {
+                where: {
+                    id: user.id
                 }
             });
 
