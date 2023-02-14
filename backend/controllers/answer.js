@@ -25,9 +25,6 @@ export const answerQuestion = async (req, res) => {
             });
 
             const postUpdate = await Post.update({
-                last_editor_user_id: user_id,
-                last_editor_display_name: user.display_name,
-                last_edit_date: new Date(),
                 last_activity_date: new Date(),
                 answer_count: Sequelize.literal('answer_count + 1')
             }, {
@@ -59,7 +56,7 @@ export const answerQuestion = async (req, res) => {
                 accepted_answer_id: null
             });
 
-            res.status(200).json(postHistory);
+            res.status(200).json("done");
         } else {
             res.status(404).json("Post not found");
         }
