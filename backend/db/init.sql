@@ -7,7 +7,7 @@
 -- users
 CREATE TABLE users (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	account_id INT,
+	account_id INT, -- User's Stack Exchange Network profile ID
 	reputation INT NOT NULL,
 	views INT DEFAULT 0, -- Number of times profile is viewed
 	down_votes INT DEFAULT 0, -- How many downvotes user has cast
@@ -24,7 +24,7 @@ CREATE TABLE users (
 
 -- credentials
 CREATE TABLE credentials (
-	id INT AUTO_INCREMENT PRIMARY KEY,
+	id INT PRIMARY KEY,
 	user_name VARCHAR(255) NOT NULL UNIQUE,
 	password VARCHAR(255) NOT NULL,
 	FOREIGN KEY (id) REFERENCES users(id) 

@@ -65,7 +65,7 @@ export const answerQuestion = async (req, res) => {
     } catch (error) {
         res.status(500).json(error);
     }
-}
+};
 
 
 // upvote answer will also add to the upvote count of the upvoter, and increase reputation of owner of answer by 10
@@ -118,6 +118,14 @@ export const upvoteAnswer = async (req, res) => {
                 }
             });
 
+            const nPostU = await Post.update({ // Update post's score
+                score: post.score + 1
+            }, {
+                where: {
+                    id: post.id
+                }
+            });
+
             res.status(200).json("Upvote Answer");
         } else {
             res.status(404).json("Post or owner not found");
@@ -125,7 +133,7 @@ export const upvoteAnswer = async (req, res) => {
     } catch (error) {
         res.status(500).json(error);
     }
-}
+};
 
 
 // downvote answer will also add to the downvote count of the downvoter, and decrease reputation of owner of answer by 2. It also decreases the reputation of the downvoter by 1
@@ -177,6 +185,14 @@ export const downvoteAnswer = async (req, res) => {
                 }
             });
 
+            const nPostU = await Post.update({ // Update post's score
+                score: post.score - 1
+            }, {
+                where: {
+                    id: post.id
+                }
+            });
+
             res.status(200).json("answer downvoted");
         } else {
             res.status(404).json("Post not found");
@@ -184,4 +200,6 @@ export const downvoteAnswer = async (req, res) => {
     } catch (error) {
         res.status(500).json(error);
     }
-}
+};
+
+

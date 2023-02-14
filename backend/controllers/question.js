@@ -54,6 +54,14 @@ export const upvoteQuestion = async (req, res) => {
                 }
             });
 
+            const nPostU = await Post.update({ // Update post's score
+                score: post.score + 1
+            }, {
+                where: {
+                    id: post.id
+                }
+            });
+
             res.status(200).json("Upvote Question");
         } else {
             res.status(404).json("Post or owner not found");
@@ -61,7 +69,7 @@ export const upvoteQuestion = async (req, res) => {
     } catch (error) {
         res.status(500).json(error);
     }
-}
+};
 
 
 // downvote question will also add to the downvote count of the downvoter, and decrease reputation of owner of question by 2. It also decreases the reputation of the downvoter by 1
@@ -113,6 +121,15 @@ export const downvoteQuestion = async (req, res) => {
                 }
             });
 
+            const nPostU = await Post.update({ // Update post's score
+                score: post.score - 1
+            }, {
+                where: {
+                    id: post.id
+                }
+            });
+
+
             res.status(200).json("question downvoted");
         } else {
             res.status(404).json("Post not found");
@@ -120,7 +137,7 @@ export const downvoteQuestion = async (req, res) => {
     } catch (error) {
         res.status(500).json(error);
     }
-}
+};
 
 
 // Closes question
@@ -150,4 +167,55 @@ export const closeQuestion = async (req, res) => {
     } catch (error) { 
         res.status(500).json(error);
     }
-}   
+};   
+
+
+// Creates a question
+export const createQuestion = async (req, res) => {
+    try {
+        let owner_user_id = req.body.owner_user_id; // Expects "owner_user_id" in body of request
+        let title = req.body.title; // Expects "title" in body of request
+        let body = req.body.body; // Expects "body" in body of request
+        let tags = req.body.tags; // Expects "tags" in body of request
+
+        const user = await User.findOne({
+            where: {
+                id: owner_user_id
+            }
+        });
+
+        if (user) { // If user exists
+            const post = await Post.create({ // Creates a post
+                id: null, // ID is auto-incremented
+                owner_user_id: owner_user_id,
+                last_editor_user_id: null, 
+                post_type_id: 1, // 1 is question
+                accepted_answer_id: null,
+                score: 0,
+                parent_id: null,
+                view_count: 0, 
+                answer_count: 0,
+                comment_count: 0,
+                owner_display_name: user.display_name,
+                last_editor_display_name: null,
+                title: title,
+                tags: tags,
+                content_license: "CC BY-SA 2.5",
+                body: body,
+                favorite_count: 0,
+                creation_date: new Date(),
+                community_owned_date: null,
+                closed_date: null,
+                last_edit_date: null,
+                last_activity_date: new Date()
+            });
+
+        } else { // If user does not exist
+            res.status(404).json("User not found");
+        }
+    } catch (error) { 
+        res.status(500).json(error);
+    }
+};
+
+

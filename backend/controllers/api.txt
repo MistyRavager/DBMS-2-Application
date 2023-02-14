@@ -1,19 +1,35 @@
-Get User by Id (Done)
-Get User by Display Name (Done)
-Auto Complete User (Done but might need indexing, should test with frontend)
-Auto Complete Tag (Done but might need indexing, should test with frontend)
+###user.js###
+Get User by Id (DONE)
+Get User by Display Name (DONE)
+Create User (DONE)
+
+###autocomplete.js###
+Auto Complete User (DONE but might need indexing, should test with frontend)
+Auto Complete Tag (DONE but might need indexing, should test with frontend)
+
+###post.js###
+Get post by tag (DONE)
+Get post by tags (DONE)
+Get post by ID (DONE)
+Get posts by User ID (DONE)
+Edit post (DONE)
+Delete post (DONE)
+
+###question.js###
+Upvote a question -- This increments upvote count of upvoter, reputation of question asker += 5 (DONE)
+Downvote a question -- This increments downvote count of downvoter, reputation of question asker -=2, of downvoter -=1 (DONE)
+Close a question (DONE)
+Create a question (DONE)
+
+###answer.js###
+Upvote an answer -- This increments upvote count of upvoter, reputation of answerer += 10 (DONE)
+Downvote an answer -- This increments downvote count of downvoter, reputation of answerer -=2, of downvoter -=1 (DONE)
+Answer a question (DONE)
 
 
-Upvote a question -- This increments upvote count of upvoter, reputation of question asker += 5 (Done)
-Downvote a question -- This increments downvote count of downvoter, reputation of question asker -=2, of downvoter -=1 (Done)
-Upvote an answer -- This increments upvote count of upvoter, reputation of answerer += 10 (Done)
-Downvote an answer -- This increments downvote count of downvoter, reputation of answerer -=2, of downvoter -=1 (Done)
-Close a question (Done)
-
-Ask a question 
-Answer a question (Done)
+###auth.js###
+Login and auth (DONE)
 
 
-Edit a question
-Edit an answer
-Login and auth (Done)
+Additional / Optional functionality: 
+Accept an answer 
