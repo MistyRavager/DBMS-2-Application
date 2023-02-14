@@ -12,15 +12,15 @@ export const answerQuestion = async (req, res) => {
 
         const post = await Post.findOne({
             where: {
-                id: post_id
+                id: post_id,
+                post_type_id: 1
             }
         });
 
         if (post) {
-            const  user = await User.findOne({
+            const user = await User.findOne({
                 where: {
                     id: user_id,
-                    post_type_id: 1
                 }
             });
 
