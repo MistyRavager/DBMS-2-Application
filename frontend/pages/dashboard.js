@@ -1,7 +1,17 @@
 import * as React from 'react';
 import Sidebar from '../components/sidebar'
 import Head from 'next/head';
-import { Avatar, Card, Typography, Toolbar, Grid, Paper, Container, Box} from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+import Toolbar from '@mui/material/Toolbar';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
 import {  CardContent, CardActions, Button } from '@mui/material';
 
 export default function Dashboard() {

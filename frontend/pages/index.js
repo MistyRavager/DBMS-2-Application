@@ -4,7 +4,8 @@ import utilStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
 import Sidebar from '../components/sidebar'
 import { Link } from '@mui/material'
-
+import BackToTop from '../components/backtotop'
+import { Container, Box } from '@mui/material'
 export default function Home({ allPostsData }) {
   return (
     // <Layout home>
@@ -30,7 +31,27 @@ export default function Home({ allPostsData }) {
           ))}
         </ul>
       </div> */}
+      {/* <BackToTop> */}
       <Link href="/dashboard">Dashboard</Link>
+      <Link href="/create">create</Link>
+      <Link href="/signin">signin</Link>
+      <Link href="/signup">signup</Link>
+
+        {/* <Container>
+          <Box sx={{ my: 2 }}>
+            {[...new Array(50)]
+              .map(
+              () => `Cras mattis consectetur purus sit amet fermentum.
+        Cras justo odio, dapibus ac facilisis in, egestas eget quam.
+        Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
+              )
+            .join('\n')}
+          </Box>
+        </Container>
+       */}
+      
+      {/* </BackToTop> */}
     </>
     // </Layout>
   )
