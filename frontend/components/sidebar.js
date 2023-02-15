@@ -9,7 +9,10 @@ import List from '@mui/material/List';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Avatar from '@mui/material/Avatar';
+import { ListItemButton } from '@mui/material';
 const drawerWidth = 300;
 const mdTheme = createTheme();
 
@@ -40,7 +43,20 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
   );
   
-
+const profile =(
+    <React.Fragment>
+      <ListItemButton >
+        <ListItemIcon>
+          <Avatar
+            alt="SuriBaka"
+            src="/images/profile.jpg"
+            // sx={{ width: '100%', height: '100%' }}
+          />
+          </ListItemIcon>
+        <ListItemText primary="Username" />
+      </ListItemButton>
+    </React.Fragment>
+)
 export default function Sidebar() { 
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
@@ -66,8 +82,10 @@ export default function Sidebar() {
             </Toolbar>
             <Divider />
             <List component="nav">
+                {profile}
+                <Divider sx={{ my: 1 }}/>
                 {mainListItems}
-                <Divider sx={{ my: 1 }} />
+                <Divider sx={{ my: 1 }}/>
                 {topTags}
                 <Divider sx={{ my: 1 }} />
                 {topQuestions}
