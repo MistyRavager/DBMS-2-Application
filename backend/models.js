@@ -19,6 +19,7 @@ export const Credential = db.define("credentials", {
     }
 },{
     freezeTableName: true,
+    timestamps: false,
 });
 
 export const User = db.define("users", {
@@ -74,6 +75,7 @@ export const User = db.define("users", {
     }
 },{
   freezeTableName: true,
+  timestamps: false,
 });
 
 export const Post = db.define("posts", {
@@ -153,6 +155,7 @@ export const Post = db.define("posts", {
     }
 },{
     freezeTableName: true,
+    timestamps: false,
 });
 
 export const PostLink = db.define("post_links", {
@@ -179,6 +182,7 @@ export const PostLink = db.define("post_links", {
     }
 },{
     freezeTableName: true,
+    timestamps: false,
 });
 
 export const PostHistory = db.define("post_history", {
@@ -220,6 +224,7 @@ export const PostHistory = db.define("post_history", {
     }
 },{
     freezeTableName: true,
+    timestamps: false,
 });
 
 export const Comment = db.define("comments", {
@@ -255,6 +260,7 @@ export const Comment = db.define("comments", {
     }
 },{
     freezeTableName: true,
+    timestamps: false,
 });
 
 export const Vote = db.define("votes", {
@@ -283,6 +289,7 @@ export const Vote = db.define("votes", {
     }
 },{
     freezeTableName: true,
+    timestamps: false,
 });
 
 // CREATE TABLE badges (
@@ -322,6 +329,7 @@ export const Badge = db.define("badges", {
     }
 },{
     freezeTableName: true,
+    timestamps: false,
 });
 
 export const Tag = db.define("tags", {
@@ -346,5 +354,6 @@ export const Tag = db.define("tags", {
     }
 },{
     freezeTableName: true,
+    timestamps: false,
 });
 
