@@ -6,7 +6,7 @@ import { User, Credential } from "../models.js";
 // Function gets user by id
 export const getUserByID = async (req, res) => {
     try {
-        let user_id = req.body.id; // Expects "id" in body of request
+        let user_id = req.params.id; // Expects "id" in body of request
 
         const user = await User.findOne({ // Finds user with id = user_id
             where: {
@@ -23,7 +23,7 @@ export const getUserByID = async (req, res) => {
 // Function gets user by display name
 export const getUserByDisplayName = async (req, res) => {
     try {
-        let display_name = req.body.display_name; // Expects "display_name" in body of request
+        let display_name = req.params.display_name; // Expects "display_name" in body of request
 
         const user = await User.findOne({ // Finds user with display_name = display_name
             where: {
