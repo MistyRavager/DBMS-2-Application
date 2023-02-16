@@ -1,5 +1,5 @@
 import { where } from "sequelize";
-import { Credential } from "../models";
+import { Credential } from "../models.js";
 
 
 // Function takes user_id and password, and checks if present in 'credentials' database

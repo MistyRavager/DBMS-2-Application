@@ -1,5 +1,5 @@
 import { Sequelize, where } from "sequelize";
-import { Tag, User } from "../models";
+import { Tag, User } from "../models.js";
 
 
 

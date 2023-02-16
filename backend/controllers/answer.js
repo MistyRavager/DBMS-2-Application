@@ -1,5 +1,5 @@
 import { Sequelize, where } from "sequelize";
-import { Post, User, Vote } from "../models";
+import { Post, User, Vote } from "../models.js";
 
 
 

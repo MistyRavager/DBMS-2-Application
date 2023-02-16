@@ -1,5 +1,5 @@
 import { where } from "sequelize";
-import { User, Credential } from "../models";
+import { User, Credential } from "../models.js";
 
 
 

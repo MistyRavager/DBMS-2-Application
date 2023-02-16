@@ -9,7 +9,7 @@ import {
 import {
     AutocompleteTag,
     AutocompleteUser
-} from "../controllers/autocomplete"
+} from "../controllers/autocomplete.js"
 import {
     getPostByID,
     getPostByUserID,
