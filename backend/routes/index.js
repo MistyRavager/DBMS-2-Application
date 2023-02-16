@@ -77,9 +77,9 @@ router.post("/question/create", createQuestion);
 
 
 // Get user by ID
-router.get("/user/:id", getUserByID);
+router.get("/user/id/:id", getUserByID);
 // Get user by display name
-router.get("/user/:display_name", getUserByDisplayName);
+router.get("/user/name/:display_name", getUserByDisplayName);
 // Create a user
 router.post("/user/create", createUser);
 
