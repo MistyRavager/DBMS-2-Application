@@ -15,15 +15,17 @@ try {
 
   const auth = async (req, res, next) => {
     let pass = req.headers.authorization;
+    console.log(pass);
     
     if (pass == undefined) {
       res.json({ message: "no header" });
       return;
     }
-    
-    let authCode = pass.split(" ")[1];
-    let usrname = authCode.split(":")[0];
-    let pswd = authCode.split(":")[1];
+
+    // let authCode = pass.split(" ")[1];
+    // console.log(authCode);
+    let usrname = pass.split(":")[0];
+    let pswd = pass.split(":")[1];
 
     let result = await authenticateUser(usrname, pswd);
 
@@ -35,7 +37,7 @@ try {
   };
   
   //TEMPORARILY COMMENTED OUT AUTH
-  // app.use(auth);
+  app.use(auth);
   app.use(cors());
   app.use(express.json());
   app.use("/", productRoutes);
