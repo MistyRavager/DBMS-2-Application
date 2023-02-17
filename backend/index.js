@@ -22,8 +22,6 @@ try {
       return;
     }
 
-    // let authCode = pass.split(" ")[1];
-    // console.log(authCode);
     let usrname = pass.split(":")[0];
     let pswd = pass.split(":")[1];
 
