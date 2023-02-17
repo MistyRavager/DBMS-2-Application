@@ -8,22 +8,22 @@ Auto Complete User (DONE but might need indexing, should test with frontend) (TE
 Auto Complete Tag (DONE but might need indexing, should test with frontend) (TESTED USING CURL)
 
 ###post.js###
-Get post by tag (DONE) 
-Get post by tags (DONE) 
+Get post by tag (DONE) (TESTED USING CURL) (Note: use angle brackets around tag_name)
+Get post by tags (DONE) (TESTED USING CURL) (Note: use angle brackets around each tag; egs: "tags":["<comments>", "<documentation>"])
 Get post by ID (DONE) (TESTED USING CURL)
 Get posts by User ID (DONE) (TESTED USING CURL)
 Edit post (DONE)
 Delete post (DONE)
 
 ###question.js###
-Upvote a question -- This increments upvote count of upvoter, reputation of question asker += 5 (DONE)
-Downvote a question -- This increments downvote count of downvoter, reputation of question asker -=2, of downvoter -=1 (DONE)
+Upvote a question -- This increments upvote count of upvoter, reputation of question asker += 5 (DONE) (TESTED USING CURL)
+Downvote a question -- This increments downvote count of downvoter, reputation of question asker -=2, of downvoter -=1 (DONE) (TESTED USING CURL)
 Close a question (DONE)
 Create a question (DONE)
 
 ###answer.js###
-Upvote an answer -- This increments upvote count of upvoter, reputation of answerer += 10 (DONE)
-Downvote an answer -- This increments downvote count of downvoter, reputation of answerer -=2, of downvoter -=1 (DONE)
+Upvote an answer -- This increments upvote count of upvoter, reputation of answerer += 10 (DONE) (TESTED USING CURL)
+Downvote an answer -- This increments downvote count of downvoter, reputation of answerer -=2, of downvoter -=1 (DONE) (TESTED USING CURL)
 Answer a question (DONE)
 
 

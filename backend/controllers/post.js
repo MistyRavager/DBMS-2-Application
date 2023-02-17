@@ -86,7 +86,7 @@ export const getPostByTag = async (req, res) => {
 // Function gets post by tags. Sorts by date or upvotes depending on flags
 export const getPostByTags = async (req, res) => {
     try {
-        let tags = req.body.tags; // Expects "tag_name" in body of request
+        let tags = req.body.tags; // Expects "tags" in body of request
         let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
         let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
         let order_list = [];

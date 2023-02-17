@@ -55,7 +55,8 @@ export const upvoteQuestion = async (req, res) => {
             });
 
             const nPostU = await Post.update({ // Update post's score
-                score: post.score + 1
+                score: post.score + 1,
+                last_activity_date: new Date()
             }, {
                 where: {
                     id: post.id
@@ -99,9 +100,12 @@ export const downvoteQuestion = async (req, res) => {
 
         if (post && owner) { // If both post and owner exist
             const vote = await Vote.create({ // Create a vote
+                id: null, //ID is auto-incremented
                 post_id: post_id,
                 user_id: user_id,
-                vote_type_id: 3 // 3 is downvote
+                vote_type_id: 3, // 3 is downvote
+                bounty_amount: null,
+                creation_date: new Date()
             });
 
             const nuserU = await User.update({ // Update owner's reputation
@@ -122,7 +126,8 @@ export const downvoteQuestion = async (req, res) => {
             });
 
             const nPostU = await Post.update({ // Update post's score
-                score: post.score - 1
+                score: post.score - 1,
+                last_activity_date: new Date()
             }, {
                 where: {
                     id: post.id
@@ -153,7 +158,8 @@ export const closeQuestion = async (req, res) => {
 
         if (post) { // If post exists
             const npostU = await Post.update({ // Updates post with closed_date
-                closed_date: new Date()
+                closed_date: new Date(),
+                last_activity_date: new Date()
             }, {
                 where: {
                     id: post_id

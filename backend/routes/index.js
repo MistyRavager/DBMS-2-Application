@@ -37,9 +37,9 @@ const router = express.Router();
 // Answer a question
 router.post("/question/answer/:post_id", answerQuestion);
 // Upvote an answer
-router.post("/answer/upvote/:post_id", upvoteAnswer);
+router.post("/answer/upvote/:post_id", upvoteAnswer); // Tested
 // Downvote an answer
-router.post("/answer/downvote/:post_id", downvoteAnswer);
+router.post("/answer/downvote/:post_id", downvoteAnswer); // Tested
 
 
 
@@ -57,9 +57,9 @@ router.get("/post/id/:post_id", getPostByID); // Tested
 // Get post by user ID
 router.get("/post/userid/:user_id", getPostByUserID); // Tested
 // Get post by tag
-router.get("/post/tag", getPostByTag);
+router.get("/post/tag", getPostByTag); // Tested
 // Get post by tags
-router.get("/post/tags", getPostByTags);
+router.get("/post/tags", getPostByTags); // Tested
 // Edit post
 router.put("/post/edit/:post_id", editPost);
 // Delete post
@@ -68,9 +68,9 @@ router.delete("/post/delete/:post_id", deletePost);
 
 
 // Upvote a question
-router.post("/question/upvote/:post_id", upvoteQuestion);
+router.post("/question/upvote/:post_id", upvoteQuestion); // Tested
 // Downvote a question
-router.post("/question/downvote/:post_id", downvoteQuestion);
+router.post("/question/downvote/:post_id", downvoteQuestion); // Tested
 // Close a question
 router.put("/question/close/:post_id", closeQuestion);
 // Create a question
