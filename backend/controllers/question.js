@@ -7,7 +7,7 @@ import { Post, User, Vote } from "../models.js";
 // upvote question will also add to the upvote count of the upvoter, and increase reputation of owner of question by 5
 export const upvoteQuestion = async (req, res) => {
     try {
-        let post_id = req.body.post_id; // Expects "post_id" in body of request (post_id of question)
+        let post_id = req.params.post_id; // Expects "post_id" in body of request (post_id of question)
         let user_id = req.body.user_id; // Expects "user_id" in body of request (user_id of upvoter)
 
         const post = await Post.findOne({ // Find post
@@ -75,7 +75,7 @@ export const upvoteQuestion = async (req, res) => {
 // downvote question will also add to the downvote count of the downvoter, and decrease reputation of owner of question by 2. It also decreases the reputation of the downvoter by 1
 export const downvoteQuestion = async (req, res) => {
     try {
-        let post_id = req.body.post_id; // Expects "post_id" in body of request (post_id of question)
+        let post_id = req.params.post_id; // Expects "post_id" in body of request (post_id of question)
         let user_id = req.body.user_id; // Expects "user_id" in body of request (user_id of downvoter)
 
         const post = await Post.findOne({ // Find post
@@ -143,7 +143,7 @@ export const downvoteQuestion = async (req, res) => {
 // Closes question
 export const closeQuestion = async (req, res) => {
     try {
-        let post_id = req.body.post_id; // Expects "post_id" in body of request
+        let post_id = req.params.post_id; // Expects "post_id" in body of request
 
         const post = await Post.findOne({ // Finds post with post_id
             where: {

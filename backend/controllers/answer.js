@@ -6,7 +6,7 @@ import { Post, User, Vote } from "../models.js";
 // Function answers question
 export const answerQuestion = async (req, res) => {
     try {
-        let post_id = req.body.post_id;  // Expects "post_id" in body of request (post_id of question)
+        let post_id = req.params.post_id;  // Expects "post_id" in body of request (post_id of question)
         let user_id = req.body.user_id;  // Expects "user_id" in body of request (user_id of answerer)
         let answer = req.body.answer;  // Expects "answer" in body of request (body of answer to question)
 
@@ -71,7 +71,7 @@ export const answerQuestion = async (req, res) => {
 // upvote answer will also add to the upvote count of the upvoter, and increase reputation of owner of answer by 10
 export const upvoteAnswer = async (req, res) => {
     try {
-        let post_id = req.body.post_id; // Expects "post_id" in body of request (post_id of answer)
+        let post_id = req.params.post_id; // Expects "post_id" in body of request (post_id of answer)
         let user_id = req.body.user_id; // Expects "user_id" in body of request (user_id of upvoter)
 
         const post = await Post.findOne({ // Find post
@@ -139,7 +139,7 @@ export const upvoteAnswer = async (req, res) => {
 // downvote answer will also add to the downvote count of the downvoter, and decrease reputation of owner of answer by 2. It also decreases the reputation of the downvoter by 1
 export const downvoteAnswer = async (req, res) => {
     try {
-        let post_id = req.body.post_id; // Expects "post_id" in body of request (post_id of answer)
+        let post_id = req.params.post_id; // Expects "post_id" in body of request (post_id of answer)
         let user_id = req.body.user_id; // Expects "user_id" in body of request (user_id of downvoter)
 
         const post = await Post.findOne({ // Find post

@@ -35,18 +35,18 @@ const router = express.Router();
 
 
 // Answer a question
-router.post("/question/answer", answerQuestion);
+router.post("/question/answer/:post_id", answerQuestion);
 // Upvote an answer
-router.post("/answer/upvote", upvoteAnswer);
+router.post("/answer/upvote/:post_id", upvoteAnswer);
 // Downvote an answer
-router.post("/answer/downvote", downvoteAnswer);
+router.post("/answer/downvote/:post_id", downvoteAnswer);
 
 
 
 // Autocomplete tag
-router.get("/autocomplete/tag", AutocompleteTag);
+router.get("/autocomplete/tag/:tag_name/:limit", AutocompleteTag);
 // Autocomplete user
-router.get("/autocomplete/user", AutocompleteUser);
+router.get("/autocomplete/user/:display_name/:limit", AutocompleteUser);
 
 
 
@@ -66,11 +66,11 @@ router.delete("/post/delete", deletePost);
 
 
 // Upvote a question
-router.post("/question/upvote", upvoteQuestion);
+router.post("/question/upvote/:post_id", upvoteQuestion);
 // Downvote a question
-router.post("/question/downvote", downvoteQuestion);
+router.post("/question/downvote/:post_id", downvoteQuestion);
 // Close a question
-router.put("/question/close", closeQuestion);
+router.put("/question/close/:post_id", closeQuestion);
 // Create a question
 router.post("/question/create", createQuestion);
 

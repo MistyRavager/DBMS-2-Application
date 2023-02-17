@@ -6,8 +6,8 @@ import { Tag, User } from "../models.js";
 // Function autocompletes tag (returns json with tag)
 export const AutocompleteTag = async (req, res) => {
     try {
-        let tag_name = req.body.tag_name; // Expects "tag_name" in body of request
-        let limit_i = req.body.limit; // Expects "limit" in body of request
+        let tag_name = req.params.tag_name; // Expects "tag_name" in body of request
+        let limit_i = req.params.limit; // Expects "limit" in body of request
         // cast limit_i to int
         limit_i = parseInt(limit_i);
 
@@ -30,8 +30,8 @@ export const AutocompleteTag = async (req, res) => {
 // Function autocompletes user (returns json with user)
 export const AutocompleteUser = async (req, res) => {
     try {
-        let display_name = req.body.display_name; // Expects "display_name" in body of request
-        let limit_i = req.body.limit; // Expects "limit" in body of request
+        let display_name = req.params.display_name; // Expects "display_name" in body of request
+        let limit_i = req.params.limit; // Expects "limit" in body of request
         limit_i = parseInt(limit_i);
 
         const user = await User.findAll({ // Finds all users with display_name in display_name (Looks for the display_name as a substring in display_name)
