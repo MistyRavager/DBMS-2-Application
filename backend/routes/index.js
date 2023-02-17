@@ -45,17 +45,17 @@ router.post("/answer/downvote/:post_id", downvoteAnswer);
 
 // Autocomplete tag
 // Ex http://localhost:5002/autocomplete/tag/co/10
-router.get("/autocomplete/tag/:tag_name/:limit", AutocompleteTag);
+router.get("/autocomplete/tag/:tag_name/:limit", AutocompleteTag); // Tested
 // Autocomplete user
 // Ex http://localhost:5002/autocomplete/user/ge/10
-router.get("/autocomplete/user/:display_name/:limit", AutocompleteUser);
+router.get("/autocomplete/user/:display_name/:limit", AutocompleteUser); // Tested
 
 
 
 // Get post by ID
-router.get("/post/id/:post_id", getPostByID);
+router.get("/post/id/:post_id", getPostByID); // Tested
 // Get post by user ID
-router.get("/post/userid/:user_id", getPostByUserID);
+router.get("/post/userid/:user_id", getPostByUserID); // Tested
 // Get post by tag
 router.get("/post/tag", getPostByTag);
 // Get post by tags
@@ -79,9 +79,9 @@ router.post("/question/create", createQuestion);
 
 
 // Get user by ID
-router.get("/user/id/:id", getUserByID);
+router.get("/user/id/:id", getUserByID); // Tested
 // Get user by display name
-router.get("/user/name/:display_name", getUserByDisplayName);
+router.get("/user/name/:display_name", getUserByDisplayName); // Tested
 // Create a user
 router.post("/user/create", createUser);
 

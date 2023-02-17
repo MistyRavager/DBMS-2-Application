@@ -8,17 +8,11 @@ import { Post } from "../models.js";
 export const getPostByID = async (req, res) => {
     try {
         let post_id = req.params.post_id; // Expects "post_id" in body of request
-        let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
-        let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
 
         const post = await Post.findOne({ // Finds posts with id = post_id
             where: {
                 id: post_id
-            },
-            order: [
-                score_flag ? ['score', 'DESC'] : [],
-                date_flag ? ['creation_date', 'DESC'] : []
-            ]
+            }
         });
 
         res.status(200).json(post); // Returns post
@@ -34,15 +28,19 @@ export const getPostByUserID = async (req, res) => {
         let user_id = req.params.user_id; // Expects "user_id" in body of request
         let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
         let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
+        let order_list = [];
+        if (score_flag === "1") {
+            order_list.push(['score', 'DESC']);
+        }
+        if (date_flag === "1") {
+            order_list.push(['creation_date', 'DESC']);
+        }
 
         const post = await Post.findAll({ // Finds all posts with owner_user_id = user_id
             where: {
                 owner_user_id: user_id 
             },
-            order: [
-                score_flag ? ['score', 'DESC'] : [],
-                date_flag ? ['creation_date', 'DESC'] : []
-            ]
+            order: order_list
         });
 
         res.status(200).json(post); // Returns posts
@@ -58,6 +56,13 @@ export const getPostByTag = async (req, res) => {
         let tag_name = req.body.tag_name; // Expects "tag_name" in body of request
         let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
         let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
+        let order_list = [];
+        if (score_flag === "1") {
+            order_list.push(['score', 'DESC']);
+        }
+        if (date_flag === "1") {
+            order_list.push(['creation_date', 'DESC']);
+        }
 
         const post = await Post.findAll({ // Finds all posts with tag_name in tags (Looks for the tag_name as a substring in tags)
             where: {
@@ -67,10 +72,7 @@ export const getPostByTag = async (req, res) => {
                     post_type_id: 1
                 }]
             },
-            order: [
-                score_flag ? ['score', 'DESC'] : [],
-                date_flag ? ['creation_date', 'DESC'] : []
-            ]
+            order: order_list
         });
 
         res.status(200).json(post); // Returns posts
@@ -87,6 +89,13 @@ export const getPostByTags = async (req, res) => {
         let tags = req.body.tags; // Expects "tag_name" in body of request
         let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
         let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
+        let order_list = [];
+        if (score_flag === "1") {
+            order_list.push(['score', 'DESC']);
+        }
+        if (date_flag === "1") {
+            order_list.push(['creation_date', 'DESC']);
+        }
 
         const post = await Post.findAll({ // Finds all posts with tag_name in tags (Looks for the tag_name as a substring in tags)
             where: {
@@ -102,10 +111,7 @@ export const getPostByTags = async (req, res) => {
                     }
                 ]
             },
-            order: [
-                score_flag ? ['score', 'DESC'] : [],
-                date_flag ? ['creation_date', 'DESC'] : []
-            ]
+            order: order_list
         });
 
         res.status(200).json(post); // Returns posts

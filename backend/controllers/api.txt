@@ -1,17 +1,17 @@
 ###user.js###
-Get User by Id (DONE)
-Get User by Display Name (DONE)
+Get User by Id (DONE) (TESTED USING CURL)
+Get User by Display Name (DONE) (TESTED USING CURL) (For space use %20)
 Create User (DONE)
 
 ###autocomplete.js###
-Auto Complete User (DONE but might need indexing, should test with frontend)
-Auto Complete Tag (DONE but might need indexing, should test with frontend)
+Auto Complete User (DONE but might need indexing, should test with frontend) (TESTED USING CURL)
+Auto Complete Tag (DONE but might need indexing, should test with frontend) (TESTED USING CURL)
 
 ###post.js###
-Get post by tag (DONE)
-Get post by tags (DONE)
-Get post by ID (DONE)
-Get posts by User ID (DONE)
+Get post by tag (DONE) 
+Get post by tags (DONE) 
+Get post by ID (DONE) (TESTED USING CURL)
+Get posts by User ID (DONE) (TESTED USING CURL)
 Edit post (DONE)
 Delete post (DONE)
 
