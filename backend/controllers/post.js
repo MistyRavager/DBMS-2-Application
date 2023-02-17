@@ -7,7 +7,7 @@ import { Post } from "../models.js";
 // Function gets post by post id. Sorts by date or score depending on flags
 export const getPostByID = async (req, res) => {
     try {
-        let post_id = req.body.post_id; // Expects "post_id" in body of request
+        let post_id = req.params.post_id; // Expects "post_id" in body of request
         let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
         let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
 
@@ -31,7 +31,7 @@ export const getPostByID = async (req, res) => {
 // Function gets posts by user id. Sorts by date or upvotes depending on flags
 export const getPostByUserID = async (req, res) => {
     try {
-        let user_id = req.body.user_id; // Expects "user_id" in body of request
+        let user_id = req.params.user_id; // Expects "user_id" in body of request
         let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
         let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
 
@@ -118,7 +118,7 @@ export const getPostByTags = async (req, res) => {
 // Edits a post
 export const editPost = async (req, res) => {
     try {
-        let post_id = req.body.post_id; // Expects "post_id" in body of request
+        let post_id = req.params.post_id; // Expects "post_id" in body of request
         let title = req.body.title; // Expects "title" in body of request
         let body = req.body.body; // Expects "body" in body of request
         let tags = req.body.tags; // Expects "tags" in body of request
@@ -162,7 +162,7 @@ export const editPost = async (req, res) => {
 // Deletes a post
 export const deletePost = async (req, res) => {
     try {
-        let post_id = req.body.post_id; // Expects "post_id" in body of request
+        let post_id = req.params.post_id; // Expects "post_id" in body of request
 
         const post = await Post.findOne({ // Finds post with post_id
             where: {

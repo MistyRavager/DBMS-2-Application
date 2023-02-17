@@ -44,24 +44,26 @@ router.post("/answer/downvote/:post_id", downvoteAnswer);
 
 
 // Autocomplete tag
+// Ex http://localhost:5002/autocomplete/tag/co/10
 router.get("/autocomplete/tag/:tag_name/:limit", AutocompleteTag);
 // Autocomplete user
+// Ex http://localhost:5002/autocomplete/user/ge/10
 router.get("/autocomplete/user/:display_name/:limit", AutocompleteUser);
 
 
 
 // Get post by ID
-router.get("/post/id", getPostByID);
+router.get("/post/id/:post_id", getPostByID);
 // Get post by user ID
-router.get("/post/userid", getPostByUserID);
+router.get("/post/userid/:user_id", getPostByUserID);
 // Get post by tag
 router.get("/post/tag", getPostByTag);
 // Get post by tags
 router.get("/post/tags", getPostByTags);
 // Edit post
-router.put("/post/edit", editPost);
+router.put("/post/edit/:post_id", editPost);
 // Delete post
-router.delete("/post/delete", deletePost);
+router.delete("/post/delete/:post_id", deletePost);
 
 
 
