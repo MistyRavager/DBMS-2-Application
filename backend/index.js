@@ -14,6 +14,14 @@ try {
   }
 
   const auth = async (req, res, next) => {
+    let pass = req.headers.authorization;
+    
+    if (pass == undefined) {
+      res.json({ message: "no header" });
+      return;
+    }
+    
+    let authCode = pass.split(" ")[1];
     let usrname = authCode.split(":")[0];
     let pswd = authCode.split(":")[1];
 
