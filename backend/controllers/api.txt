@@ -1,7 +1,7 @@
 ###user.js###
 Get User by Id (DONE) (TESTED USING CURL)
 Get User by Display Name (DONE) (TESTED USING CURL) (For space use %20)
-Create User (DONE)
+Create User (DONE) (TESTED USING CURL)
 
 ###autocomplete.js###
 Auto Complete User (DONE but might need indexing, should test with frontend) (TESTED USING CURL)
@@ -19,7 +19,7 @@ Delete post (DONE)
 Upvote a question -- This increments upvote count of upvoter, reputation of question asker += 5 (DONE) (TESTED USING CURL)
 Downvote a question -- This increments downvote count of downvoter, reputation of question asker -=2, of downvoter -=1 (DONE) (TESTED USING CURL)
 Close a question (DONE)
-Create a question (DONE)
+Create a question (DONE) (TESTED USING CURL) (tags should be a string like: "<tag1><tag2>" )
 
 ###answer.js###
 Upvote an answer -- This increments upvote count of upvoter, reputation of answerer += 10 (DONE) (TESTED USING CURL)

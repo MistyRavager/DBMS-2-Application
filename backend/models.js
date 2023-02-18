@@ -29,9 +29,7 @@ export const User = db.define("users", {
         autoIncrement: true
     },
     account_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true
+        type: DataTypes.INTEGER
     },
     reputation: {
         type: DataTypes.INTEGER,

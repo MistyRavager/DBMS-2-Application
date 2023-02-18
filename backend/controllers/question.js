@@ -216,6 +216,7 @@ export const createQuestion = async (req, res) => {
                 last_activity_date: new Date()
             });
 
+            res.status(200).json("question created"); // If successful, returns "question closed" in a json
         } else { // If user does not exist
             res.status(404).json("User not found");
         }
