@@ -65,9 +65,9 @@ export default function Home({ allPostsData }) {
             <Grid item sm={4} md ={8}/>
             <Grid item sm={4} md={4} >
               <Grid item sm={12} md={5}  sx={{ml:"30%",my:"25%"}}>
-              <Button className={styles.button} sx={{marginBottom:1}}><LockOpenRoundedIcon/> SignUp</Button>
-              <Button className={styles.button} sx={{marginBottom:1}}><LoginRoundedIcon/> Login</Button>
-              <Button className={styles.button} sx={{marginBottom:1}}><Explore/> Explore</Button>
+              <Button className={styles.button} sx={{marginBottom:1}} href="/signup" ><LockOpenRoundedIcon/> SignUp</Button>
+              <Button className={styles.button} sx={{marginBottom:1}} href="/signin" ><LoginRoundedIcon/> Login</Button>
+              <Button className={styles.button} sx={{marginBottom:1}} href="/explore" ><Explore/> Explore</Button>
 
               {/* <button className={styles.button} role="button">Button 33</button> */}
               </Grid>
@@ -92,27 +92,6 @@ export default function Home({ allPostsData }) {
           ))}
         </ul>
       </div> */}
-      {/* <BackToTop> */}
-      {/* <Link href="/dashboard">Dashboard </Link>
-      <Link href="/create">create </Link>
-      <Link href="/signin">signin </Link>
-      <Link href="/signup">signup </Link> */}
-
-        {/* <Container>
-          <Box sx={{ my: 2 }}>
-            {[...new Array(50)]
-              .map(
-              () => `Cras mattis consectetur purus sit amet fermentum.
-        Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-        Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
-              )
-            .join('\n')}
-          </Box>
-        </Container>
-       */}
-      
-      {/* </BackToTop> */}
     </>
     // </Layout>
   )

@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Head from 'next/head';
 
 // function Copyright(props) {
 //   return (
@@ -39,6 +40,10 @@ export default function SignInSide() {
   };
 
   return (
+    <>
+    <Head>
+      <title>Sign In</title>
+    </Head>
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
@@ -123,5 +128,6 @@ export default function SignInSide() {
         </Grid>
       </Grid>
     </ThemeProvider>
+    </>
   );
 }
