@@ -26,20 +26,20 @@ export const getPostByID = async (req, res) => {
 export const getPostByUserID = async (req, res) => {
     try {
         let user_id = req.params.user_id; // Expects "user_id" in body of request
-        let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
-        let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
+        let score_flag = req.query.score_flag; // Expects "score_flag" in body of request
+        let date_flag = req.query.date_flag; // Expects "date_flag" in body of request
         let order_list = [];
 
-        if (score_flag === "1") {
+        if (score_flag == "1") {
             order_list.push(['score', 'DESC']);
         }
-        else if (score_flag === "0") {
+        else if (score_flag == "0") {
             order_list.push(['score', 'ASC']);
         }
-        if (date_flag === "1") {
+        if (date_flag == "1") {
             order_list.push(['creation_date', 'DESC']);
         }
-        else if (date_flag === "0") {
+        else if (date_flag == "0") {
             order_list.push(['creation_date', 'ASC']);
         }
 
@@ -60,15 +60,21 @@ export const getPostByUserID = async (req, res) => {
 // Function gets post by tag. Sorts by date or upvotes depending on flags
 export const getPostByTag = async (req, res) => {
     try {
-        let tag_name = req.body.tag_name; // Expects "tag_name" in body of request
-        let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
-        let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
+        let tag_name = req.query.tag_name; // Expects "tag_name" in body of request
+        let score_flag = req.query.score_flag; // Expects "score_flag" in body of request
+        let date_flag = req.query.date_flag; // Expects "date_flag" in body of request
         let order_list = [];
-        if (score_flag === "1") {
+        if (score_flag == "1") {
             order_list.push(['score', 'DESC']);
         }
-        if (date_flag === "1") {
+        else if (score_flag == "0") {
+            order_list.push(['score', 'ASC']);
+        }
+        if (date_flag == "1") {
             order_list.push(['creation_date', 'DESC']);
+        }
+        else if (date_flag == "0") {
+            order_list.push(['creation_date', 'ASC']);
         }
 
         const post = await Post.findAll({ // Finds all posts with tag_name in tags (Looks for the tag_name as a substring in tags)
@@ -93,15 +99,21 @@ export const getPostByTag = async (req, res) => {
 // Function gets post by tags. Sorts by date or upvotes depending on flags
 export const getPostByTags = async (req, res) => {
     try {
-        let tags = req.body.tags; // Expects "tags" in body of request
-        let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
-        let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
+        let tags = req.query.tags; // Expects "tags" in body of request
+        let score_flag = req.query.score_flag; // Expects "score_flag" in body of request
+        let date_flag = req.query.date_flag; // Expects "date_flag" in body of request
         let order_list = [];
-        if (score_flag === "1") {
+        if (score_flag == "1") {
             order_list.push(['score', 'DESC']);
         }
-        if (date_flag === "1") {
+        else if (score_flag == "0") {
+            order_list.push(['score', 'ASC']);
+        }
+        if (date_flag == "1") {
             order_list.push(['creation_date', 'DESC']);
+        }
+        else if (date_flag == "0") {
+            order_list.push(['creation_date', 'ASC']);
         }
 
         const post = await Post.findAll({ // Finds all posts with tag_name in tags (Looks for the tag_name as a substring in tags)
