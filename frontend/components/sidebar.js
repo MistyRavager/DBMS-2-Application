@@ -45,7 +45,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   
 const profile =(
     <React.Fragment>
-      <ListItemButton >
+      <ListItemButton component="a" href="/dashboard">
         <ListItemIcon>
           <Avatar
             alt="SuriBaka"

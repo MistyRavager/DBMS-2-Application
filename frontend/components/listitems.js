@@ -18,13 +18,13 @@ import { WrapText } from '@mui/icons-material';
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
+    <ListItemButton component="a" href="/create">
       <ListItemIcon>
         <CreateIcon />
       </ListItemIcon>
       <ListItemText primary="Create Question" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton component="a" href="/explore">
       <ListItemIcon>
         <ExploreIcon />
       </ListItemIcon>

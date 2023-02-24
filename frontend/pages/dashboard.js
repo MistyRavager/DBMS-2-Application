@@ -14,6 +14,25 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 
 export default function Dashboard() {
+  function handleClick(e) {
+    e.preventDefault();
+    const getQuestion = async () => {
+      const data = {
+        // user_id: 7,
+        date_flag: "1",
+      };
+
+      const response = await fetch(`http://localhost:5002/question/userid/${6}?sort_by=creation_date`, {
+        method: "GET"
+        // body: JSON.stringify(data),
+      });
+      return response.json();
+    };
+    getQuestion().then((data) => {
+      // alert(data.message);
+      console.log(data);
+    });
+  }  
     return (
     <>
     <Head>
@@ -61,6 +80,8 @@ export default function Dashboard() {
                   <Typography sx={{fontSize:25}} component="div" gutterBottom color="text.secondary">
                     Some Description: Baka
                   </Typography>
+                  <Button href='#' size="small" onClick={handleClick}>Learn More</Button>
+
                 </Paper>
               </Grid>
               <Grid item xs={12} md={4} lg={3} xl={2}>

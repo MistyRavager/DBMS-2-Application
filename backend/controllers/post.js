@@ -29,11 +29,18 @@ export const getPostByUserID = async (req, res) => {
         let score_flag = req.body.score_flag; // Expects "score_flag" in body of request
         let date_flag = req.body.date_flag; // Expects "date_flag" in body of request
         let order_list = [];
+
         if (score_flag === "1") {
             order_list.push(['score', 'DESC']);
         }
+        else if (score_flag === "0") {
+            order_list.push(['score', 'ASC']);
+        }
         if (date_flag === "1") {
             order_list.push(['creation_date', 'DESC']);
+        }
+        else if (date_flag === "0") {
+            order_list.push(['creation_date', 'ASC']);
         }
 
         const post = await Post.findAll({ // Finds all posts with owner_user_id = user_id
