@@ -182,8 +182,24 @@ export const deletePost = async (req, res) => {
                     id: post_id
                 }
             });
+
+            if (post.post_type_id == 1) { // If post is a question
+                const nanswerD = await Post.destroy({ // Deletes all answers to question
+                    where: {
+                        parent_id: post_id
+                    }
+                });
+            }
+
+            const dCom = await Comment.destroy({ // Deletes all comments to post
+                where: {
+                    post_id: post_id
+                }
+            });
+
+            res.status(200).json({"message":"Post deleted"});
         } else { // If post does not exist
-            res.status(404).json("Post not found");
+            res.status(404).json({"message":"Post not found"});
         }
     }   catch (error) {
         res.status(500).json(error);
