@@ -1,7 +1,30 @@
 import { where } from "sequelize";
 import { Post, User, Vote } from "../models.js";
 
+export const getQuestionByUserId = async (req, res) => {
+    try {
+        let user_id = req.params.user_id; // Expects "user_id" in params of request
+        let sort_by = req.query.sort_by;
 
+        if (sort_by == null) {
+            sort_by = "creation_date";
+        }
+
+        const post = await Post.findAll({ // Finds all posts with owner_user_id = user_id
+            where: {
+                owner_user_id: user_id,
+                post_type_id: 1
+            },
+            order: [
+                [sort_by, 'DESC']
+            ]
+        });
+
+        res.status(200).json(post); // Returns posts
+    } catch (error) {
+        res.status(500).json(error); // Returns error
+    }
+};
 
 
 // upvote question will also add to the upvote count of the upvoter, and increase reputation of owner of question by 5

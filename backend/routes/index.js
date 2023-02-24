@@ -22,7 +22,8 @@ import {
     upvoteQuestion,
     downvoteQuestion,
     closeQuestion,
-    createQuestion
+    createQuestion,
+    getQuestionByUserId
 } from "../controllers/question.js"
 import {
     getUserByID,
@@ -66,7 +67,9 @@ router.put("/post/edit/:post_id", editPost);
 router.delete("/post/delete/:post_id", deletePost);
 
 
-
+// Get question by user ID and sort by creation_date or score
+// Ex http://localhost:5002/question/userid/1?sort_by=creation_date
+router.get("/question/userid/:user_id", getQuestionByUserId);
 // Upvote a question
 router.post("/question/upvote/:post_id", upvoteQuestion); // Tested
 // Downvote a question
