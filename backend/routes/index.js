@@ -36,7 +36,7 @@ const router = express.Router();
 
 
 // Answer a question
-router.post("/question/answer/:post_id", answerQuestion);
+router.post("/question/answer/:post_id", answerQuestion); // Tested
 // Upvote an answer
 router.post("/answer/upvote/:post_id", upvoteAnswer); // Tested
 // Downvote an answer
@@ -62,22 +62,22 @@ router.get("/post/tag", getPostByTag); // Tested
 // Get post by tags
 router.get("/post/tags", getPostByTags); // Tested
 // Edit post
-router.put("/post/edit/:post_id", editPost);
+router.put("/post/edit/:post_id", editPost); // Tested
 // Delete post
-router.delete("/post/delete/:post_id", deletePost);
+router.delete("/post/delete/:post_id", deletePost); // Tested
 
 
 // Get question by user ID and sort by creation_date or score
 // Ex http://localhost:5002/question/userid/1?sort_by=creation_date
-router.get("/question/userid/:user_id", getQuestionByUserId);
+router.get("/question/userid/:user_id", getQuestionByUserId); // Tested
 // Upvote a question
 router.post("/question/upvote/:post_id", upvoteQuestion); // Tested
 // Downvote a question
 router.post("/question/downvote/:post_id", downvoteQuestion); // Tested
-// Close a question
-router.put("/question/close/:post_id", closeQuestion);
 // Create a question
-router.post("/question/create", createQuestion);
+router.post("/question/create", createQuestion); // Tested
+// Close a question
+router.put("/question/close/:post_id", closeQuestion); 
 
 
 
@@ -86,7 +86,7 @@ router.get("/user/id/:id", getUserByID); // Tested
 // Get user by display name
 router.get("/user/name/:display_name", getUserByDisplayName); // Tested
 // Create a user
-router.post("/user/create", createUser);
+router.post("/user/create", createUser); // Tested
 
 
 export default router;

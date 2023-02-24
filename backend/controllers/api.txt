@@ -13,13 +13,13 @@ Get post by tags (DONE) (TESTED USING CURL) (Note: use angle brackets around eac
 Get post by ID (DONE) (TESTED USING CURL)
 Get posts by User ID (DONE) (TESTED USING CURL)
 Edit post (DONE) (TESTED USING CURL)
-Delete post (DONE)
+Delete post (DONE) (TESTED USING CURL) 
 
 ###question.js###
 Upvote a question -- This increments upvote count of upvoter, reputation of question asker += 5 (DONE) (TESTED USING CURL)
 Downvote a question -- This increments downvote count of downvoter, reputation of question asker -=2, of downvoter -=1 (DONE) (TESTED USING CURL)
-Close a question (DONE)
 Create a question (DONE) (TESTED USING CURL) (tags should be a string like: "<tag1><tag2>" )
+Get question by user ID (DONE) (TESTED USING CURL) 
 
 ###answer.js###
 Upvote an answer -- This increments upvote count of upvoter, reputation of answerer += 10 (DONE) (TESTED USING CURL)
@@ -32,4 +32,5 @@ Login and auth (DONE)
 
 
 Additional / Optional functionality: 
+Close a question (DONE)
 Accept an answer 
