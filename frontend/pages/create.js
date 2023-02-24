@@ -53,7 +53,7 @@ export default function create() {
   return (
     <>
         <Head>
-            <title>Dashboard</title>
+            <title>Create Question</title>
         </Head>
         <Box sx={{ display: 'flex' }}>
             <Sidebar/>
