@@ -290,15 +290,6 @@ export const Vote = db.define("votes", {
     timestamps: false,
 });
 
-// CREATE TABLE badges (
-// 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-// 	user_id INT NOT NULL,
-// 	class TINYINT NOT NULL,
-// 	name VARCHAR(64) NOT NULL,
-// 	tag_based TINYINT(1) NOT NULL,
-// 	date TIMESTAMP(3) NOT NULL
-// );
-
 export const Badge = db.define("badges", {
     id: {
         type: DataTypes.INTEGER,
