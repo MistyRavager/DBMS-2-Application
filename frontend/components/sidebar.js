@@ -14,7 +14,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Avatar from '@mui/material/Avatar';
 import { ListItemButton } from '@mui/material';
 const drawerWidth = 300;
-const mdTheme = createTheme();
+const mdTheme = createTheme({
+  palette: {
+    mode: 'light',
+  }
+});
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
