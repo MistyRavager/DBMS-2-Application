@@ -1,5 +1,5 @@
 import { Sequelize, where } from "sequelize";
-import { Post } from "../models.js";
+import { Post, User } from "../models.js";
 
 
 
@@ -156,6 +156,8 @@ export const editPost = async (req, res) => {
                     id: post_id
                     }
             });
+
+            res.status(200).json("Post edited");
         } else { // If post or editor does not exist
             res.status(404).json("Post or editor not found");
         }
@@ -182,6 +184,7 @@ export const deletePost = async (req, res) => {
                     id: post_id
                 }
             });
+            res.status(200).json("Post edited");
         } else { // If post does not exist
             res.status(404).json("Post not found");
         }
