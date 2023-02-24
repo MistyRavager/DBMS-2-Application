@@ -25,7 +25,7 @@ export const getUserByDisplayName = async (req, res) => {
     try {
         let display_name = req.params.display_name; // Expects "display_name" in body of request
 
-        const user = await User.findOne({ // Finds user with display_name = display_name
+        const user = await User.findAll({ // Finds user with display_name = display_name
             where: {
                 display_name: display_name
             }
