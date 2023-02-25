@@ -117,7 +117,7 @@ export const answerQuestion = async (req, res) => {
                 accepted_answer_id: null
             });
 
-            res.status(200).json("done");
+            res.status(200).json("Created answer");
         } else {
             res.status(404).json("Post not found");
         }

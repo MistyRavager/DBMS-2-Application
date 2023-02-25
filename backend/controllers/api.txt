@@ -25,6 +25,8 @@ Get question by user ID (DONE) (TESTED USING CURL)
 Upvote an answer -- This increments upvote count of upvoter, reputation of answerer += 10 (DONE) (TESTED USING CURL)
 Downvote an answer -- This increments downvote count of downvoter, reputation of answerer -=2, of downvoter -=1 (DONE) (TESTED USING CURL)
 Answer a question (DONE) (TESTED USING CURL)
+Get Answer by user ID (DONE) (TESTED USING CURL)
+Get Answer by question ID (DONE) (TESTED USING CURL)
 
 
 ###auth.js###
