@@ -18,14 +18,26 @@ const mdTheme = createTheme({ palette: { mode: 'light' } });
 
 export default function UserDetails(props) {
     const [posts, setPosts] = React.useState([]);
-    async function getPosts(e) {
-        e.preventDefault();
+    const [answers, setAnswers] = React.useState([]);
+    async function getQuestions() {
         const response = await fetch(`http://localhost:5002/question/userid/${props.details?.id}?sort_by=creation_date`, {
             method: "GET"
         });
         const x = await response.json();
         setPosts(x);
     }
+    async function getAnswers() {
+        const response = await fetch(`http://localhost:5002/answer/userid/${props.details?.id}?sort_by=creation_date`,{
+            method: "GET"
+        });
+        const x = await response.json();
+        setAnswers(x);
+    }
+    React.useEffect(() => {
+        getQuestions();
+        getAnswers();
+    },[props]);
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box
@@ -119,17 +131,17 @@ export default function UserDetails(props) {
                             <Grid item xs={12}>
                                 <Typography variant="h6" component="div" gutterBottom>
                                 Recent Posts
-                                <Button href='#' size="small" onClick={(e) =>{getPosts(e)}}>Learn More</Button>
+                                <Button href='#' size="small" onClick={(e) =>{getQuestions(e)}}>Learn More</Button>
 
                                 </Typography>
                             </Grid>
-                            {(posts.length > 0) ?   posts.map((post) => {
+                            {posts?.map((post) => {
                                 return (
-                                    <Grid item xs={12}>
-                                        <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}  key={post.id}>
+                                    <Grid item xs={12}  key={post.id}>
+                                        <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }} >
                                             <CardContent>
                                                 <Typography sx={{fontSize:20}} component="div">
-                                                Question: {post.title} 
+                                                QuestionID {post.id}: {post.title} 
                                                 </Typography>
                                                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                                 Tags: {post.tags}
@@ -144,33 +156,45 @@ export default function UserDetails(props) {
                                                 <Button href={`/posts/${props.details?.id}/${post.id}`} size="small">Learn More</Button>
                                             </CardActions>
                                         </Card>
-                                    </Grid>)}) :<></>}
+                                    </Grid>)})}
+                            </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h6" component="div" gutterBottom>
-                        Recent Answers
-                        </Typography>
-                        <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                        <CardContent>
-                            <Typography sx={{fontSize:20}} component="div">
-                            Question: What is the meaning of life? Part 2
-                            </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            Tag1 Tag2 Tag3
-                            </Typography>
-                            <Typography sx={{ mb: 1.5, fontSize:14 }} color="text.secondary">
-                            Upvotes Received: 100 Downvotes: 0 Answers: 10 
-                            </Typography>
-                            <Typography variant="body2">
-                            Your Answer {'(Top Answer??)'} :<br/>
-                            the condition that distinguishes animals and plants from inorganic matter, including the capacity for growth, reproduction, functional activity, and continual change preceding death.
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                        <Button href='#' size="small">Learn More</Button>
-                        </CardActions>
-                        </Card>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <Typography variant="h6" component="div" gutterBottom>
+                                Recent Answers
+                                </Typography>
+                            </Grid>
+                            {answers?.map((answer) => {
+                                return (
+                                    <Grid item xs={12} key={answer?.id}>
+                                        <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                            <CardContent>
+                                                <Typography sx={{fontSize:20}} component="div">
+                                                AnswerID: {answer?.id} 
+                                                </Typography>
+                                                <Typography component={'span'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                                Score: {answer?.score}
+                                                </Typography>
+                                                <Typography component={'div'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                                {/* {(answer?.id == post?.accepted_answer_id) ? 
+                                                    <Chip 
+                                                        label="Accepted Answer"
+                                                        sx={{color:"#00a152", fontWeight:"bold"}}
+                                                        disabled
+                                                        variant="outlined"
+                                                        icon = {<DoneIcon style={{color:"#00a152"}}/>}
+                                                    />
+                                                    :<></>} */}
+                                                </Typography>
+                                                <Typography component={'span'} variant="body2" dangerouslySetInnerHTML={{__html:answer.body}}>
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                            </Grid>)})}
+                        
                     </Grid>
                     </Grid>
                 </Container>

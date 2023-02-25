@@ -41,12 +41,12 @@ const router = express.Router();
 // Get answer by user ID
 // Ex http://127.0.0.1:5002/answer/userid/4?sort_by=score&limit=3
 // By default sorts by creation date and returns 10 answers
-router.get("/answer/userid/:user_id", getAnswerByUserId); // Tested
+router.get("/answer/userid/:user_id", getAnswerByUserId); // Tested with frontend
 
 // Get answer by question ID
 // Ex http://127.0.0.1:5002/answer/questionid/4?sort_by=score
 // By default sorts by score
-router.get("/answer/questionid/:question_id", getAnswerByQuestionId);
+router.get("/answer/questionid/:question_id", getAnswerByQuestionId); // Tested with frontend
 // Answer a question
 // Ex http://localhost:5002/question/answer/442654
 // Ex body {"user_id":"2", "answer":"This is a test answer"}
@@ -79,7 +79,7 @@ router.get("/autocomplete/user/:display_name/:limit", AutocompleteUser); // Test
 
 
 // Get post by ID
-router.get("/post/id/:post_id", getPostByID); // Tested
+router.get("/post/id/:post_id", getPostByID); // Tested with frontend
 
 // Get post by user ID
 router.get("/post/userid/:user_id", getPostByUserID); // Tested
@@ -108,21 +108,21 @@ router.put("/post/edit/:post_id", editPost); // Tested
 // Ex http://localhost:5002/post/delete/442654
 // If the post is a question, deletes all associated answers too. Also decrements corresponding tag count
 // If successful, returns "Post deleted"
-router.delete("/post/delete/:post_id", deletePost); // Tested
+router.delete("/post/delete/:post_id", deletePost); // Tested 
 
 
 // Get question by user ID and sort by creation_date or score
 // Ex http://127.0.0.1:5002/question/userid/4?sort_by=score&limit=3
 // By default sorts by creation date and returns 10 answers
-router.get("/question/userid/:user_id", getQuestionByUserId); // Tested
+router.get("/question/userid/:user_id", getQuestionByUserId); // Tested with frontend
 
 // Get top k tags
 // Ex http://localhost:5002/question/top_tags/10
-router.get("/question/top_tags/:limit", getTopTags); // Tested
+router.get("/question/top_tags/:limit", getTopTags); // Tested with frontend
 
 // Get top k questions
 // Ex http://localhost:5002/question/top_questions/10
-router.get("/question/top_questions/:limit", getTopQuestions); // Tested
+router.get("/question/top_questions/:limit", getTopQuestions); // Tested with frontend
 
 // Upvote a question
 router.post("/question/upvote/:post_id", upvoteQuestion); // Tested
@@ -147,7 +147,7 @@ router.put("/question/close/:post_id", closeQuestion);
 // Get user by ID
 // Ex http://localhost:5002/user/id/4
 // If successful, returns a single json containing the user. For schema, check init.sql
-router.get("/user/id/:id", getUserByID); // Tested
+router.get("/user/id/:id", getUserByID); // Tested with frontend
 
 // Get user by display name
 // Ex http://localhost:5002/user/name/Geoff%20Dalgas

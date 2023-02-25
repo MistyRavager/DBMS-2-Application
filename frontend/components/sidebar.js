@@ -87,8 +87,6 @@ export default function Sidebar() {
       const x = await res.json();
       setQuestion(x);
     }
-    console.log(tags);
-    console.log(questions);
     React.useEffect(()=>{
       getTopTags();
       getTopQuestions();

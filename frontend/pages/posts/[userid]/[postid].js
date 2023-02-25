@@ -156,7 +156,7 @@ export default function Post() {
                   Answers
                 </Typography>
                 <Grid container spacing={3}>    
-                    {(answers?.length > 0)?answers?.map((answer) => {
+                    {answers?.map((answer) => {
                         return (
                             <Grid item xs={12} key={answer?.id}>
                                 <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
@@ -197,7 +197,7 @@ export default function Post() {
                                             subheader={makeDate(answer?.last_edit_date)}
                                         />
                                 </Card>
-                            </Grid>)}) :<></>}
+                            </Grid>)})}
                 </Grid>
                 
               </Grid>
