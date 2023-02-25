@@ -27,6 +27,7 @@ CREATE TABLE credentials (
 	id INT PRIMARY KEY,
 	user_name VARCHAR(255) NOT NULL UNIQUE,
 	password VARCHAR(255) NOT NULL,
+	access_token VARCHAR(255),
 	FOREIGN KEY (id) REFERENCES users(id) 
 	ON DELETE CASCADE
 );
