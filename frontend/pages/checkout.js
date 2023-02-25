@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import QuestionDetails from '../components/Qdetails';
+import QuestionDetails from '../components/postQuestion';
 import AddTags from '../components/addTags';
 import Review from '../components/review';
 

@@ -17,55 +17,9 @@ import Link from '@mui/material/Link';
 const mdTheme = createTheme({ palette: { mode: 'light' } });
 
 export default function UserDetails(props) {
-    function handleClick(e) {
-        e.preventDefault();
-        const getQuestion = async () => {
-        const data = {
-            // user_id: 7,
-            date_flag: "1",
-        };
-
-        const response = await fetch(`http://localhost:5002/question/userid/${6}?sort_by=creation_date`, {
-            method: "GET"
-            // body: JSON.stringify(data),
-        });
-        return response.json();
-        };
-        getQuestion().then((data) => {
-        console.log(data);
-        });
-    }
     const [posts, setPosts] = React.useState([]);
-    // const [userQuestions, setUserQuestions] = React.useState([]);
-
-    // function createMapping(){
-    //     return posts.map((post) => {
-    //         return (
-    //             <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }} key={post.id}>
-    //                 <CardContent>
-    //                     <Typography sx={{fontSize:20}} component="div">
-    //                     Question: {post.title}
-    //                     </Typography>
-    //                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-    //                     Tags: {post.tags}
-    //                     </Typography>
-    //                     <Typography sx={{ mb: 1.5, fontSize:14 }} color="text.secondary">
-    //                     Score: {post.score} Answers: {post.answer_count} View Count: {post.view_count} 
-    //                     </Typography>
-    //                     <Typography variant="body2">
-    //                     Your Answer {'(Top Answer??)'} :<br/>
-    //                     the condition that distinguishes animals and plants from inorganic matter, including the capacity for growth, reproduction, functional activity, and continual change preceding death.
-    //                     </Typography>
-    //                 </CardContent>
-    //                 <CardActions>
-    //                 <Button href='#' size="small">Learn More</Button>
-    //                 </CardActions>
-    //             </Card>
-    //         );
-    //     });
-    // }
     async function getPosts(e) {
-        // e.preventDefault();
+        e.preventDefault();
         const response = await fetch(`http://localhost:5002/question/userid/${props.details?.id}?sort_by=creation_date`, {
             method: "GET"
         });
@@ -161,54 +115,37 @@ export default function UserDetails(props) {
                         </Paper>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h6" component="div" gutterBottom>
-                        Recent Posts
-                        <Button href='#' size="small" onClick={(e) =>{getPosts(e)}}>Learn More</Button>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <Typography variant="h6" component="div" gutterBottom>
+                                Recent Posts
+                                <Button href='#' size="small" onClick={(e) =>{getPosts(e)}}>Learn More</Button>
 
-                        </Typography>
-
-                        <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                        <CardContent>
-                            <Typography sx={{fontSize:20}} component="div">
-                            Question: What is the meaning of life?
-                            </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            Tag1 Tag2 Tag3
-                            </Typography>
-                            <Typography sx={{ mb: 1.5, fontSize:14 }} color="text.secondary">
-                            Upvotes: 100 Downvotes: 0 Answers: 10 
-                            </Typography>
-                            <Typography variant="body2">
-                            Top Answer :<br/>
-                            the condition that distinguishes animals and plants from inorganic matter, including the capacity for growth, reproduction, functional activity, and continual change preceding death.
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                        <Button href='#' size="small">Learn More</Button>
-                        </CardActions>
-                        </Card>
-                        {(posts.length > 0) ?   posts.map((post) => {
-                            return (
-                                <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}  key={post.id}>
-                                    <CardContent>
-                                        <Typography sx={{fontSize:20}} component="div">
-                                        Question: {post.title}
-                                        </Typography>
-                                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                        Tags: {post.tags}
-                                        </Typography>
-                                        <Typography sx={{ mb: 1.5, fontSize:14 }} color="text.secondary">
-                                        Score: {post.score} Answers: {post.answer_count} View Count: {post.view_count} 
-                                        </Typography>
-                                        <Typography variant="body2">
-                                        Your Answer {'(Top Answer??)'} :<br/>
-                                        the condition that distinguishes animals and plants from inorganic matter, including the capacity for growth, reproduction, functional activity, and continual change preceding death.
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                    <Button href='#' size="small">Learn More</Button>
-                                    </CardActions>
-                            </Card>)}) :<></>}
+                                </Typography>
+                            </Grid>
+                            {(posts.length > 0) ?   posts.map((post) => {
+                                return (
+                                    <Grid item xs={12}>
+                                        <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}  key={post.id}>
+                                            <CardContent>
+                                                <Typography sx={{fontSize:20}} component="div">
+                                                Question: {post.title} 
+                                                </Typography>
+                                                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                                Tags: {post.tags}
+                                                </Typography>
+                                                <Typography variant="body2" dangerouslySetInnerHTML={{__html:post.body}}>
+                                                </Typography>
+                                                <Typography sx={{ mb: 1.5, fontSize:14 }} color="text.secondary">
+                                                Score: {post.score} Answers: {post.answer_count} View Count: {post.view_count} 
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <Button href={`/posts/${props.details?.id}/${post.id}`} size="small">Learn More</Button>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>)}) :<></>}
+                        </Grid>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="h6" component="div" gutterBottom>

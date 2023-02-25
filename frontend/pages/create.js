@@ -13,7 +13,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import QuestionDetails from '../components/Qdetails';
+import QuestionDetails from '../components/postQuestion';
 import AddTags from '../components/addTags';
 import Review from '../components/review';
 

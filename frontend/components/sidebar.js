@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import { mainListItems, topTags, topQuestions } from './listitems';
 import MuiDrawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
@@ -9,10 +8,16 @@ import List from '@mui/material/List';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import Avatar from '@mui/material/Avatar';
-import { ListItemButton } from '@mui/material';
+import CreateIcon from '@mui/icons-material/Create';
+import ExploreIcon from '@mui/icons-material/Explore';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+import LabelIcon from '@mui/icons-material/Label';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+
 const drawerWidth = 300;
 const mdTheme = createTheme({
   palette: {
@@ -66,7 +71,28 @@ export default function Sidebar() {
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
+    const [tags, setTags] = React.useState([]);
+    const [questions, setQuestion] = React.useState([]);
+    async function getTopTags() {
+        const res = await fetch('http://localhost:5002/question/top_tags/5',{
+            method: 'GET'
+        });
+        const x = await res.json();
+        setTags(x);
+    }
+    async function getTopQuestions(){
+      const res = await fetch('http://localhost:5002/question/top_questions/5',{
+        method: 'GET'
+      });
+      const x = await res.json();
+      setQuestion(x);
+    }
+    console.log(tags);
+    console.log(questions);
+    React.useEffect(()=>{
+      getTopTags();
+      getTopQuestions();
+    },[])
     return (
         <ThemeProvider theme={mdTheme}>
             
@@ -88,11 +114,50 @@ export default function Sidebar() {
             <List component="nav">
                 {profile}
                 <Divider sx={{ my: 1 }}/>
-                {mainListItems}
+                <ListItemButton component="a" href="/create">
+                    <ListItemIcon>
+                      <CreateIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Create Question" />
+                  </ListItemButton>
+                  <ListItemButton component="a" href="/explore">
+                    <ListItemIcon>
+                      <ExploreIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Explore" />
+                  </ListItemButton>
                 <Divider sx={{ my: 1 }}/>
-                {topTags}
+                <ListSubheader component="div" inset>
+                  Top 5 Tags
+                </ListSubheader>
+                {/* <ListItemButton href='/'> */}
+                {tags?.map((tag) => {
+                  return (
+                    <ListItemButton key={tag.id}>
+                      <ListItemIcon>
+                        <LabelIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={tag.tag_name} primaryTypographyProps={{fontSize: '0.8em'}}/>
+                    </ListItemButton>
+                  )
+                })}
                 <Divider sx={{ my: 1 }} />
-                {topQuestions}
+                <ListSubheader component="div" inset>
+                  Top 5 Questions
+                </ListSubheader>
+                {
+                  questions?.map((question)=> {
+                    return (
+                      <ListItemButton component="a" href={`/posts/${question.owner_user_id}/${question.id}`} key={question.id}>
+                        <ListItemIcon>
+                          <QuestionAnswerIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={question.title} primaryTypographyProps={{fontSize: '0.8em',overflow: "hidden", textOverflow: "ellipsis", width: '11rem'}}/>
+                      </ListItemButton>
+                    )
+                  })
+                }
+
             </List>
             </Drawer>
         </ThemeProvider>
