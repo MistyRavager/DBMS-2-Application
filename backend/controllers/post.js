@@ -1,5 +1,5 @@
 import { Sequelize, where } from "sequelize";
-import { Post, User, Comment } from "../models.js";
+import { Post, User, Comment, Tag } from "../models.js";
 
 
 
@@ -176,7 +176,7 @@ export const editPost = async (req, res) => {
                     }
             });
 
-            res.status(200).json("Post edited");
+            res.status(200).json("Edited post");
         } else { // If post or editor does not exist
             res.status(404).json("Post or editor not found");
         }
@@ -197,6 +197,8 @@ export const deletePost = async (req, res) => {
             }
         });
 
+        let tags = post.tags; // Gets tags of post
+
         if (post) { // If post exists
             const npostD = await Post.destroy({ // Deletes post
                 where: {
@@ -210,13 +212,28 @@ export const deletePost = async (req, res) => {
                         parent_id: post_id
                     }
                 });
+
+                // Updating tag count
+                let tags_array = tags.split(">");
+                tags_array = tags_array.map(tag => tag.substring(1, tag.length));
+                tags_array.pop();
+
+                for (let i = 0; i < tags_array.length; i++) { // For each tag in tags_array
+                    const tagU = await Tag.update({ // Update tag's count
+                        count: Sequelize.literal('count - 1')
+                    }, {
+                        where: {
+                            tag_name: tags_array[i]
+                        }
+                    });
+                }
             }
 
-            const dCom = await Comment.destroy({ // Deletes all comments to post
-                where: {
-                    post_id: post_id
-                }
-            });
+            // const dCom = await Comment.destroy({ // Deletes all comments to post
+            //     where: {
+            //         post_id: post_id
+            //     }
+            // });
 
             res.status(200).json({"message":"Post deleted"});
         } else { // If post does not exist

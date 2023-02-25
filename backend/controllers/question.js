@@ -245,7 +245,8 @@ export const createQuestion = async (req, res) => {
                 last_activity_date: new Date()
             });
 
-            tags_array = tags.split(">");
+            // Updating tag count
+            let tags_array = tags.split(">");
             tags_array = tags_array.map(tag => tag.substring(1, tag.length));
             tags_array.pop();
 
@@ -259,7 +260,7 @@ export const createQuestion = async (req, res) => {
                 });
             }
 
-            res.status(200).json("question created"); // If successful, returns "question closed" in a json
+            res.status(200).json("Created question"); // If successful, returns "question closed" in a json
         } else { // If user does not exist
             res.status(404).json("User not found");
         }

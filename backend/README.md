@@ -3,7 +3,7 @@ The backend for the CQA Application was designed using NodeJS, Express, and MySQ
 
 ### Initialising
 1. Download the relevant XML files 
-2. Run `init.sql` to create the schema and `data.sql` to populate the tables
+2. Run `init.sql` to create the schema and `data.sql` to populate the tables 
 3. Install the required modules using `npm install`
 4. Add a .env file in the backend folder with the field `MYSQL_PASSWORD=<password>`
 5. Start the backend using `node index.js`
