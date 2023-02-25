@@ -2,7 +2,7 @@ import db from "./conn.js";
 import express from "express";
 import cors from "cors";
 import productRoutes from "./routes/index.js";
-import { authenticateUser } from "./controllers/auth.js";
+// import { authenticateUser } from "./controllers/auth.js";
 
 const app = express();
 
@@ -13,26 +13,26 @@ try {
     console.error("Connection error:", error);
   }
 
-  const auth = async (req, res, next) => {
-    let pass = req.headers.authorization;
-    console.log(pass);
+  // const auth = async (req, res, next) => {
+  //   let pass = req.headers.authorization;
+  //   console.log(pass);
     
-    if (pass == undefined) {
-      res.json({ message: "no header" });
-      return;
-    }
+  //   if (pass == undefined) {
+  //     res.json({ message: "no header" });
+  //     return;
+  //   }
 
-    let usrname = pass.split(":")[0];
-    let pswd = pass.split(":")[1];
+  //   let usrname = pass.split(":")[0];
+  //   let pswd = pass.split(":")[1];
 
-    let result = await authenticateUser(usrname, pswd);
+  //   let result = await authenticateUser(usrname, pswd);
 
-    if (result) {
-      next();
-    } else {
-      res.json({ message: "No Auth" });
-    }
-  };
+  //   if (result) {
+  //     next();
+  //   } else {
+  //     res.json({ message: "No Auth" });
+  //   }
+  // };
   
   //TEMPORARILY COMMENTED OUT AUTH
   // app.use(auth);

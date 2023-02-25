@@ -1,6 +1,7 @@
 import { where } from "sequelize";
 import { User, Credential } from "../models.js";
-
+import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
 
 
 // Function gets user by id
@@ -65,10 +66,25 @@ export const createUser = async (req, res) => {
             last_access_date: new Date()
         });
 
+        const salt = await bcrypt.genSalt();
+        const hashPassword = await bcrypt.hash(password, salt);
+
+        const userID = newUser.id
+
+        const accessToken = jwt.sign({userID, display_name}, process.env.ACCESS_TOKEN_SECRET,{
+            expiresIn: '1d'
+        });
+
         const newCredential = await Credential.create({ // Creates credential
             id: newUser.id, // id is auto-incremented
             user_name: user_name, 
-            password: password
+            password: hashPassword,
+            access_token: accessToken
+        });
+
+        res.cookie('accessToken', accessToken,{
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000
         });
         
 

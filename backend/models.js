@@ -16,6 +16,9 @@ export const Credential = db.define("credentials", {
     password : {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    access_token : {
+        type: DataTypes.STRING
     }
 },{
     freezeTableName: true,
