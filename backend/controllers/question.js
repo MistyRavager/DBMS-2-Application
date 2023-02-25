@@ -1,4 +1,4 @@
-import { where } from "sequelize";
+import { Sequelize,where } from "sequelize";
 import { Post, User, Vote, Tag } from "../models.js";
 
 export const getQuestionByUserId = async (req, res) => {
