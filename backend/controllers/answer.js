@@ -2,6 +2,38 @@ import { Sequelize, where } from "sequelize";
 import { Post, User, Vote } from "../models.js";
 
 
+export const getAnswerByUserId = async (req, res) => {
+    try {
+        let user_id = req.params.user_id; // Expects "user_id" in params of request
+        let sort_by = req.query.sort_by;
+        let count = Number(req.query.limit);
+
+        if (sort_by == null || sort_by == "undefined" || sort_by == NaN) {
+            sort_by = "creation_date";
+        }
+
+        if (req.query.limit == null || req.query.limit == "undefined" || req.query.limit === NaN) {
+            count = 10;
+        }
+
+        const post = await Post.findAll({ // Finds all posts with owner_user_id = user_id
+            where: {
+                owner_user_id: user_id,
+                post_type_id: 2
+            },
+            order: [
+                [sort_by, 'DESC']
+            ],
+            limit: count
+        });
+
+        res.status(200).json(post); // Returns posts
+    } catch (error) {
+        res.status(500).json(error); // Returns error
+    }
+};
+
+
 
 // Function answers question
 export const answerQuestion = async (req, res) => {

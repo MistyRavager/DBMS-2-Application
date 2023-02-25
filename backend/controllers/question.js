@@ -6,10 +6,13 @@ export const getQuestionByUserId = async (req, res) => {
         let user_id = req.params.user_id; // Expects "user_id" in params of request
         let sort_by = req.query.sort_by;
         let count = Number(req.query.limit);
-        console.log(count);
 
-        if (sort_by == null) {
+        if (sort_by == null || sort_by == "undefined" || sort_by == NaN) {
             sort_by = "creation_date";
+        }
+
+        if (req.query.limit == null || req.query.limit == "undefined" || req.query.limit === NaN) {
+            count = 10;
         }
 
         const post = await Post.findAll({ // Finds all posts with owner_user_id = user_id
