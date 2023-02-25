@@ -5,7 +5,8 @@ import {
     answerQuestion,
     upvoteAnswer,
     downvoteAnswer,
-    getAnswerByUserId
+    getAnswerByUserId,
+    getAnswerByQuestionId
 } from "../controllers/answer.js"
 import {
     AutocompleteTag,
@@ -39,6 +40,10 @@ const router = express.Router();
 // Ex http://127.0.0.1:5002/answer/userid/4?sort_by=score&limit=3
 // By default sorts by creation date and returns 10 answers
 router.get("/answer/userid/:user_id", getAnswerByUserId);
+// Get answer by question ID
+// Ex http://127.0.0.1:5002/answer/questionid/4?sort_by=score
+// By default sorts by score
+router.get("/answer/questionid/:question_id", getAnswerByQuestionId);
 // Answer a question
 router.post("/question/answer/:post_id", answerQuestion); // Tested
 // Upvote an answer

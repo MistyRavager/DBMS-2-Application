@@ -12,7 +12,7 @@ export const getQuestionByUserId = async (req, res) => {
         }
 
         if (req.query.limit == null || req.query.limit == "undefined" || req.query.limit === NaN) {
-            count = 10;
+            count = 100;
         }
 
         const post = await Post.findAll({ // Finds all posts with owner_user_id = user_id

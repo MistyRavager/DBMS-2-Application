@@ -2,6 +2,33 @@ import { Sequelize, where } from "sequelize";
 import { Post, User, Vote } from "../models.js";
 
 
+export const getAnswerByQuestionId = async (req, res) => {
+    try {
+        let question_id = req.params.question_id; // Expects "question_id" in params of request
+        let sort_by = req.query.sort_by;
+
+        if (sort_by == null || sort_by == "undefined" || sort_by == NaN) {
+            sort_by = "score";
+        }
+
+        const post = await Post.findAll({ // Finds all posts with parent_id = question_id
+            where: {
+                parent_id: question_id,
+                post_type_id: 2
+            },
+            order: [
+                [sort_by, 'DESC']
+            ]
+        });
+
+        res.status(200).json(post); // Returns posts
+
+    } catch (error) {
+        res.status(500).json(error); // Returns error
+    }
+};
+
+
 export const getAnswerByUserId = async (req, res) => {
     try {
         let user_id = req.params.user_id; // Expects "user_id" in params of request
@@ -13,7 +40,7 @@ export const getAnswerByUserId = async (req, res) => {
         }
 
         if (req.query.limit == null || req.query.limit == "undefined" || req.query.limit === NaN) {
-            count = 10;
+            count = 100;
         }
 
         const post = await Post.findAll({ // Finds all posts with owner_user_id = user_id
