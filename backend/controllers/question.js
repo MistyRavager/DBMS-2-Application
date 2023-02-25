@@ -1,6 +1,45 @@
 import { Sequelize,where } from "sequelize";
 import { Post, User, Vote, Tag } from "../models.js";
 
+export const getTopTags = async (req, res) => {
+    try {
+        let limit_i = req.params.limit; // Expects "limit" in params of request
+        limit_i = parseInt(limit_i);
+
+        const tag = await Tag.findAll({ // Finds all tags with tag_name in tags (Looks for the tag_name as a substring in tags)
+            order: [
+                ['count', 'DESC']
+            ],
+            limit: limit_i // Limits the number of tags returned
+        });
+        
+        res.status(200).json(tag); // Returns tags
+    } catch (error) {
+        res.status(500).json(error); // Returns error
+    }
+};
+
+export const getTopQuestions = async (req, res) => {
+    try {
+        let count = Number(req.params.limit);
+
+        const post = await Post.findAll({ // Finds all posts with owner_user_id = user_id
+            where: {
+                post_type_id: 1
+            },
+            order: [
+                ['score', 'DESC']
+            ],
+            limit: count
+        });
+
+        res.status(200).json(post); // Returns posts
+    } catch (error) {
+        res.status(500).json(error); // Returns error
+    }
+};
+
+
 export const getQuestionByUserId = async (req, res) => {
     try {
         let user_id = req.params.user_id; // Expects "user_id" in params of request

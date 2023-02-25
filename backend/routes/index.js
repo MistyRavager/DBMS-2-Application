@@ -39,11 +39,11 @@ const router = express.Router();
 // Get answer by user ID
 // Ex http://127.0.0.1:5002/answer/userid/4?sort_by=score&limit=3
 // By default sorts by creation date and returns 10 answers
-router.get("/answer/userid/:user_id", getAnswerByUserId);
+router.get("/answer/userid/:user_id", getAnswerByUserId); // Tested
 // Get answer by question ID
 // Ex http://127.0.0.1:5002/answer/questionid/4?sort_by=score
 // By default sorts by score
-router.get("/answer/questionid/:question_id", getAnswerByQuestionId);
+router.get("/answer/questionid/:question_id", getAnswerByQuestionId); // Tested
 // Answer a question
 router.post("/question/answer/:post_id", answerQuestion); // Tested
 // Upvote an answer
