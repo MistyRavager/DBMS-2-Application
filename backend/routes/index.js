@@ -25,7 +25,9 @@ import {
     downvoteQuestion,
     closeQuestion,
     createQuestion,
-    getQuestionByUserId
+    getQuestionByUserId,
+    getTopTags,
+    getTopQuestions
 } from "../controllers/question.js"
 import {
     getUserByID,
@@ -113,6 +115,14 @@ router.delete("/post/delete/:post_id", deletePost); // Tested
 // Ex http://127.0.0.1:5002/question/userid/4?sort_by=score&limit=3
 // By default sorts by creation date and returns 10 answers
 router.get("/question/userid/:user_id", getQuestionByUserId); // Tested
+
+// Get top k tags
+// Ex http://localhost:5002/question/top_tags/10
+router.get("/question/top_tags/:limit", getTopTags); // Tested
+
+// Get top k questions
+// Ex http://localhost:5002/question/top_questions/10
+router.get("/question/top_questions/:limit", getTopQuestions); // Tested
 
 // Upvote a question
 router.post("/question/upvote/:post_id", upvoteQuestion); // Tested
