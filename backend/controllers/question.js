@@ -5,6 +5,8 @@ export const getQuestionByUserId = async (req, res) => {
     try {
         let user_id = req.params.user_id; // Expects "user_id" in params of request
         let sort_by = req.query.sort_by;
+        let count = Number(req.query.limit);
+        console.log(count);
 
         if (sort_by == null) {
             sort_by = "creation_date";
@@ -17,7 +19,8 @@ export const getQuestionByUserId = async (req, res) => {
             },
             order: [
                 [sort_by, 'DESC']
-            ]
+            ],
+            limit: count
         });
 
         res.status(200).json(post); // Returns posts
