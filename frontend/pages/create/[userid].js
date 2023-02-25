@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Head from 'next/head'
 import { Box } from '@mui/material'
-import Sidebar from '../components/sidebar'
+import Sidebar from '../../components/sidebar'
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
@@ -13,9 +13,10 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import QuestionDetails from '../components/postQuestion';
-import AddTags from '../components/addTags';
-import Review from '../components/review';
+import QuestionDetails from '../../components/postQuestion';
+import AddTags from '../../components/addTags';
+import Review from '../../components/review';
+import {useRouter} from 'next/router'
 
 const steps = ['Details','Review Question'];
 
@@ -35,7 +36,9 @@ function getStepContent(step) {
 
 export default function create(props) {
     const [activeStep, setActiveStep] = React.useState(0);
-
+    const router = useRouter()
+    const {userid} = router.query
+    const [userdetails, setUserDetails] = React.useState();
     const handleNext = () => {
         setActiveStep(activeStep + 1);
     };
@@ -44,14 +47,27 @@ export default function create(props) {
         setActiveStep(activeStep - 1);
     };
     
+    async function getUser() {
+        const response = await fetch(`http://localhost:5002/user/id/${userid}`, {
+            method: "GET"
+        });
+        const x = await response.json();
+        setUserDetails(x);
+    }
 
+    
+    React.useEffect(() => {
+      if (!router.isReady) return;
+        console.log("loading");
+        getUser();
+    }, [router.isReady]);
   return (
     <>
         <Head>
             <title>Create Question</title>
         </Head>
         <Box sx={{ display: 'flex' }}>
-            <Sidebar/>
+            <Sidebar details = {userdetails}/>
             <Box
             component="main"
             sx={{

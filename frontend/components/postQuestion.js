@@ -12,6 +12,9 @@ import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box'
 import { useTheme } from '@mui/material/styles';
+import dynamic from "next/dynamic";
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
 const ITEM_HEIGHT = 48;
@@ -51,7 +54,8 @@ function getStyles(name, personName, theme) {
 export default function QuestionDetails() {
   const theme = useTheme();
   const [Tags, setTag] = React.useState([]);
-
+  const [data, setData] = React.useState("");
+  const Editor = dynamic(() => import("./editor"), { ssr: false });
   const handleChange = (event) => {
       const {
       target: { value },
@@ -81,6 +85,17 @@ export default function QuestionDetails() {
 
         </Grid>
         <Grid item xs={12}>
+          <Typography sx={{  fontSize:20 }} gutterBottom color="text.secondary">
+            Question Description
+          </Typography>
+          <Editor
+          value={data}
+          onChange={(v) => {
+              console.log(v);
+            }}
+          />
+        </Grid>
+        {/* <Grid item xs={12}>
           <TextField
             required
             id="description"
@@ -91,9 +106,10 @@ export default function QuestionDetails() {
             variant="outlined"
             multiline
             minRows={4}
-          />
+          /> */}
 
-        </Grid>
+        {/* </Grid> */}
+        
         <Grid item xs={12}>
           <FormControl sx={{ width: '50%', ml:'25%' }}>
           <InputLabel id="demo-multiple-chip-label">Select Tags</InputLabel>
@@ -125,6 +141,7 @@ export default function QuestionDetails() {
             </Select>
         </FormControl>
         </Grid>
+        
       </Grid>
     </React.Fragment>
   );

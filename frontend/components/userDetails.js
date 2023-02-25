@@ -19,15 +19,17 @@ const mdTheme = createTheme({ palette: { mode: 'light' } });
 export default function UserDetails(props) {
     const [posts, setPosts] = React.useState([]);
     const [answers, setAnswers] = React.useState([]);
+    const questionsPerPage = 5;
+    const answersPerPage = 5;
     async function getQuestions() {
-        const response = await fetch(`http://localhost:5002/question/userid/${props.details?.id}?sort_by=creation_date`, {
+        const response = await fetch(`http://localhost:5002/question/userid/${props.details?.id}?sort_by=creation_date&limit=${questionsPerPage}`, {
             method: "GET"
         });
         const x = await response.json();
         setPosts(x);
     }
     async function getAnswers() {
-        const response = await fetch(`http://localhost:5002/answer/userid/${props.details?.id}?sort_by=creation_date`,{
+        const response = await fetch(`http://localhost:5002/answer/userid/${props.details?.id}?sort_by=creation_date&limit=${answersPerPage}`,{
             method: "GET"
         });
         const x = await response.json();

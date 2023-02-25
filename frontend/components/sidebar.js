@@ -52,27 +52,28 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
   );
   
-const profile =(
-    <React.Fragment>
-      <ListItemButton component="a" href="/dashboard">
-        <ListItemIcon>
-          <Avatar
-            alt="SuriBaka"
-            src="/images/profile.jpg"
-            // sx={{ width: '100%', height: '100%' }}
-          />
-          </ListItemIcon>
-        <ListItemText primary="Username" />
-      </ListItemButton>
-    </React.Fragment>
-)
-export default function Sidebar() { 
+
+export default function Sidebar(props) { 
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
     };
     const [tags, setTags] = React.useState([]);
     const [questions, setQuestion] = React.useState([]);
+    const profile =(
+      <React.Fragment>
+        <ListItemButton component="a" href="/dashboard">
+          <ListItemIcon>
+            <Avatar
+              alt={props.details?.display_name}
+              src={props.details?.profile_image_url}
+              // sx={{ width: '100%', height: '100%' }}
+            />
+            </ListItemIcon>
+          <ListItemText primary={props.details?.display_name} />
+        </ListItemButton>
+      </React.Fragment>
+    )
     async function getTopTags() {
         const res = await fetch('http://localhost:5002/question/top_tags/5',{
             method: 'GET'
@@ -110,9 +111,18 @@ export default function Sidebar() {
             </Toolbar>
             <Divider />
             <List component="nav">
-                {profile}
+                <ListItemButton component="a" href="/dashboard">
+                  <ListItemIcon>
+                    <Avatar
+                      alt={props.details?.display_name}
+                      src={props.details?.profile_image_url}
+                      // sx={{ width: '100%', height: '100%' }}
+                    />
+                    </ListItemIcon>
+                  <ListItemText primary={props.details?.display_name} />
+                </ListItemButton>
                 <Divider sx={{ my: 1 }}/>
-                <ListItemButton component="a" href="/create">
+                <ListItemButton component="a" href={`/create/${props.details?.id}`}>
                     <ListItemIcon>
                       <CreateIcon />
                     </ListItemIcon>
