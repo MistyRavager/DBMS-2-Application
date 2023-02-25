@@ -1,5 +1,5 @@
 import { where } from "sequelize";
-import { Post, User, Vote } from "../models.js";
+import { Post, User, Vote, Tag } from "../models.js";
 
 export const getQuestionByUserId = async (req, res) => {
     try {
@@ -211,7 +211,7 @@ export const createQuestion = async (req, res) => {
         let owner_user_id = req.body.owner_user_id; // Expects "owner_user_id" in body of request
         let title = req.body.title; // Expects "title" in body of request
         let body = req.body.body; // Expects "body" in body of request
-        let tags = req.body.tags; // Expects "tags" in body of request
+        let tags = req.body.tags; // Expects "tags" in body of request in <tag1><tag2><tag3> format
 
         const user = await User.findOne({
             where: {
@@ -244,6 +244,20 @@ export const createQuestion = async (req, res) => {
                 last_edit_date: null,
                 last_activity_date: new Date()
             });
+
+            tags_array = tags.split(">");
+            tags_array = tags_array.map(tag => tag.substring(1, tag.length));
+            tags_array.pop();
+
+            for (let i = 0; i < tags_array.length; i++) { // For each tag in tags_array
+                const tagU = await Tag.update({ // Update tag's count
+                    count: Sequelize.literal('count + 1')
+                }, {
+                    where: {
+                        tag_name: tags_array[i]
+                    }
+                });
+            }
 
             res.status(200).json("question created"); // If successful, returns "question closed" in a json
         } else { // If user does not exist
