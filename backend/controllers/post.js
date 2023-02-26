@@ -100,8 +100,12 @@ export const getPostByTag = async (req, res) => {
 export const getPostByTags = async (req, res) => {
     try {
         let tags = req.query.tags; // Expects "tags" in body of request
+        if (typeof(tags) === 'string'){
+            tags = Array(tags)
+        }
         let score_flag = req.query.score_flag; // Expects "score_flag" in body of request
         let date_flag = req.query.date_flag; // Expects "date_flag" in body of request
+        let limit_i = Number(req.query.limit)
         let order_list = [];
         if (score_flag == "1") {
             order_list.push(['score', 'DESC']);
@@ -130,7 +134,8 @@ export const getPostByTags = async (req, res) => {
                     }
                 ]
             },
-            order: order_list
+            order: order_list,
+            limit: limit_i
         });
 
         res.status(200).json(post); // Returns posts

@@ -74,7 +74,7 @@ export default function Post() {
         <title>Post</title>
     </Head>
     <Box sx={{ display: 'flex' }}>
-      <Sidebar/>
+      <Sidebar userid={userid}/>
       
       <Box
           component="main"

@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Layout, { siteTitle } from '../components/layout'
+// import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
 import Sidebar from '../components/sidebar'
@@ -28,7 +28,7 @@ export default function Home({ allPostsData }) {
     <>
     
       <Head>
-        <title>{siteTitle}</title>
+        <title>Home</title>
       </Head>
       {/* <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />

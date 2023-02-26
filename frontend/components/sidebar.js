@@ -60,20 +60,18 @@ export default function Sidebar(props) {
     };
     const [tags, setTags] = React.useState([]);
     const [questions, setQuestion] = React.useState([]);
-    const profile =(
-      <React.Fragment>
-        <ListItemButton component="a" href="/dashboard">
-          <ListItemIcon>
-            <Avatar
-              alt={props.details?.display_name}
-              src={props.details?.profile_image_url}
-              // sx={{ width: '100%', height: '100%' }}
-            />
-            </ListItemIcon>
-          <ListItemText primary={props.details?.display_name} />
-        </ListItemButton>
-      </React.Fragment>
-    )
+    const [userdetails, setUserDetails] = React.useState();
+
+    async function getUser() {
+      const response = await fetch(`http://localhost:5002/user/id/${props?.userid}`, {
+          method: "GET"
+      });
+      const x = await response.json();
+      setUserDetails(x);
+    }
+    React.useEffect(() => {
+        getUser();
+    }, [props]);
     async function getTopTags() {
         const res = await fetch('http://localhost:5002/question/top_tags/5',{
             method: 'GET'
@@ -114,15 +112,15 @@ export default function Sidebar(props) {
                 <ListItemButton component="a" href="/dashboard">
                   <ListItemIcon>
                     <Avatar
-                      alt={props.details?.display_name}
-                      src={props.details?.profile_image_url}
+                      alt={userdetails?.display_name}
+                      src={userdetails?.profile_image_url}
                       // sx={{ width: '100%', height: '100%' }}
                     />
                     </ListItemIcon>
-                  <ListItemText primary={props.details?.display_name} />
+                  <ListItemText primary={userdetails?.display_name} />
                 </ListItemButton>
                 <Divider sx={{ my: 1 }}/>
-                <ListItemButton component="a" href={`/create/${props.details?.id}`}>
+                <ListItemButton component="a" href={`/create/${userdetails?.id}`}>
                     <ListItemIcon>
                       <CreateIcon />
                     </ListItemIcon>
@@ -141,7 +139,7 @@ export default function Sidebar(props) {
                 {/* <ListItemButton href='/'> */}
                 {tags?.map((tag) => {
                   return (
-                    <ListItemButton key={tag.id}>
+                    <ListItemButton key={tag.id} component="a" href={`/tags/${userdetails?.id}/${tag.tag_name}`}>
                       <ListItemIcon>
                         <LabelIcon />
                       </ListItemIcon>

@@ -38,7 +38,6 @@ export default function create(props) {
     const [activeStep, setActiveStep] = React.useState(0);
     const router = useRouter()
     const {userid} = router.query
-    const [userdetails, setUserDetails] = React.useState();
     const handleNext = () => {
         setActiveStep(activeStep + 1);
     };
@@ -47,27 +46,21 @@ export default function create(props) {
         setActiveStep(activeStep - 1);
     };
     
-    async function getUser() {
-        const response = await fetch(`http://localhost:5002/user/id/${userid}`, {
-            method: "GET"
-        });
-        const x = await response.json();
-        setUserDetails(x);
-    }
+    
 
     
-    React.useEffect(() => {
-      if (!router.isReady) return;
-        console.log("loading");
-        getUser();
-    }, [router.isReady]);
+    // React.useEffect(() => {
+    //   if (!router.isReady) return;
+    //     console.log("loading");
+    //     getUser();
+    // }, [router.isReady]);
   return (
     <>
         <Head>
             <title>Create Question</title>
         </Head>
         <Box sx={{ display: 'flex' }}>
-            <Sidebar details = {userdetails}/>
+            <Sidebar userid = {userid}/>
             <Box
             component="main"
             sx={{

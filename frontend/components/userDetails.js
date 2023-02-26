@@ -107,7 +107,6 @@ export default function UserDetails(props) {
                             </Grid>        
                         </Grid>
                         
-                        <Button href='#' size="small" onClick={(e) =>{console.log(props.details)}}>Learn More</Button>
 
                         </Paper>
                     </Grid>
@@ -133,7 +132,6 @@ export default function UserDetails(props) {
                             <Grid item xs={12}>
                                 <Typography variant="h6" component="div" gutterBottom>
                                 Recent Posts
-                                <Button href='#' size="small" onClick={(e) =>{getQuestions(e)}}>Learn More</Button>
 
                                 </Typography>
                             </Grid>
