@@ -6,13 +6,16 @@ export const verifyToken = (req, res, next) => {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decodedToken) => {
             if(err){
                 console.log(err.message);
-                res.redirect('/signin');
+                // res.redirect('/signin');
+                return res.sendStatus(401);
             } else {
                 console.log(decodedToken);
                 next();
             }
         });
     } else {
-        res.redirect('/signin');
+        // res.redirect('/signin');
+        console.log("Hi");
+        return res.sendStatus(401);
     }
 };

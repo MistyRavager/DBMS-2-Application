@@ -2,6 +2,8 @@ import db from "./conn.js";
 import express from "express";
 import cors from "cors";
 import productRoutes from "./routes/index.js";
+import cookieParser from "cookie-parser";
+
 // import { authenticateUser } from "./controllers/auth.js";
 
 const app = express();
@@ -36,6 +38,7 @@ try {
   
   //TEMPORARILY COMMENTED OUT AUTH
   // app.use(auth);
+  app.use(cookieParser());
   app.use(cors(({ credentials:true, origin:'http://localhost:3000' })));
   app.use(express.json());
   app.use("/", productRoutes);

@@ -34,8 +34,22 @@ import {
     getUserByDisplayName,
     createUser
 } from "../controllers/user.js"
+import {
+    Signin,
+    Signout
+}
+from "../controllers/auth.js"
+import {
+    verifyToken
+}
+from "../middleware/VerifyToken.js"
 
 const router = express.Router();
+
+
+//Authentication
+router.post("/signin", Signin); 
+router.post("/signout", Signout); 
 
 
 // Get answer by user ID
@@ -148,7 +162,7 @@ router.put("/question/close/:post_id", closeQuestion);
 // Get user by ID
 // Ex http://localhost:5002/user/id/4
 // If successful, returns a single json containing the user. For schema, check init.sql
-router.get("/user/id/:id", getUserByID); // Tested with frontend
+router.get("/user/id/:id", verifyToken, getUserByID); // Tested with frontend
 
 // Get user by display name
 // Ex http://localhost:5002/user/name/Geoff%20Dalgas

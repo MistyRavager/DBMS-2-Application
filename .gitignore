@@ -2,3 +2,4 @@ xml/
 csv/
 .DS_STORE
 test.txt
+**/node_modules

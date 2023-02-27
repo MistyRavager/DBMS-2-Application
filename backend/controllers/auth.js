@@ -26,7 +26,7 @@ import jwt from "jsonwebtoken"
 
 
 
-export const Login = async(req, res) => {
+export const Signin = async(req, res) => {
     try {
         const cred = await Credential.findAll({
             where:{
@@ -64,12 +64,12 @@ export const Login = async(req, res) => {
 
 
 
-export const Logout = async(req, res) => {
+export const Signout = async(req, res) => {
     const accessToken = req.cookies.accessToken;
     if(!accessToken) return res.sendStatus(204);
     const cred = await Credential.findAll({
         where:{
-            refresh_token: accessToken
+            access_token: accessToken
         }
     });
     if(!cred[0]) return res.sendStatus(204);
