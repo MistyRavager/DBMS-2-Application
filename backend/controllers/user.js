@@ -2,7 +2,9 @@ import { where } from "sequelize";
 import { User, Credential } from "../models.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
+import dotenv from "dotenv";
 
+const env = dotenv.config();
 
 // Function gets user by id
 export const getUserByID = async (req, res) => {
@@ -74,6 +76,7 @@ export const createUser = async (req, res) => {
         const accessToken = jwt.sign({userID, display_name}, process.env.ACCESS_TOKEN_SECRET,{
             expiresIn: '1d'
         });
+        console.log("accessToken"+accessToken);
 
         const newCredential = await Credential.create({ // Creates credential
             id: newUser.id, // id is auto-incremented
@@ -81,13 +84,13 @@ export const createUser = async (req, res) => {
             password: hashPassword,
             access_token: accessToken
         });
-
+        console.log("newCredential"+newCredential);
         res.cookie('accessToken', accessToken,{
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000
         });
         
-
+        console.log('cookie set');
         res.status(200).json("User created");
     } catch (error) {
         res.status(500).json(error); // Returns error   

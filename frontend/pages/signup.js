@@ -13,6 +13,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Head from 'next/head';
+import dynamic from "next/dynamic";
+
 // function Copyright(props) {
 //   return (
 //     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -29,15 +31,34 @@ import Head from 'next/head';
 const theme = createTheme();
 
 export default function SignInSide() {
+  const [aboutme, setAboutMe] = React.useState("");
+  var aboutme1 = "";
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
+    async function postDetails(){
+      const response = await fetch(`http://localhost:5002/user/create`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          display_name: data.get('display_name'),
+          location: data.get('location'),
+          profile_image_url: data.get('profile_image_url'),
+          website_url: data.get('website_url'),
+          user_name: data.get('username'),
+          password: data.get('password'),
+          about_me: '<p>hello</p>',
+        }),
+      });
+      console.log(await response.json());
+    }
+    postDetails();
   };
-
+  const Editor = dynamic(() => import("../components/editor"), { ssr: false });
+  console.log("abcd"+aboutme);
   return (
     <>
     <Head>
@@ -46,8 +67,7 @@ export default function SignInSide() {
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
-        <Grid
-          item
+        {/* <Grid item
           xs={false}
           sm={4}
           md={7}
@@ -59,8 +79,8 @@ export default function SignInSide() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        /> */}
+        <Grid item xs={12}  component={Paper} elevation={6} square>
           <Box
             sx={{
               my: 8,
@@ -81,6 +101,54 @@ export default function SignInSide() {
                 margin="normal"
                 required
                 fullWidth
+                name="display_name"
+                label="Display Name"
+                type="text"
+                id="display_name"
+                autoComplete="current-display-name"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+
+                name="location"
+                label="Location"
+                type="text"
+                id="location"
+                autoComplete="current-location"
+                autoFocus
+
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+
+                id="profile_image_url"
+                label="Profile image URL"
+                name="profile_image_url"
+                autoComplete="current-profile-image-url"
+                autoFocus
+                type="url"
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+
+                id="website_url"
+                label="Website URL"
+                name="website_url"
+                autoComplete="website-url"
+                type="url"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
                 id="username"
                 label="Username"
                 name="username"
@@ -97,6 +165,13 @@ export default function SignInSide() {
                 id="password"
                 autoComplete="current-password"
               />
+              <Editor
+                value={aboutme1}
+                onChange={(v) => {
+                    console.log(v);
+                    // setAboutMe(v);
+                  }}
+              />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
@@ -106,6 +181,7 @@ export default function SignInSide() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onSubmit={handleSubmit}
               >
                 Sign Up
               </Button>
