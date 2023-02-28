@@ -48,3 +48,42 @@ export const AutocompleteUser = async (req, res) => {
         res.status(500).json(error); // Returns error
     }
 };
+
+export const Autocomplete = async (req, res) => {
+    try {
+        let search = req.params.search; // Expects "search" in body of request
+        let limit_i = req.params.limit; // Expects "limit" in body of request
+        limit_i = parseInt(limit_i);
+
+        console.log(search);
+
+        const tag = await Tag.findAll({ // Finds all tags with tag_name in tags (Looks for the tag_name as a substring in tags)
+            where: {
+                tag_name: {
+                    [Sequelize.Op.like]: search + "%" 
+                }
+            },
+            limit: limit_i // Limits the number of tags returned
+        });
+
+        const user = await User.findAll({ // Finds all users with display_name in display_name (Looks for the display_name as a substring in display_name)
+            where: {
+                display_name: {
+                    [Sequelize.Op.like]: search + "%"
+                }
+            },
+            limit: limit_i // Limits the number of users returned
+        });
+
+        // console.log(tag);
+        // console.log(user);
+        let result = {
+            "tags": tag,
+            "users": user
+        }
+        // console.log(result);
+        res.status(200).json(result); // Returns json
+    } catch (error) {
+        res.status(500).json(error);
+    }
+};

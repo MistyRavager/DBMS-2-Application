@@ -10,7 +10,8 @@ import {
 } from "../controllers/answer.js"
 import {
     AutocompleteTag,
-    AutocompleteUser
+    AutocompleteUser,
+    Autocomplete
 } from "../controllers/autocomplete.js"
 import {
     getPostByID,
@@ -88,8 +89,15 @@ router.get("/autocomplete/tag/:tag_name/:limit",verifyToken,  AutocompleteTag); 
 // You miight have to use things like %20 instead of spaces for the URLs
 // As before, 'display_name' is used as a prefix, and 'limit' is the number of users to return
 // Returns an array of jsons. For the schema of the json, check init.sql
-router.get("/autocomplete/user/:display_name/:limit",verifyToken,  AutocompleteUser); // Tested
+router.get("/autocomplete/user/:display_name/:limit", verifyToken,  AutocompleteUser); // Tested
 
+
+// Autocomplete tag and user
+// Ex http://localhost:5002/autocomplete/Geoff/10
+// 'search' is the complete or incomplete tag name or user display name. The autocomplete function uses it as a prefix.
+// 'limit' is the number of tags to return
+// Returns an array of jsons. For the schema of the json, check init.sql
+router.get("/autocomplete/:search/:limit", verifyToken, Autocomplete); // Tested
 
 
 // Get post by ID
