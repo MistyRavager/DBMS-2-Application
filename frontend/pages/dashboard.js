@@ -21,7 +21,7 @@ export default function Dashboard(props) {
         credentials: 'include'
       });
       if (response.status === 401) {
-        console.log("ho gaya1");
+        console.log("Unauthorized");
         router.push("/signin");
       }
       setUserDetails(await response.json());

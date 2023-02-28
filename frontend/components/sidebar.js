@@ -17,7 +17,8 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import LabelIcon from '@mui/icons-material/Label';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-
+import LogoutIcon from '@mui/icons-material/Logout';
+import LoginIcon from '@mui/icons-material/Login';
 const drawerWidth = 300;
 const mdTheme = createTheme({
   palette: {
@@ -63,6 +64,7 @@ export default function Sidebar(props) {
     const [userdetails, setUserDetails] = React.useState();
     const questionsPerPage = 5;
     const answersPerPage = 5;
+    const [loggedIn, setLoggedIn] = React.useState(true);
     async function getUser() {
       const response = await fetch(`http://localhost:5002/user/id/${props?.userid}`, {
           method: "GET",
@@ -124,18 +126,18 @@ export default function Sidebar(props) {
                   <ListItemText primary={userdetails?.display_name} />
                 </ListItemButton>
                 <Divider sx={{ my: 1 }}/>
-                <ListItemButton component="a" href={`/create/${userdetails?.id}`}>
+                <ListItemButton component="a" href={`/create/question/${userdetails?.id}`}>
                     <ListItemIcon>
                       <CreateIcon />
                     </ListItemIcon>
                     <ListItemText primary="Create Question" />
-                  </ListItemButton>
-                  <ListItemButton component="a" href="/explore">
+                </ListItemButton>
+                <ListItemButton component="a" href="/explore">
                     <ListItemIcon>
                       <ExploreIcon />
                     </ListItemIcon>
                     <ListItemText primary="Explore" />
-                  </ListItemButton>
+                </ListItemButton>
                 <Divider sx={{ my: 1 }}/>
                 <ListSubheader component="div" inset>
                   Top 5 Tags
@@ -167,6 +169,14 @@ export default function Sidebar(props) {
                     )
                   })
                 }
+                <Divider />
+
+                <ListItemButton component="a" href="/signin">
+                    <ListItemIcon>
+                      {(loggedIn) ? <LogoutIcon /> : <LoginIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" />
+                </ListItemButton>
 
             </List>
             </Drawer>

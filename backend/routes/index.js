@@ -66,7 +66,7 @@ router.get("/answer/questionid/:question_id",verifyToken,  getAnswerByQuestionId
 // Ex body {"user_id":"2", "answer":"This is a test answer"}
 // In the body, "user_id" is the id of the person answering the question and answer is the body of the answer (stored as html in the DB)
 // If successful, returns "Created answer"
-router.post("/question/answer/:post_id", answerQuestion); // Tested
+router.post("/question/answer/:post_id",verifyToken ,answerQuestion); // Tested
 
 // Upvote an answer
 router.post("/answer/upvote/:post_id", upvoteAnswer); // Tested
