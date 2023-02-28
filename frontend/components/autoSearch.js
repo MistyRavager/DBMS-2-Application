@@ -20,7 +20,10 @@ export default function AutoSearch(props) {
         /* fetch for tag */
         if((tagVal !== undefined) && (tagVal !== ''))
         {
-            fetch(`http://localhost:5002/autocomplete/tag/${tagVal}/10`).then(
+            fetch(`http://localhost:5002/autocomplete/tag/${tagVal}/10`,{
+                method: 'GET',
+                credentials: 'include'
+            }).then(
                 response => response.json()
             ).then(
                 data => {
@@ -32,7 +35,10 @@ export default function AutoSearch(props) {
         }
         else
         {
-            fetch(`http://localhost:5002/autocomplete/tag/a/10`).then(
+            fetch(`http://localhost:5002/autocomplete/tag/a/10`,{
+                method: 'GET',
+                credentials: 'include'
+            }).then(
                 response => response.json()
             ).then(
                 data => {
@@ -46,7 +52,10 @@ export default function AutoSearch(props) {
         /* fetch for user */
         if((userVal !== undefined) && (userVal !== ''))
         {
-            fetch(`http://localhost:5002/autocomplete/user/${userVal}/10`).then(
+            fetch(`http://localhost:5002/autocomplete/user/${userVal}/10`,{
+                method: 'GET',
+                credentials: 'include'
+            }).then(
                 response => response.json()
             ).then(
                 data => {
@@ -58,7 +67,10 @@ export default function AutoSearch(props) {
         }
         else
         {
-            fetch(`http://localhost:5002/autocomplete/user/a/10`).then(
+            fetch(`http://localhost:5002/autocomplete/user/a/10`,{
+                method: 'GET',
+                credentials: 'include'
+            }).then(
                 response => response.json()
             ).then(
                 data => {

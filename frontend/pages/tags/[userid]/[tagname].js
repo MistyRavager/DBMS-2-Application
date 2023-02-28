@@ -25,7 +25,8 @@ export default function TagPage(props) {
     const questionsPerPage = 5;
     async function getQuestions() {
         const response = await fetch(`http://localhost:5002/post/tags?score_flag=1&tags=<${tagname}>&limit=${questionsPerPage}`, {
-            method: "GET"
+            method: "GET",
+            credentials: 'include'
         });
         const x = await response.json();
         console.log(x);

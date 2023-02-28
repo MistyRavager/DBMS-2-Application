@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 export default function Dashboard(props) {
   const [userdetails,setUserDetails] = React.useState();
   const [userid, setUserId] = React.useState(4);
-  // const navigate = useNavigate();
   const router = useRouter(4);
 
   async function tempGetUser(e) {
@@ -27,7 +26,7 @@ export default function Dashboard(props) {
       }
       setUserDetails(await response.json());
     } catch (err) {
-      console.log("ho gaya");
+      console.log(err);
     }
 
       return ;
@@ -41,9 +40,9 @@ export default function Dashboard(props) {
         <title>Dashboard</title>
     </Head>
     <Box sx={{ display: 'flex' }}>
-      {/* <Sidebar userid={userid}/> */}
+      <Sidebar userid={userid}/>
       <Button onClick={(e)=> {tempGetUser(e)}}>Click</Button>
-      {/* <UserDetails details={userdetails}/> */}
+      <UserDetails details={userdetails}/>
     </Box>
     </>
     );

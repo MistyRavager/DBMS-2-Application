@@ -61,10 +61,12 @@ export default function Sidebar(props) {
     const [tags, setTags] = React.useState([]);
     const [questions, setQuestion] = React.useState([]);
     const [userdetails, setUserDetails] = React.useState();
-
+    const questionsPerPage = 5;
+    const answersPerPage = 5;
     async function getUser() {
       const response = await fetch(`http://localhost:5002/user/id/${props?.userid}`, {
-          method: "GET"
+          method: "GET",
+          credentials: 'include'
       });
       const x = await response.json();
       setUserDetails(x);
@@ -73,15 +75,17 @@ export default function Sidebar(props) {
         getUser();
     }, [props]);
     async function getTopTags() {
-        const res = await fetch('http://localhost:5002/question/top_tags/5',{
-            method: 'GET'
+        const res = await fetch(`http://localhost:5002/question/top_tags/${questionsPerPage}`,{
+            method: 'GET',
+            credentials: 'include'
         });
         const x = await res.json();
         setTags(x);
     }
     async function getTopQuestions(){
-      const res = await fetch('http://localhost:5002/question/top_questions/5',{
-        method: 'GET'
+      const res = await fetch(`http://localhost:5002/question/top_questions/${answersPerPage}`,{
+        method: 'GET',
+        credentials: 'include'
       });
       const x = await res.json();
       setQuestion(x);

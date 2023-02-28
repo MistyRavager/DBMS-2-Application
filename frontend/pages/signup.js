@@ -14,25 +14,13 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Head from 'next/head';
 import dynamic from "next/dynamic";
-
-// function Copyright(props) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
-
+import MyEditor from "../components/editor"
+import { useRouter } from 'next/router';
 const theme = createTheme();
 
 export default function SignInSide() {
   const [aboutme, setAboutMe] = React.useState("");
-  var aboutme1 = "";
+  const router = useRouter();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -50,15 +38,16 @@ export default function SignInSide() {
           website_url: data.get('website_url'),
           user_name: data.get('username'),
           password: data.get('password'),
-          about_me: '<p>hello</p>',
+          about_me: aboutme,
         }),
       });
       console.log(await response.json());
+      if (response.status === 200) {
+        router.push("/dashboard");
+      }
     }
     postDetails();
   };
-  const Editor = dynamic(() => import("../components/editor"), { ssr: false });
-  console.log("abcd"+aboutme);
   return (
     <>
     <Head>
@@ -110,7 +99,6 @@ export default function SignInSide() {
               />
               <TextField
                 margin="normal"
-                required
                 fullWidth
 
                 name="location"
@@ -123,7 +111,6 @@ export default function SignInSide() {
               />
               <TextField
                 margin="normal"
-                required
                 fullWidth
 
                 id="profile_image_url"
@@ -135,7 +122,6 @@ export default function SignInSide() {
               />
               <TextField
                 margin="normal"
-                required
                 fullWidth
 
                 id="website_url"
@@ -165,16 +151,12 @@ export default function SignInSide() {
                 id="password"
                 autoComplete="current-password"
               />
-              <Editor
-                value={aboutme1}
-                onChange={(v) => {
-                    console.log(v);
-                    // setAboutMe(v);
-                  }}
-              />
+
+              <MyEditor data={setAboutMe}/>
+              
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                label="Remember me : Have not implemented"
               />
               <Button
                 type="submit"

@@ -12,7 +12,7 @@ import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box'
 import { useTheme } from '@mui/material/styles';
-import dynamic from "next/dynamic";
+import MyEditor from "./editor"
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -55,7 +55,6 @@ export default function QuestionDetails() {
   const theme = useTheme();
   const [Tags, setTag] = React.useState([]);
   const [data, setData] = React.useState("");
-  const Editor = dynamic(() => import("./editor"), { ssr: false });
   const handleChange = (event) => {
       const {
       target: { value },
@@ -88,27 +87,9 @@ export default function QuestionDetails() {
           <Typography sx={{  fontSize:20 }} gutterBottom color="text.secondary">
             Question Description
           </Typography>
-          <Editor
-          value={data}
-          onChange={(v) => {
-              console.log(v);
-            }}
-          />
+          <MyEditor data={setData}/>
         </Grid>
-        {/* <Grid item xs={12}>
-          <TextField
-            required
-            id="description"
-            name="description"
-            label="Description"
-            fullWidth
-            autoComplete="given-description"
-            variant="outlined"
-            multiline
-            minRows={4}
-          /> */}
 
-        {/* </Grid> */}
         
         <Grid item xs={12}>
           <FormControl sx={{ width: '50%', ml:'25%' }}>

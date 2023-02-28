@@ -26,7 +26,8 @@ export default function Post() {
 
     async function getAnswer() {
       const response = await fetch(`http://localhost:5002/answer/questionid/${postid}?sort_by=score`, {
-          method: "GET"
+          method: "GET",
+          credentials: 'include'
       });
       const x = await response.json();
       setAnswers(x);
@@ -34,7 +35,8 @@ export default function Post() {
 
     async function getPost() {
       const response = await fetch(`http://localhost:5002/post/id/${postid}`, {
-          method: "GET"
+          method: "GET",
+          credentials: 'include'
       });
       const x = await response.json();
       setPost(x);
@@ -42,7 +44,8 @@ export default function Post() {
     
     async function getUser() {
         const response = await fetch(`http://localhost:5002/user/id/${userid}`, {
-            method: "GET"
+            method: "GET",
+            credentials: 'include'
         });
         const x = await response.json();
         setUserDetails(x);
