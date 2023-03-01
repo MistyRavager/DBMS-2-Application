@@ -46,11 +46,17 @@ import string
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
+# load the environment variables
+from dotenv import load_dotenv
+load_dotenv()
+
+MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
+
 # this is the code to connect to the database
 mydb = mysql.connector.connect(
     database='cqadb',
     user='root',
-    passwd='Tsunami123!',
+    passwd=MYSQL_PASSWORD,
     host='localhost'
 )
 
