@@ -10,8 +10,7 @@ import { useRouter } from 'next/router';
 
 export default function Dashboard(props) {
   const [userdetails,setUserDetails] = React.useState();
-  const [userid, setUserId] = React.useState(4);
-  const router = useRouter(4);
+  const router = useRouter();
 
   // async function tempGetUser(e) {
   //     e.preventDefault();
@@ -33,7 +32,6 @@ export default function Dashboard(props) {
   // }
 
   async function actualGetUser() {
-    // e.preventDefault();
       try {
       const response = await fetch(`http://localhost:5002/me`, {
         method: "GET",
@@ -54,18 +52,16 @@ export default function Dashboard(props) {
     actualGetUser();
   }, [])
 
-  React.useEffect(()=>{
-    setUserId(userdetails?.id);
-  },[userdetails])
     return (
     <>
     <Head>
         <title>Dashboard</title>
     </Head>
     <Box sx={{ display: 'flex' }}>
-      <Sidebar userid={userid}/>
+      <Sidebar />
       {/* <Button onClick={(e)=> {actualGetUser(e)}}>Click</Button> */}
-      <UserDetails details={userdetails}/>
+      
+      {(userdetails)?<UserDetails id={userdetails.id}/>:<></>}
     </Box>
     </>
     );

@@ -14,13 +14,13 @@ import Button from '@mui/material/Button';
 import {  createTheme, ThemeProvider } from '@mui/material/styles';
 import Link from '@mui/material/Link';
 import {useRouter} from 'next/router'
-import Sidebar from '../../../components/sidebar';
+import Sidebar from '../../components/sidebar';
 
 const mdTheme = createTheme({ palette: { mode: 'light' } });
 
-export default function TagPage(props) {
+export default function TagPage() {
     const router = useRouter()
-    const {userid,tagname} = router.query;
+    const {tagname} = router.query;
     const [posts, setPosts] = React.useState();
     const questionsPerPage = 5;
     async function getQuestions() {
@@ -41,7 +41,7 @@ export default function TagPage(props) {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <Sidebar userid={userid}/>
+            <Sidebar/>
             <ThemeProvider theme={mdTheme}>
                 <Box
                     component="main"
@@ -67,8 +67,7 @@ export default function TagPage(props) {
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
                                     <Typography variant="h6" component="div" gutterBottom>
-                                    Recent Posts
-                                    <Button href='#' size="small" onClick={(e) =>{getQuestions(e)}}>Learn More</Button>
+                                    Posts for tag {tagname}
 
                                     </Typography>
                                 </Grid>
@@ -90,7 +89,7 @@ export default function TagPage(props) {
                                                     </Typography>
                                                 </CardContent>
                                                 <CardActions>
-                                                    <Button href={`/posts/${post.owner_user_id}/${post.id}`} size="small">Learn More</Button>
+                                                    <Button href={`/posts/${post.id}`} size="small">Learn More</Button>
                                                 </CardActions>
                                             </Card>
                                         </Grid>)})}

@@ -127,7 +127,7 @@ router.get("/post/tags",verifyToken,  getPostByTags); // Tested
 // In the body, "user_id" is the id of the person editing the post. (Might need to be deprecated, since we're only allowing owner to edit)
 // the request can edit the post title, the post body or the post tags
 // If successful, returns "Edited post"
-router.put("/post/edit/:post_id", editPost); // Tested
+router.put("/post/edit/:post_id", verifyToken, editPost); // Tested
 
 // Delete post
 // Ex http://localhost:5002/post/delete/442654
