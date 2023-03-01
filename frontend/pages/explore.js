@@ -25,39 +25,16 @@ import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
+
 export default function Explore() {
   /* State */
   const [formTagData, setFormTagData] = useState()
   const [formUserData, setFormUserData] = useState()
   const [posts, setPosts] = useState()
   const [currChk, setCurrChk] = useState() // Checks if presently checks for tags
+  const [currFlag, setCurrFlag] = useState() // Checks if dateFlag
   const [scoreFlag, setScoreFlag] = useState(1)
   const [dateFlag, setDateFlag] = useState(0)
-
-  /* 
-  {posts?.map((post) => {
-                                return (
-                                    <Grid item xs={12}  key={post.id}>
-                                        <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }} >
-                                            <CardContent>
-                                                <Typography sx={{fontSize:20}} component="div">
-                                                QuestionID {post.id}: {post.title} 
-                                                </Typography>
-                                                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                                Tags: {post.tags}
-                                                </Typography>
-                                                <Typography variant="body2" dangerouslySetInnerHTML={{__html:post.body}}>
-                                                </Typography>
-                                                <Typography sx={{ mb: 1.5, fontSize:14 }} color="text.secondary">
-                                                Score: {post.score} Answers: {post.answer_count} View Count: {post.view_count} 
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Button href={`/posts/${props.details?.id}/${post.id}`} size="small">Learn More</Button>
-                                            </CardActions>
-                                        </Card>
-                                    </Grid>)})}
-  */
 
   /* useEffect: Tracks changes in Tags */
   useEffect(() => {
@@ -78,6 +55,7 @@ export default function Explore() {
                 response => response.json()
             ).then(
                 data => {
+                  console.log(data)
                   setCurrChk(true)
                   setPosts(data)
                 }
@@ -108,8 +86,9 @@ export default function Explore() {
     }
   }, [formUserData])
 
-  /* useEffect: Sorts by Score/Date */
+  /* useEffect: Sorts by Score */
   useEffect(() => {
+    setCurrFlag(false)
     if(currChk)
     {
       // Parse object to get tagSQL
@@ -122,7 +101,7 @@ export default function Explore() {
       // Fetch
       if(tagSQL != '' && tagSQL != undefined)
       {
-        fetch(`http://localhost:5002/post/tags?score_flag=${scoreFlag}&date_flag=${dateFlag}${tagSQL}&limit=5`,{
+        fetch(`http://localhost:5002/post/tags?score_flag=${scoreFlag}&date_flag=2${tagSQL}&limit=5`,{
                   method: 'GET',
                   credentials: 'include'
               }).then(
@@ -143,7 +122,7 @@ export default function Explore() {
       // Fetch
       if(userSQL != '' && userSQL != undefined)
       {
-        fetch(`http://localhost:5002/post/userid/${userSQL}`,{
+        fetch(`http://localhost:5002/post/userid/456?score_flag=${scoreFlag}&date_flag=2`,{
                   method: 'GET',
                   credentials: 'include'
               }).then(
@@ -156,13 +135,66 @@ export default function Explore() {
               )
       }
     }
-  }, [scoreFlag, dateFlag])
+  }, [scoreFlag])
 
-  /* Test */
-  useEffect(()=>{
-  console.log("Current Posts: \n", posts)
+  /* useEffect: Sorts by Date */
+  useEffect(() => {
+    setCurrFlag(true)
+    if(currChk)
+    {
+      // Parse object to get tagSQL
+      const tagParse = formTagData?.tags.map((tag)=>{
+        return "&tags=<"+tag.split(":")[1]+">";
+      })
+      const tagSQL = tagParse?.join("")
+      console.log(tagSQL)
 
-  },[posts])
+      // Fetch
+      if(tagSQL != '' && tagSQL != undefined)
+      {
+        fetch(`http://localhost:5002/post/tags?score_flag=2&date_flag=${dateFlag}${tagSQL}&limit=5`,{
+                  method: 'GET',
+                  credentials: 'include'
+              }).then(
+                  response => response.json()
+              ).then(
+                  data => {
+                    setCurrChk(true)
+                    setPosts(data)
+                  }
+              )
+      }
+    }
+    else{
+      // Parse object to get userID
+      const userSQL = formUserData?.users.split(":")[0]
+      console.log(userSQL)
+
+      // Fetch
+      if(userSQL != '' && userSQL != undefined)
+      {
+        fetch(`http://localhost:5002/post/userid/456?score_flag=2&date_flag=${dateFlag}`,{
+                  method: 'GET',
+                  credentials: 'include'
+              }).then(
+                  response => response.json()
+              ).then(
+                  data => {
+                    setCurrChk(false)
+                    setPosts(data)
+                  }
+              )
+      }
+    }
+  }, [dateFlag])
+
+  /* Make Date */
+  function makeDate(date) {
+    if (date == null) return "";
+    const t = date.split(/[-T:.]/);
+    const d = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
+    return d.toLocaleString();
+}
 
   /* Main Return */
   return (
@@ -199,7 +231,7 @@ export default function Explore() {
                   p: 2,
                   display: 'flex',
                   flexDirection: 'column',
-                  height: 450,
+                  height: 550,
                   fontFamily: 'Roboto',
                 }}
               >
@@ -212,8 +244,17 @@ export default function Explore() {
                   <AutoUsers setDetails={setFormUserData}/>
                 </Stack>
 
-                <Button onClick={() => setScoreFlag(scoreFlag==1? 0: 1)}><SortByAlphaIcon/> : Sort by Score {scoreFlag? <ArrowUpwardIcon/> : <ArrowDownwardIcon/>}</Button>
-                <Button onClick={() => setDateFlag(dateFlag==1? 0: 1)}><SortByAlphaIcon/> : Sort by Date  {dateFlag? <ArrowUpwardIcon/> : <ArrowDownwardIcon/>}</Button>
+                <Button onClick={() => setScoreFlag(scoreFlag==1? 0: 1)}><SortByAlphaIcon/> : Sort by Score {scoreFlag? <><ArrowUpwardIcon/><p>DESC</p></> : <><ArrowDownwardIcon/><p>ASC</p></>}</Button>
+                <Button onClick={() => setDateFlag(dateFlag==1? 0: 1)}><SortByAlphaIcon/> : Sort by Date  {dateFlag? <><ArrowUpwardIcon/><p>DESC</p></> : <><ArrowDownwardIcon/><p>ASC</p></>}</Button>
+                
+                <Grid container spacing={2}>
+                  <Grid item xs={6} textAlign='left'>
+                    {currFlag? <p>Sorting by Date : {dateFlag==1? "Descending":"Ascending"}</p> : <p>Sorting by Score : {scoreFlag==1? "Descending":"Ascending"}</p>}
+                  </Grid>
+                  <Grid item xs={6} textAlign='right'>
+                    {<p>Sorting based on {currChk?"tags":"user"}</p>}
+                  </Grid>
+                </Grid>
 
               </Paper>
             </Grid>
@@ -228,6 +269,12 @@ export default function Explore() {
                               </Typography>
                               <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                               Tags: {post.tags}
+                              </Typography>
+                              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                              User ID: {post.owner_user_id}
+                              </Typography>
+                              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                              Date: {makeDate(post.creation_date)}
                               </Typography>
                               <Typography variant="body2" dangerouslySetInnerHTML={{__html:post.body}}>
                               </Typography>
