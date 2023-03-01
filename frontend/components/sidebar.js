@@ -77,16 +77,19 @@ export default function Sidebar(props) {
     //     getUser();
     // }, [props]);
     async function getUser() {
-      const response = await fetch(`http://localhost:5002/me`, {
+      const res = await fetch(`http://localhost:5002/me`, {
           method: "GET",
           credentials: 'include'
       });
-      const x = await response.json();
+      if(res.status === 200) {
+        setLoggedIn(true);
+      }
+      else {
+        setLoggedIn(false);
+      }
+      const x = await res.json();
       setUserDetails(x);
     }
-    React.useEffect(() => {
-        getUser();
-    }, []);
     async function getTopTags() {
         const res = await fetch(`http://localhost:5002/question/top_tags/${questionsPerPage}`,{
             method: 'GET',
@@ -103,7 +106,19 @@ export default function Sidebar(props) {
       const x = await res.json();
       setQuestion(x);
     }
+    const handleLogoutClick = () => {
+      async function logOut(){
+      const res = await fetch(`http://localhost:5002/signout`, {
+        method: "POST",
+        credentials: 'include'
+      });
+      console.log(await res.json());
+      }
+      logOut();
+    }
+
     React.useEffect(()=>{
+      getUser();
       getTopTags();
       getTopQuestions();
     },[])
@@ -181,13 +196,27 @@ export default function Sidebar(props) {
                   })
                 }
                 <Divider />
-
-                <ListItemButton component="a" href="/signin">
+                
+                {(loggedIn) ?
+                  <ListItemButton component="a" href="/" onClick={handleLogoutClick}>
                     <ListItemIcon>
-                      {(loggedIn) ? <LogoutIcon /> : <LoginIcon />}
+                      <LogoutIcon />
                     </ListItemIcon>
                     <ListItemText primary="Logout" />
-                </ListItemButton>
+                  </ListItemButton> 
+
+                  :
+
+                  <ListItemButton component="a" href="/signin">
+                    <ListItemIcon>
+                      <LoginIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Login" />
+                  </ListItemButton>
+                }
+
+
+          
 
             </List>
             </Drawer>

@@ -143,11 +143,11 @@ router.get("/question/userid/:user_id",verifyToken,  getQuestionByUserId); // Te
 
 // Get top k tags
 // Ex http://localhost:5002/question/top_tags/10
-router.get("/question/top_tags/:limit", verifyToken, getTopTags); // Tested with frontend
+router.get("/question/top_tags/:limit", getTopTags); // Tested with frontend
 
 // Get top k questions
 // Ex http://localhost:5002/question/top_questions/10
-router.get("/question/top_questions/:limit", verifyToken, getTopQuestions); // Tested with frontend
+router.get("/question/top_questions/:limit", getTopQuestions); // Tested with frontend
 
 // Upvote a question
 router.post("/question/upvote/:post_id", upvoteQuestion); // Tested
