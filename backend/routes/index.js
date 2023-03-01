@@ -37,7 +37,8 @@ import {
 } from "../controllers/user.js"
 import {
     Signin,
-    Signout
+    Signout,
+    Me
 }
 from "../controllers/auth.js"
 import {
@@ -51,6 +52,7 @@ const router = express.Router();
 //Authentication
 router.post("/signin", Signin); 
 router.post("/signout", Signout); 
+router.get("/me", verifyToken, Me);
 
 
 // Get answer by user ID
