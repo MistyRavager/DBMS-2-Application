@@ -69,7 +69,7 @@ myresult = mycursor.fetchall()
 for x in myresult:
     salt = bcrypt.gensalt()
     password = bcrypt.hashpw((x[0] + str(x[1])).encode('utf-8'), salt)
-    mycursor.execute("INSERT INTO credentials (id, user_name, password) VALUES (%s, %s, %s)", (x[1], x[0], password))
+    mycursor.execute("INSERT INTO credentials (id, user_name, password) VALUES (%s, %s, %s)", (x[1], x[0] + str(x[1]), password))
     mydb.commit()
 
 # this is the code to close the connection
