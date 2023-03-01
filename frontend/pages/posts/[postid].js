@@ -30,6 +30,7 @@ export default function Post() {
           credentials: 'include'
       });
       const x = await response.json();
+      console.log(x);
       setAnswers(x);
     } 
 
@@ -39,6 +40,7 @@ export default function Post() {
           credentials: 'include'
       });
       const x = await response.json();
+      console.log(x);
       setPost(x);
     }
     async function actualGetUser() {
@@ -157,30 +159,51 @@ export default function Post() {
                     </Grid>
                   
                   <Grid item xs={3} sx={{ml:"75%"}}>
+
                     <Card sx={{ maxWidth: "100%"}}>
-                        <CardHeader
-                            avatar={
-                            <Avatar
-                              alt={postuserdetails?.display_name}
-                              src={postuserdetails?.profile_image_url}
-                            />
-                            }
-                            // action={
-                            // <IconButton aria-label="settings">
-                            //     <MoreVertIcon />
-                            // </IconButton>
-                            // }
-                            title={postuserdetails?.display_name}
-                            subheader={makeDate(post?.creation_date)}
-                        />
+                        {
+                          (postuserdetails?.owner_user_id)?<CardHeader
+                              avatar={
+                              <Avatar
+                                alt={postuserdetails?.display_name}
+                                src={postuserdetails?.profile_image_url}
+                              />
+                              }
+                              // action={
+                              // <IconButton aria-label="settings">
+                              //     <MoreVertIcon />
+                              // </IconButton>
+                              // }
+                              title={postuserdetails?.display_name}
+                              subheader={makeDate(post?.creation_date)}
+                          />
+                          :
+                          <CardHeader
+                              avatar={
+                              <Avatar
+                                alt={postuserdetails?.display_name}
+                                src={postuserdetails?.profile_image_url}
+                              />
+                              }
+                              // action={
+                              // <IconButton aria-label="settings">
+                              //     <MoreVertIcon />
+                              // </IconButton>
+                              // }
+                              title={"Deleted User"}
+                              subheader={makeDate(post?.creation_date)}
+                          />
+                          }
                     </Card>
-                    </Grid>
+                  </Grid>
+
                 </Paper>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="h6" component="div" gutterBottom>
                   Answers
                 </Typography>
+
                 <Grid container spacing={3}>    
                     {answers?.map((answer) => {
                         return (
@@ -207,11 +230,12 @@ export default function Post() {
                                         <Typography component={'span'} variant="body2" dangerouslySetInnerHTML={{__html:answer.body}}>
                                         </Typography>
                                     </CardContent>
-                                    {(answer?.last_editor_display_name)?<CardHeader
+
+                                    {(answer?.owner_display_name)?<CardHeader
                                             avatar={
                                             <Avatar
-                                            alt={answer?.last_editor_display_name}
-                                            src={answer?.last_editor_display_name}
+                                            alt={answer?.owner_display_name}
+                                            src={answer?.owner_display_name}
                                             />
                                             }
                                             // action={
@@ -219,14 +243,15 @@ export default function Post() {
                                             //     <MoreVertIcon />
                                             // </IconButton>
                                             // }
-                                            title={answer?.last_editor_display_name}
-                                            subheader={makeDate(answer?.last_edit_date)}
+                                            title={answer?.owner_display_name}
+                                            subheader={makeDate(answer?.creation_date)}
                                         />:
+
                                         <CardHeader
                                             avatar={
                                             <Avatar
-                                            alt={answer?.last_editor_display_name}
-                                            src={answer?.last_editor_display_name}
+                                            alt={answer?.owner_display_name}
+                                            src={answer?.owner_display_name}
                                             />
                                             }
                                             // action={
@@ -235,7 +260,7 @@ export default function Post() {
                                             // </IconButton>
                                             // }
                                             title="Deleted User"
-                                            subheader={makeDate(answer?.last_edit_date)}
+                                            subheader={makeDate(answer?.creation_date)}
                                         />}
                                 </Card>
                             </Grid>)})}
