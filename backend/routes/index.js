@@ -106,6 +106,12 @@ router.get("/autocomplete/:search/:limit", Autocomplete); // Tested
 router.get("/post/id/:post_id",  getPostByID); // Tested with frontend
 
 // Get post by user ID
+// Ex http://localhost:5002/post/userid/456?score_flag=1&date_flag=0&tags=<comments>&tags=<documentation>&limit=k
+// score_flag is 1 if you want to sort by score descending, 0 if you want to sort by score ascending. Same for date_flag (sorts by creation_date)
+// Using a different value for score_flag or date_flag will not sort.
+// Make sure that each tag is surrounded by angle brackets.
+// Limit is also implemented
+// If successful, returns an array of jsons. For the schema of the json, check init.sql
 router.get("/post/userid/:user_id",  getPostByUserID); // Tested
 
 // Get post by tag
