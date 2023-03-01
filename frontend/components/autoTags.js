@@ -50,7 +50,7 @@ export default function AutoTags(props) {
 
     /* Continuously handle changes while typing */
     async function handleChangeTags(e) {
-        await setTagVal(e.target.value);
+        await setTagVal(encodeURIComponent(e.target.value));
         console.log('Value is:', e.target.value);
     }
 

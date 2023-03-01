@@ -50,7 +50,7 @@ export default function AutoSearch(props) {
 
     /* Continuously handle changes while typing */
     async function handleChangeUsers(e) {
-        await setUserVal(e.target.value);
+        await setUserVal(encodeURIComponent(e.target.value));
         console.log('Value is:', e.target.value);
     }
 
