@@ -29,7 +29,7 @@ export const getPostByUserID = async (req, res) => {
         let score_flag = req.query.score_flag; // Expects "score_flag" in body of request
         let date_flag = req.query.date_flag; // Expects "date_flag" in body of request
         let order_list = [];
-
+        let limit_i = Number(req.query.limit)
         if (score_flag == "1") {
             order_list.push(['score', 'DESC']);
         }
@@ -47,7 +47,8 @@ export const getPostByUserID = async (req, res) => {
             where: {
                 owner_user_id: user_id 
             },
-            order: order_list
+            order: order_list,
+            limit: limit_i
         });
 
         res.status(200).json(post); // Returns posts

@@ -83,6 +83,13 @@ export default function AutoSearch(props) {
                 />
             )}
         />
-        <Button type='submit'>Ask</Button>       
+        <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            type='submit'
+          >
+            Set Users
+          </Button>      
     </form>
 }

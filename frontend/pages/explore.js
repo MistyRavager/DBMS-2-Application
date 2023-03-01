@@ -35,6 +35,8 @@ export default function Explore() {
   const [currFlag, setCurrFlag] = useState() // Checks if dateFlag
   const [scoreFlag, setScoreFlag] = useState(1)
   const [dateFlag, setDateFlag] = useState(0)
+  const [recNum, setRecNum] = useState(10)
+  const [start, setStart] = useState(false)
 
   /* useEffect: Tracks changes in Tags */
   useEffect(() => {
@@ -46,9 +48,12 @@ export default function Explore() {
     console.log(tagSQL)
 
     // Fetch
+    setRecNum(10)
+    setCurrFlag(false)
+    setStart(true)
     if(tagSQL != '' && tagSQL != undefined)
     {
-      fetch(`http://localhost:5002/post/tags?score_flag=${scoreFlag}&date_flag=${dateFlag}${tagSQL}&limit=5`,{
+      fetch(`http://localhost:5002/post/tags?score_flag=${scoreFlag}&date_flag=2${tagSQL}&limit=${recNum}`,{
                 method: 'GET',
                 credentials: 'include'
             }).then(
@@ -70,9 +75,12 @@ export default function Explore() {
     console.log(userSQL)
 
     // Fetch
+    setRecNum(10)
+    setCurrFlag(false)
+    setStart(true)
     if(userSQL != '' && userSQL != undefined)
     {
-      fetch(`http://localhost:5002/post/userid/${userSQL}`,{
+      fetch(`http://localhost:5002/post/userid/${userSQL}score_flag=${scoreFlag}&date_flag=2&limit=${recNum}`,{
                 method: 'GET',
                 credentials: 'include'
             }).then(
@@ -101,7 +109,7 @@ export default function Explore() {
       // Fetch
       if(tagSQL != '' && tagSQL != undefined)
       {
-        fetch(`http://localhost:5002/post/tags?score_flag=${scoreFlag}&date_flag=2${tagSQL}&limit=5`,{
+        fetch(`http://localhost:5002/post/tags?score_flag=${scoreFlag}&date_flag=2${tagSQL}&limit=${recNum}`,{
                   method: 'GET',
                   credentials: 'include'
               }).then(
@@ -122,7 +130,7 @@ export default function Explore() {
       // Fetch
       if(userSQL != '' && userSQL != undefined)
       {
-        fetch(`http://localhost:5002/post/userid/456?score_flag=${scoreFlag}&date_flag=2`,{
+        fetch(`http://localhost:5002/post/userid/456?score_flag=${scoreFlag}&date_flag=2&limit=${recNum}`,{
                   method: 'GET',
                   credentials: 'include'
               }).then(
@@ -152,7 +160,7 @@ export default function Explore() {
       // Fetch
       if(tagSQL != '' && tagSQL != undefined)
       {
-        fetch(`http://localhost:5002/post/tags?score_flag=2&date_flag=${dateFlag}${tagSQL}&limit=5`,{
+        fetch(`http://localhost:5002/post/tags?score_flag=2&date_flag=${dateFlag}${tagSQL}&limit=${recNum}`,{
                   method: 'GET',
                   credentials: 'include'
               }).then(
@@ -173,7 +181,7 @@ export default function Explore() {
       // Fetch
       if(userSQL != '' && userSQL != undefined)
       {
-        fetch(`http://localhost:5002/post/userid/456?score_flag=2&date_flag=${dateFlag}`,{
+        fetch(`http://localhost:5002/post/userid/456?score_flag=2&date_flag=${dateFlag}&limit=${recNum}`,{
                   method: 'GET',
                   credentials: 'include'
               }).then(
@@ -187,6 +195,60 @@ export default function Explore() {
       }
     }
   }, [dateFlag])
+
+  /* More! */
+  useEffect(() => {
+    if(currChk)
+    {
+      // Parse object to get tagSQL
+      const tagParse = formTagData?.tags.map((tag)=>{
+        return "&tags=<"+tag.split(":")[1]+">";
+      })
+      const tagSQL = tagParse?.join("")
+      console.log(tagSQL)
+
+      // Fetch
+      setScoreFlag(1)
+      setDateFlag(0)
+      if(tagSQL != '' && tagSQL != undefined)
+      {
+        fetch(`http://localhost:5002/post/tags?score_flag=${scoreFlag}&date_flag=${dateFlag}${tagSQL}&limit=${recNum}`,{
+                  method: 'GET',
+                  credentials: 'include'
+              }).then(
+                  response => response.json()
+              ).then(
+                  data => {
+                    setCurrChk(true)
+                    setPosts(data)
+                  }
+              )
+      }
+    }
+    else{
+      // Parse object to get userID
+      const userSQL = formUserData?.users.split(":")[0]
+      console.log(userSQL)
+
+      // Fetch
+      setScoreFlag(1)
+      setDateFlag(0)
+      if(userSQL != '' && userSQL != undefined)
+      {
+        fetch(`http://localhost:5002/post/userid/456?score_flag=${scoreFlag}&date_flag=${dateFlag}&limit=${recNum}`,{
+                  method: 'GET',
+                  credentials: 'include'
+              }).then(
+                  response => response.json()
+              ).then(
+                  data => {
+                    setCurrChk(false)
+                    setPosts(data)
+                  }
+              )
+      }
+    }
+  }, [recNum])
 
   /* Make Date */
   function makeDate(date) {
@@ -231,7 +293,7 @@ export default function Explore() {
                   p: 2,
                   display: 'flex',
                   flexDirection: 'column',
-                  height: 550,
+                  height: 600,
                   fontFamily: 'Roboto',
                 }}
               >
@@ -249,10 +311,12 @@ export default function Explore() {
                 
                 <Grid container spacing={2}>
                   <Grid item xs={6} textAlign='left'>
-                    {currFlag? <p>Sorting by Date : {dateFlag==1? "Descending":"Ascending"}</p> : <p>Sorting by Score : {scoreFlag==1? "Descending":"Ascending"}</p>}
+                    {(start) ? (
+                      currFlag==true? <Chip label={"Sorting by Date : " + (dateFlag==1? "Descending":"Ascending")}/> : <Chip label={"Sorting by Score : " + (scoreFlag==1? "Descending":"Ascending")}/>
+                    ): ""}
                   </Grid>
                   <Grid item xs={6} textAlign='right'>
-                    {<p>Sorting based on {currChk?"tags":"user"}</p>}
+                    {(start) ? (<Chip label={"Sorting based on " + (currChk?"tags":"user")}/>) : ""}
                   </Grid>
                 </Grid>
 
@@ -288,6 +352,14 @@ export default function Explore() {
                       </Card>
                   </Grid>)
                 })}
+
+            {/* More */}
+            <Grid item xs={12}>
+              <Button onClick={()=>setRecNum(recNum + 5)}>More</Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Chip label={posts? (posts.length + " records!") : "No records!"}/>
+            </Grid>
             
             <Grid item xs={6} sx={{ml:"25%"}}>
               <Typography variant="h6" component="div" gutterBottom sx={{textAlign:'center'}}>
