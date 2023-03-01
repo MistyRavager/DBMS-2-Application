@@ -46,18 +46,26 @@ import string
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-# load .env file
-from dotenv import load_dotenv
-load_dotenv()
-
-POSTGRES_PASS = os.getenv("POSTGRES_PASS")
-
 # this is the code to connect to the database
 mydb = mysql.connector.connect(
     database='cqadb',
     user='root',
-    password=POSTGRES_PASS,
-    host='localhost',
-    port=3306,
-    cursor_factory=RealDictCursor
+    passwd='Tsunami123!',
+    host='localhost'
 )
+
+# this is the code to get the data from the users table
+mycursor = mydb.cursor()
+mycursor.execute("SELECT display_name, id FROM users LIMIT 10")
+myresult = mycursor.fetchall()
+
+# this is the code to insert the data into the credentials table
+for x in myresult:
+    salt = bcrypt.gensalt()
+    password = bcrypt.hashpw((x[0] + str(x[1])).encode('utf-8'), salt)
+    mycursor.execute("INSERT INTO credentials (id, user_name, password) VALUES (%s, %s, %s)", (x[1], x[0], password))
+    mydb.commit()
+
+# this is the code to close the connection
+mycursor.close()
+mydb.close()
