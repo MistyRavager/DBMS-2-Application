@@ -106,7 +106,7 @@ router.get("/autocomplete/:search/:limit", Autocomplete); // Tested
 router.get("/post/id/:post_id",  getPostByID); // Tested with frontend
 
 // Get post by user ID
-// Ex http://localhost:5002/post/userid/456?score_flag=1&date_flag=0&tags=<comments>&tags=<documentation>&limit=k
+// Ex http://localhost:5002/post/userid/456?score_flag=1&date_flag=0
 // score_flag is 1 if you want to sort by score descending, 0 if you want to sort by score ascending. Same for date_flag (sorts by creation_date)
 // Using a different value for score_flag or date_flag will not sort.
 // Make sure that each tag is surrounded by angle brackets.
@@ -119,7 +119,7 @@ router.get("/post/userid/:user_id",  getPostByUserID); // Tested
 router.get("/post/tag",  getPostByTag); // Tested
 
 // Get post by tags
-// Ex http://localhost:5002/post/tags?score_flag=1&date_flag=0&tags=<comments>&tags=<documentation>&limit=k
+// Ex http://localhost:5002/post/tags?score_flag=1&date_flag=0&tags=<comments>&tags=<documentation>&limit=5
 // score_flag is 1 if you want to sort by score descending, 0 if you want to sort by score ascending. Same for date_flag (sorts by creation_date)
 // Using a different value for score_flag or date_flag will not sort.
 // Make sure that each tag is surrounded by angle brackets.
