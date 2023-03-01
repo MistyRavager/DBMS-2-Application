@@ -12,8 +12,16 @@ export default function AutoTags(props) {
     /* State variables */
     const [tagList, setTagList] = useState([{count: 0, excerpt_post_id: 0, id: 0, tag_name: "No options", wiki_post_id: 0}]);
     const [tagVal, setTagVal] = useState()
-
+    // console.log(props?.default.split("><"))
     /* useEffect */
+
+    useEffect(()=>{
+        var x = props?.default.split("><")
+        x[0] = x[0].substring(1,x[0].length)
+        x[x.length-1] = x[x.length-1].substring(0,x[x.length-1].length-1)
+        console.log(x)
+        console.log("TagVal: " + tagVal)
+    },[props])
     useEffect(() => {
         /* fetch for tag */
         if((tagVal !== undefined) && (tagVal !== ''))
@@ -79,6 +87,7 @@ export default function AutoTags(props) {
                     label="Tags?"
                     placeholder="Enter here..."
                     value={tagVal}
+                    defaultValue={props?.default}
                     onChange={handleChangeTags}
                     />
                 )}
@@ -89,6 +98,13 @@ export default function AutoTags(props) {
                 />
             )}
         />
-        <Button type='submit'>Ask</Button>       
+        <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            type='submit'
+          >
+            Set Question Tags
+          </Button>
     </form>
 }

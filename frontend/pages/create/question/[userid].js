@@ -15,6 +15,8 @@ import Box from '@mui/material/Box'
 import { useTheme } from '@mui/material/styles';
 import MyEditor from "../../../components/editor"
 import TextField from '@mui/material/TextField';
+import AutoTags from '../../../components/autoTags';
+import { Button } from '@mui/material';
 
 // const steps = ['Details','Review Question'];
 
@@ -51,56 +53,50 @@ function getStyles(name, personName, theme) {
   };
 }
 
-// function getStepContent(step) {
-//   switch (step) {
-//     case 0:
-//       return <QuestionDetails />;
-//     case 1:
-//       return <Review />;
-//     default:
-//       throw new Error('Unknown step');
-//   }
-// }
 
 export default function question(props) {
     // const [activeStep, setActiveStep] = React.useState(0);
     const router = useRouter()
     const {userid} = router.query
     const theme = useTheme();
-    const [Tags, setTag] = React.useState([]);
-    const [data, setData] = React.useState("");
-    const handleChange = (event) => {
-        const {
-        target: { value },
-        } = event;
-        setTag(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value,
-        );
-    };
-    // const handleNext = () => {
-    //     setActiveStep(activeStep + 1);
-    // };
+    const [Tags, setTag] = React.useState();
+    const [data, setEditorData] = React.useState("");
+    const [title, setTitle] = React.useState("");
 
-    // const handleBack = () => {
-    //     setActiveStep(activeStep - 1);
-    // };
-    
-    
-
-    
-    // React.useEffect(() => {
-    //   if (!router.isReady) return;
-    //     console.log("loading");
-    //     getUser();
-    // }, [router.isReady]);
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      const tagParse = Tags?.tags.map((tag)=>{
+        return "<"+tag.split(":")[1]+">";
+      })
+      // const tagSQL = tagParse?.join("")
+      async function postQuestion(){
+        const res = await fetch('http://localhost:5002/question/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            owner_user_id: userid,
+            title: title,
+            body: data,
+            tags: tagParse.join("")
+          })
+        })
+        console.log(await res.json());
+        if (res.status === 200) {
+          router.push("/dashboard");
+        }
+      }
+      postQuestion();
+    }
   return (
     <>
         <Head>
             <title>Create Question</title>
         </Head>
         <Box sx={{ display: 'flex' }}>
-            <Sidebar userid = {userid}/>
+            <Sidebar />
             <Box
             component="main"
             sx={{
@@ -118,107 +114,45 @@ export default function question(props) {
                 // backgroundPosition: 'center',
             }}
             >
-            {/* <Container component="main" maxWidth="sm" sx={{ mb: 4 }}> */}
         <Paper variant="outlined" sx={{ m:4, my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
           <Typography component="h1" variant="h4" align="center">
             Question Details
           </Typography>
-          {/* <QuestionDetails /> */}
-          <Grid container spacing={3} sx={{mt:2}}>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="questionTitle"
-            name="questionTitle"
-            label="Question Title"
-            fullWidth
-            autoComplete="given-title"
-            variant="outlined"
-            multiline
-          />
+          <Grid spacing={3} container>
+            <Grid item xs={12}>
+            <TextField
+              required
+              label="Question Title"
+              fullWidth
+              autoComplete="given-title"
+              variant="outlined"
+              onChange={(e)=>setTitle(e.target.value)}
+              multiline
+            />
+          </Grid>
+          <Grid item xs={12}>
+            
+            <Typography sx={{  fontSize:20 }} gutterBottom color="text.secondary">
+              Question Description
+            </Typography>
 
-        </Grid>
-        <Grid item xs={12}>
-          <Typography sx={{  fontSize:20 }} gutterBottom color="text.secondary">
-            Question Description
-          </Typography>
-          <MyEditor data={setData}/>
-        </Grid>
-
-        
-        <Grid item xs={12}>
-          <FormControl sx={{ width: '50%', ml:'25%' }}>
-          <InputLabel id="demo-multiple-chip-label">Select Tags</InputLabel>
-            <Select
-              labelId="demo-multiple-chip-label"
-              id="demo-multiple-chip"
-              multiple
-              value={Tags}
-              onChange={handleChange}
-              input={<OutlinedInput id="select-multiple-chip" label="Select Tags" />}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </Box>
-              )}
-              MenuProps={MenuProps}
-            >
-              {tags.map((name) => (
-                <MenuItem
-                  key={name}
-                  value={name}
-                  style={getStyles(name, Tags, theme)}
-                >
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-        </FormControl>
-        </Grid>
-        
-      </Grid>
-          {/* <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 ,mr:10,ml:10}}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper> */}
-          {/* {activeStep === steps.length ? (
-            <React.Fragment>
-              <Typography variant="h5" gutterBottom>
-                Thank you for your order.
-              </Typography>
-              <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
-                confirmation, and will send you an update when your order has
-                shipped.
-              </Typography>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              {getStepContent(activeStep)}
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {activeStep !== 0 && (
-                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                    Back
-                  </Button>
-                )}
-
-                <Button
-                  variant="contained"
-                  onClick={handleNext}
-                  sx={{ mt: 3, ml: 1 }}
-                >
-                  {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                </Button>
-              </Box> */}
-            {/* </React.Fragment> */}
-          {/* )} */}
+            <MyEditor data={setEditorData}/>
+          </Grid>
+            <Grid item xs={12}>
+            <AutoTags setDetails={setTag}/>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={handleSubmit}
+              >
+                Post Question
+              </Button>
+            </Grid>
+          </Grid>
         </Paper>
-      {/* </Container> */}
 
             </Box>
         </Box>

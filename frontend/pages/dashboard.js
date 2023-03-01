@@ -12,24 +12,6 @@ export default function Dashboard(props) {
   const [userdetails,setUserDetails] = React.useState();
   const router = useRouter();
 
-  // async function tempGetUser(e) {
-  //     e.preventDefault();
-  //     try {
-  //     const response = await fetch(`http://localhost:5002/user/id/${4}`, {
-  //       method: "GET",
-  //       credentials: 'include'
-  //     });
-  //     if (response.status === 401) {
-  //       console.log("Unauthorized");
-  //       router.push("/signin");
-  //     }
-  //     setUserDetails(await response.json());
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-
-  //     return ;
-  // }
 
   async function actualGetUser() {
       try {

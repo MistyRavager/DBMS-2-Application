@@ -1,34 +1,16 @@
 import * as React from 'react';
 import Head from 'next/head'
-import Sidebar from '../../../../components/sidebar'
-import Avatar from '@mui/material/Avatar';
-import Card from '@mui/material/Card';
+import Sidebar from '../../../components/sidebar'
 import Typography from '@mui/material/Typography';
-import Toolbar from '@mui/material/Toolbar';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Container from '@mui/material/Container';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import QuestionDetails from '../../../../components/postQuestion';
-import AddTags from '../../../../components/addTags';
-import Review from '../../../../components/review';
 import {useRouter} from 'next/router'
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box'
-import { useTheme } from '@mui/material/styles';
-import MyEditor from "../../../../components/editor"
+import MyEditor from "../../../components/editor"
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import AutoSearch from '../../../../components/autoSearch';
-// const steps = ['Details','Review Question'];
+import AutoTags from '../../../components/autoTags';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -66,15 +48,33 @@ function getStyles(name, personName, theme) {
 
 
 export default function question(props) {
-    // const [activeStep, setActiveStep] = React.useState(0);
     const router = useRouter()
-    const {userid,qid} = router.query
-    const theme = useTheme();
+    const {qid} = router.query
     const [Tags, setTag] = React.useState([]);
     const [data, setData] = React.useState("");
     const [question, setQuestion] = React.useState();
-    const [formData, setFormData] = React.useState({})
-
+    const [actualuserdetails, setActualUserDetails] = React.useState();
+    const [title, setTitle] = React.useState("");
+    async function actualGetUser() {
+      // e.preventDefault();
+        try {
+        const response = await fetch(`http://localhost:5002/me`, {
+          method: "GET",
+          credentials: 'include'
+        });
+        if (response.status === 401) {
+          console.log("Unauthorized");
+          router.push("/signin");
+        }
+        setActualUserDetails(await response.json());
+      } catch (err) {
+        console.log(err);
+      }
+        return ;
+    }
+    React.useEffect(()=>{
+      actualGetUser();
+    },[])
     async function getQuestion(){
         const res = await fetch(`http://localhost:5002/post/id/${qid}`, {
             method: 'GET',
@@ -85,12 +85,13 @@ export default function question(props) {
         })
         const json = await res.json()
         if (!res.ok) throw Error(json.message)
-        console.log(json)
         setQuestion(json)
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        const formdata = new FormData(event.currentTarget);
+        const tagParse = Tags?.tags.map((tag)=>{
+          return "<"+tag.split(":")[1]+">";
+        })
         async function updatePost(){
             const res = await fetch(`http://localhost:5002/post/edit/${qid}`, {
                 method: 'PUT',
@@ -100,16 +101,16 @@ export default function question(props) {
                 },
                 body: JSON.stringify({
                     post_id: qid,
-                    title: formdata.getData('questionTitle'),
+                    title: title,
                     body: data,
-                    tags: Tags,
-                    user_id: userid
+                    tags: tagParse.join(""),
+                    user_id: actualuserdetails?.id
                 }),
             })
             const json = await res.json()
             if (!res.ok) throw Error(json.message)
             console.log(json)
-            router.push(`/posts/${userid}/${qid}`)
+            router.push(`/posts/${qid}`)
         }
         updatePost()
     };
@@ -158,6 +159,7 @@ export default function question(props) {
                 autoComplete="given-title"
                 defaultValue={question?.title}
                 variant="outlined"
+                onChange={(e)=>{setTitle(e.target.value)}}
                 multiline
             />:<></>}
             
@@ -173,7 +175,7 @@ export default function question(props) {
         
         <Grid item xs={12}>
                 <Stack spacing={3} sx={{ ml: "25%", width: "50%" }}>
-                  <AutoSearch setDetails={setFormData}/>
+                  <AutoTags setDetails={setTag} default={question?.tags}/>
                 </Stack>
         </Grid>
             <Button

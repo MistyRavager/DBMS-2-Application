@@ -1,34 +1,18 @@
 import * as React from 'react';
 import Head from 'next/head'
-import Sidebar from '../../../../components/sidebar'
+import Sidebar from '../../../components/sidebar'
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
-import Toolbar from '@mui/material/Toolbar';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Container from '@mui/material/Container';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import QuestionDetails from '../../../../components/postQuestion';
-import AddTags from '../../../../components/addTags';
-import Review from '../../../../components/review';
 import {useRouter} from 'next/router'
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box'
-import { useTheme } from '@mui/material/styles';
-import MyEditor from "../../../../components/editor"
-import TextField from '@mui/material/TextField';
+import MyEditor from "../../../components/editor"
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import DoneIcon from '@mui/icons-material/Done';
 // const steps = ['Details','Review Question'];
 
@@ -44,25 +28,18 @@ const MenuProps = {
 };
 
 
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
 
 
 export default function answer(props) {
     // const [activeStep, setActiveStep] = React.useState(0);
     const router = useRouter()
-    const {userid, qid} = router.query
-    const theme = useTheme();
+    const {qid} = router.query
     const [data, setData] = React.useState("");
     const [post,setPost] = React.useState();
     const [answers, setAnswers] = React.useState();
     const [userdetails,setUserDetails] = React.useState();
+    const [actualuserdetails, setActualUserDetails] = React.useState();
+
     async function getUser() {
       const response = await fetch(`http://localhost:5002/user/id/${post?.owner_user_id}`, {
           method: "GET",
@@ -89,7 +66,7 @@ export default function answer(props) {
     } 
     const handleSubmit = (event) => {
       event.preventDefault();
-      const data = new FormData(event.currentTarget);
+      console.log(data)
       async function postAnswer(){
         const response = await fetch(`http://localhost:5002/question/answer/${qid}`, {
           method: "POST",
@@ -99,7 +76,7 @@ export default function answer(props) {
           credentials: 'include',
           body: JSON.stringify({
             post_id: qid,
-            user_id: userid,
+            user_id: actualuserdetails?.id,
             answer: data,
           })
         });
@@ -110,6 +87,26 @@ export default function answer(props) {
       }
       postAnswer();
     };
+    async function actualGetUser() {
+      // e.preventDefault();
+        try {
+        const response = await fetch(`http://localhost:5002/me`, {
+          method: "GET",
+          credentials: 'include'
+        });
+        if (response.status === 401) {
+          console.log("Unauthorized");
+          router.push("/signin");
+        }
+        setActualUserDetails(await response.json());
+      } catch (err) {
+        console.log(err);
+      }
+        return ;
+    }
+    React.useEffect(()=>{
+      actualGetUser();
+    },[])
     React.useEffect(() => {
       if (!router.isReady) return;
         console.log("loading");
@@ -134,7 +131,7 @@ export default function answer(props) {
             <title>Create Question</title>
         </Head>
         <Box sx={{ display: 'flex' }}>
-            <Sidebar userid = {userid}/>
+            <Sidebar />
             <Box
             component="main"
             sx={{
@@ -152,6 +149,7 @@ export default function answer(props) {
                 // backgroundPosition: 'center',
             }}
             >
+
         <Paper variant="outlined" sx={{ m:4, my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
             <Grid container spacing={3}>
               {/* Chart */}
@@ -213,6 +211,38 @@ export default function answer(props) {
                     </Grid>
                 </Paper>
               </Grid>
+            </Grid>
+          </Paper>
+
+              <Paper variant="outlined" sx={{ m:4, my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+              <Typography variant="h6" component="div" gutterBottom>
+                  Answer 
+                </Typography>
+          {/* <QuestionDetails /> */}
+          <Grid container spacing={3} sx={{mt:2}}>
+        <Grid item xs={12}>
+          <Typography sx={{  fontSize:20 }} gutterBottom color="text.secondary">
+            Answer Description
+          </Typography>
+          
+          <MyEditor data={setData}/>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleSubmit}
+          >
+            Post
+          </Button>
+        </Grid>
+        
+      </Grid>
+              </Paper>
+              <Paper variant="outlined" sx={{ m:4, my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+
               <Grid item xs={12}>
                 <Typography variant="h6" component="div" gutterBottom>
                   Answers
@@ -263,37 +293,9 @@ export default function answer(props) {
                 </Grid>
                 
               </Grid>
-            </Grid>
+              </Paper>
             {/* <Copyright sx={{ pt: 4 }} /> */}
-          </Paper>
-        <Paper variant="outlined" sx={{ m:4, my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography component="h1" variant="h4" align="center">
-            Answer Details
-          </Typography>
-          {/* <QuestionDetails /> */}
-          <Grid container spacing={3} sx={{mt:2}}>
-        <Grid item xs={12}>
-          <Typography sx={{  fontSize:20 }} gutterBottom color="text.secondary">
-            Answer Description
-          </Typography>
-          
-          <MyEditor data={setData}/>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onSubmit={handleSubmit}
-          >
-            Post
-          </Button>
-        </Grid>
         
-      </Grid>
-        </Paper>
 
             </Box>
         </Box>

@@ -174,8 +174,8 @@ export default function UserDetails(props) {
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container spacing={3}>
-                            <Grid item xs={12}>
-                                <Typography variant="h6" component="div" gutterBottom>
+                            <Grid item xs={12} sx={{mt:4}}>
+                                <Typography variant="h6" component="div" gutterBottom >
                                 
                                     {(answers?.length>0)?`Recent Answers`:`No answers`}
                                 </Typography>
@@ -196,6 +196,9 @@ export default function UserDetails(props) {
                                                 <Typography component={'span'} variant="body2" dangerouslySetInnerHTML={{__html:answer.body}}>
                                                 </Typography>
                                             </CardContent>
+                                            <CardActions>
+                                                <Button href={`/posts/${answer?.parent_id}`} size="small">Learn More</Button>
+                                            </CardActions>
                                         </Card>
                             </Grid>)})}
                         

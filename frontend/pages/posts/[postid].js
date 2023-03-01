@@ -21,7 +21,7 @@ export default function Post() {
     const { postid} = router.query
     const [post,setPost] = React.useState();
     const [answers, setAnswers] = React.useState();
-    const [userdetails,setUserDetails] = React.useState();
+    const [actualuserdetails,setActualUserDetails] = React.useState();
     const [postuserdetails, setPostUserDetails] = React.useState();
 
     async function getAnswer() {
@@ -54,7 +54,7 @@ export default function Post() {
           console.log("Unauthorized");
           router.push("/signin");
         }
-        setUserDetails(await response.json());
+        setActualUserDetails(await response.json());
       } catch (err) {
         console.log(err);
       }
@@ -159,6 +159,7 @@ export default function Post() {
                     </Grid>
                   
                   <Grid item xs={3} sx={{ml:"75%"}}>
+                  
 
                     <Card sx={{ maxWidth: "100%"}}>
                         {
@@ -200,10 +201,14 @@ export default function Post() {
                 </Paper>
               </Grid>
               <Grid item xs={12}>
-                <Typography variant="h6" component="div" gutterBottom>
-                  Answers
-                </Typography>
-
+                <Grid item xs={12}>
+                  <Typography variant="h6" component="div" gutterBottom>
+                    Answers
+                    <Button component="a" href={`/create/answer/${post?.id}`}  sx={{float:"middle", ml:2}}>
+                      Add Answer
+                    </Button>
+                  </Typography>
+                </Grid>
                 <Grid container spacing={3}>    
                     {answers?.map((answer) => {
                         return (
@@ -267,31 +272,6 @@ export default function Post() {
                 </Grid>
                 
               </Grid>
-              {/* <Grid item xs={12}>
-                <Typography variant="h6" component="div" gutterBottom>
-                  Recent Answers
-                </Typography>
-                <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <CardContent>
-                    <Typography sx={{fontSize:20}} component="div">
-                      Question: What is the meaning of life? Part 2
-                    </Typography>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                      Tag1 Tag2 Tag3
-                    </Typography>
-                    <Typography sx={{ mb: 1.5, fontSize:14 }} color="text.secondary">
-                      Upvotes Received: 100 Downvotes: 0 Answers: 10 
-                    </Typography>
-                    <Typography variant="body2">
-                      Your Answer {'(Top Answer??)'} :<br/>
-                      the condition that distinguishes animals and plants from inorganic matter, including the capacity for growth, reproduction, functional activity, and continual change preceding death.
-                    </Typography>
-                  </CardContent>
-                <CardActions>
-                  <Button href='#' size="small">Learn More</Button>
-                </CardActions>
-                </Card>
-              </Grid> */}
             </Grid>
             {/* <Copyright sx={{ pt: 4 }} /> */}
           </Container>
