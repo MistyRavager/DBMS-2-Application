@@ -84,14 +84,14 @@ router.post("/answer/downvote/:post_id", downvoteAnswer); // Tested
 // 'tag_name' is the complete or incomplete tag name. The autocomplete function uses it as a prefix.
 // 'limit' is the number of tags to return
 // Returns an array of jsons. For the schema of the json, check init.sql
-router.get("/autocomplete/tag/:tag_name/:limit",verifyToken,  AutocompleteTag); // Tested
+router.get("/autocomplete/tag/:tag_name/:limit",  AutocompleteTag); // Tested
 
 // Autocomplete user
 // Ex http://localhost:5002/autocomplete/user/Geoff%20D/10
 // You miight have to use things like %20 instead of spaces for the URLs
 // As before, 'display_name' is used as a prefix, and 'limit' is the number of users to return
 // Returns an array of jsons. For the schema of the json, check init.sql
-router.get("/autocomplete/user/:display_name/:limit", verifyToken,  AutocompleteUser); // Tested
+router.get("/autocomplete/user/:display_name/:limit",  AutocompleteUser); // Tested
 
 
 // Autocomplete tag and user
@@ -99,18 +99,18 @@ router.get("/autocomplete/user/:display_name/:limit", verifyToken,  Autocomplete
 // 'search' is the complete or incomplete tag name or user display name. The autocomplete function uses it as a prefix.
 // 'limit' is the number of tags to return
 // Returns an array of jsons. For the schema of the json, check init.sql
-router.get("/autocomplete/:search/:limit", verifyToken, Autocomplete); // Tested
+router.get("/autocomplete/:search/:limit", Autocomplete); // Tested
 
 
 // Get post by ID
-router.get("/post/id/:post_id",verifyToken,  getPostByID); // Tested with frontend
+router.get("/post/id/:post_id",  getPostByID); // Tested with frontend
 
 // Get post by user ID
-router.get("/post/userid/:user_id",verifyToken,  getPostByUserID); // Tested
+router.get("/post/userid/:user_id",  getPostByUserID); // Tested
 
 // Get post by tag
 // Should be deprecated. Just use the API below. 
-router.get("/post/tag",verifyToken,  getPostByTag); // Tested
+router.get("/post/tag",  getPostByTag); // Tested
 
 // Get post by tags
 // Ex http://localhost:5002/post/tags?score_flag=1&date_flag=0&tags=<comments>&tags=<documentation>&limit=k
@@ -119,7 +119,7 @@ router.get("/post/tag",verifyToken,  getPostByTag); // Tested
 // Make sure that each tag is surrounded by angle brackets.
 // Limit is also implemented
 // If successful, returns an array of jsons. For the schema of the json, check init.sql
-router.get("/post/tags",verifyToken,  getPostByTags); // Tested
+router.get("/post/tags",  getPostByTags); // Tested
 
 // Edit post
 // Ex http://localhost:5002/post/edit/442654
