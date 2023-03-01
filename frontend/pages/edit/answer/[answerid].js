@@ -49,13 +49,12 @@ function getStyles(name, personName, theme) {
 
 export default function question(props) {
     const router = useRouter()
-    const {qid} = router.query
+    const {answerid} = router.query
     const [Tags, setTag] = React.useState([]);
     const [data, setData] = React.useState("");
-    const [question, setQuestion] = React.useState();
+    const [answer, setAnswer] = React.useState();
     const [actualuserdetails, setActualUserDetails] = React.useState();
     const [title, setTitle] = React.useState("");
-    const [oldTags,setOldTags] = React.useState();
 
     async function actualGetUser() {
       // e.preventDefault();
@@ -77,8 +76,8 @@ export default function question(props) {
     React.useEffect(()=>{
       actualGetUser();
     },[])
-    async function getQuestion(){
-        const res = await fetch(`http://localhost:5002/post/id/${qid}`, {
+    async function getAnswer(){
+        const res = await fetch(`http://localhost:5002/post/id/${answerid}`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -87,40 +86,35 @@ export default function question(props) {
         })
         const json = await res.json()
         if (!res.ok) throw Error(json.message)
-        setQuestion(json)
-        setOldTags(json.tags)
+        setAnswer(json)
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        const tagParse = Tags?.tags.map((tag)=>{
-          return "<"+tag.split(":")[1]+">";
-        })
         async function updatePost(){
-            const res = await fetch(`http://localhost:5002/post/edit/${qid}`, {
+            const res = await fetch(`http://localhost:5002/post/edit/${answerid}`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
                 'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    post_id: qid,
+                    post_id: answerid,
                     title: title,
                     body: data,
-                    tags: tagParse.join(""),
                     user_id: actualuserdetails?.id
                 }),
             })
             const json = await res.json()
             if (!res.ok) throw Error(json.message)
             console.log(json)
-            router.push(`/posts/${qid}`)
+            router.push(`/posts/${answer?.parent_id}`)
         }
         updatePost()
     };
     React.useEffect(() => {
         if (!router.isReady) return;
           console.log("loading");
-          getQuestion();
+          getAnswer();
     }, [router.isReady]);
   return (
     <>
@@ -148,19 +142,19 @@ export default function question(props) {
             >
         <Paper variant="outlined" sx={{ m:4, my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
           <Typography component="h1" variant="h4" align="center">
-            Edit Question Details
+            Edit Answer Details
           </Typography>
           <Grid container spacing={3} sx={{mt:2}}>
         <Grid item xs={12}>
-         {(question?.title)?
+         {(answer?.title)?
          <TextField
                 required
-                id="questionTitle"
-                name="questionTitle"
-                label="Question Title"
+                id="answerTitle"
+                name="answerTitle"
+                label="Answer Title"
                 fullWidth
                 autoComplete="given-title"
-                defaultValue={question?.title}
+                defaultValue={answer?.title}
                 variant="outlined"
                 onChange={(e)=>{setTitle(e.target.value)}}
                 multiline
@@ -170,25 +164,18 @@ export default function question(props) {
         </Grid>
         <Grid item xs={12}>
           <Typography sx={{  fontSize:20 }} gutterBottom color="text.secondary">
-            Question Description
+            Answer Description
           </Typography>
-          <MyEditor data={setData} placeholder={question?.body}/>
+          <MyEditor data={setData} placeholder={answer?.body}/>
         </Grid>
-
-        
         <Grid item xs={12}>
-                <Stack spacing={3} sx={{ ml: "25%", width: "50%" }}>
-                  <AutoTags setDetails={setTag}/>
-                  <Button
-            type="submit"
+            <Button
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onSubmit={handleSubmit}
+            onClick={handleSubmit}
             >
-            Edit Question
+            Edit Post
             </Button>
-                </Stack>
-            
         </Grid>
       </Grid>
           

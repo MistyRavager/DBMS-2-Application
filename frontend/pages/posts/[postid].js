@@ -30,7 +30,6 @@ export default function Post() {
           credentials: 'include'
       });
       const x = await response.json();
-      console.log(x);
       setAnswers(x);
     } 
 
@@ -40,7 +39,6 @@ export default function Post() {
           credentials: 'include'
       });
       const x = await response.json();
-      console.log(x);
       setPost(x);
     }
     async function actualGetUser() {
@@ -86,9 +84,7 @@ export default function Post() {
     React.useEffect(()=>{
       getPostUser()
     },[post])
-    // console.log(post);
-    // console.log(userdetails);
-    // console.log(answers);
+
     function makeDate(date) {
         if (date == null) return "";
         const t = date.split(/[-T:.]/);
@@ -163,37 +159,36 @@ export default function Post() {
 
                     <Card sx={{ maxWidth: "100%"}}>
                         {
-                          (postuserdetails?.owner_user_id)?<CardHeader
+                          (postuserdetails?.display_name)?<><CardHeader
                               avatar={
                               <Avatar
                                 alt={postuserdetails?.display_name}
                                 src={postuserdetails?.profile_image_url}
                               />
                               }
-                              // action={
-                              // <IconButton aria-label="settings">
-                              //     <MoreVertIcon />
-                              // </IconButton>
-                              // }
                               title={postuserdetails?.display_name}
                               subheader={makeDate(post?.creation_date)}
                           />
+                          {(actualuserdetails?.id == post?.owner_user_id)?<CardActions>
+                            <Button href={`/edit/question/${post?.id}`} size="small">Edit Question</Button>
+                          </CardActions>:<></>}
+                          </>
                           :
-                          <CardHeader
+                          <><CardHeader
                               avatar={
                               <Avatar
                                 alt={postuserdetails?.display_name}
                                 src={postuserdetails?.profile_image_url}
                               />
                               }
-                              // action={
-                              // <IconButton aria-label="settings">
-                              //     <MoreVertIcon />
-                              // </IconButton>
-                              // }
                               title={"Deleted User"}
                               subheader={makeDate(post?.creation_date)}
                           />
+                          {(actualuserdetails?.id == post?.owner_user_id)?<CardActions>
+                            <Button href={`/edit/question/${post?.id}`} size="small">Edit Question</Button>
+                          </CardActions>:<></>}
+                          
+                          </>
                           }
                     </Card>
                   </Grid>
@@ -215,9 +210,6 @@ export default function Post() {
                             <Grid item xs={12} key={answer?.id}>
                                 <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <CardContent>
-                                        {/* <Typography sx={{fontSize:20}} component="div">
-                                        AnswerID: {answer?.id} 
-                                        </Typography> */}
                                         <Typography component={'span'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                         Score: {answer?.score}
                                         </Typography>
@@ -236,22 +228,21 @@ export default function Post() {
                                         </Typography>
                                     </CardContent>
 
-                                    {(answer?.owner_display_name)?<CardHeader
+                                    {(answer?.owner_display_name)?<><CardHeader
                                             avatar={
                                             <Avatar
                                             alt={answer?.owner_display_name}
                                             src={answer?.owner_display_name}
                                             />
                                             }
-                                            // action={
-                                            // <IconButton aria-label="settings">
-                                            //     <MoreVertIcon />
-                                            // </IconButton>
-                                            // }
                                             title={answer?.owner_display_name}
                                             subheader={makeDate(answer?.creation_date)}
-                                        />:
-
+                                        />
+                                        {(actualuserdetails?.id == post?.owner_user_id)?<CardActions>
+                            <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer</Button>
+                          </CardActions>:<></>}
+                                        </>:
+                                        <>
                                         <CardHeader
                                             avatar={
                                             <Avatar
@@ -259,14 +250,15 @@ export default function Post() {
                                             src={answer?.owner_display_name}
                                             />
                                             }
-                                            // action={
-                                            // <IconButton aria-label="settings">
-                                            //     <MoreVertIcon />
-                                            // </IconButton>
-                                            // }
-                                            title="Deleted User"
+                                            title={"Deleted User"}
                                             subheader={makeDate(answer?.creation_date)}
-                                        />}
+                                        />
+                                        {(actualuserdetails?.id == post?.owner_user_id)?<CardActions>
+                                          <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer</Button>
+                                        </CardActions>:<></>}
+                                        </>
+                                        }
+                                      
                                 </Card>
                             </Grid>)})}
                 </Grid>

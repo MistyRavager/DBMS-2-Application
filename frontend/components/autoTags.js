@@ -14,6 +14,8 @@ export default function AutoTags(props) {
     const [tagVal, setTagVal] = useState()
     // console.log(props?.default.split("><"))
     /* useEffect */
+
+
     useEffect(() => {
         /* fetch for tag */
         if((tagVal !== undefined) && (tagVal !== ''))
