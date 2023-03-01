@@ -62,14 +62,14 @@ mydb = mysql.connector.connect(
 
 # this is the code to get the data from the users table
 mycursor = mydb.cursor()
-mycursor.execute("SELECT display_name, id FROM users LIMIT 10")
+mycursor.execute("SELECT display_name, id FROM users")
 myresult = mycursor.fetchall()
 
 # this is the code to insert the data into the credentials table
 for x in myresult:
-    salt = bcrypt.gensalt()
-    password = bcrypt.hashpw((x[0] + str(x[1])).encode('utf-8'), salt)
-    mycursor.execute("INSERT INTO credentials (id, user_name, password) VALUES (%s, %s, %s)", (x[1], x[0] + str(x[1]), password))
+    password = x[0] + str(x[1])
+    user_name = x[0] + str(x[1])
+    mycursor.execute("INSERT INTO credentials (id, user_name, password) VALUES (%s, %s, %s)", (x[1], user_name, password))
     mydb.commit()
 
 # this is the code to close the connection

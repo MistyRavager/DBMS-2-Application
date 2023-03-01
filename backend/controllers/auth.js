@@ -33,30 +33,64 @@ export const Signin = async(req, res) => {
                 user_name: req.body.user_name
             }
         });
-        const match = await bcrypt.compare(req.body.password, cred[0].password);
-
-        if(!match) return res.status(400).json({msg: "Wrong Password"});
 
         const user = await User.findOne({
             where:{
                 id: cred[0].id
             }
         });
-        const userId = user.id;
-        const name = user.display_name;
-        const accessToken = jwt.sign({userId, name}, process.env.ACCESS_TOKEN_SECRET,{
-            expiresIn: '1d'
-        });
-        await Credential.update({access_token: accessToken},{
-            where:{
-                id: userId
+
+        let credDate = user.creation_date;
+        credDate = credDate.toString();
+        credDate = credDate.split(" ");
+        credDate = credDate[3];
+
+        const date = new Date();
+        const year = '2023'
+
+        if (credDate >= year) {
+            const match = await bcrypt.compare(req.body.password, cred[0].password);
+
+            if(!match) return res.status(400).json({msg: "Wrong Password"});
+
+            const userId = user.id;
+            const name = user.display_name;
+            const accessToken = jwt.sign({userId, name}, process.env.ACCESS_TOKEN_SECRET,{
+                expiresIn: '1d'
+            });
+            await Credential.update({access_token: accessToken},{
+                where:{
+                    id: userId
+                }
+            });
+            res.cookie('accessToken', accessToken,{
+                httpOnly: true,
+                maxAge: 24 * 60 * 60 * 1000
+            });
+            res.json("User successfully logged in");
+        } else {
+            const match = (cred[0].password === req.body.password);
+
+            if (!match) {
+                return res.status(400).json({msg: "Wrong Password"});
             }
-        });
-        res.cookie('accessToken', accessToken,{
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000
-        });
-        res.json("User successfully logged in");
+
+            const userId = user.id;
+            const name = user.display_name;
+            const accessToken = jwt.sign({userId, name}, process.env.ACCESS_TOKEN_SECRET,{
+                expiresIn: '1d'
+            });
+            await Credential.update({access_token: accessToken},{
+                where:{
+                    id: userId
+                }
+            });
+            res.cookie('accessToken', accessToken,{
+                httpOnly: true,
+                maxAge: 24 * 60 * 60 * 1000
+            });
+            res.json("User successfully logged in");
+        }   
     } catch (error) {
         res.status(404).json({msg:"Unable to log in"});
     }
