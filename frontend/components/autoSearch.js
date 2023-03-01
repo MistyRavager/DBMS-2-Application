@@ -97,7 +97,7 @@ export default function AutoSearch(props) {
     const {handleSubmit, control} = useForm();
 
     /* Return */
-    return <form onSubmit={handleSubmit(data => props.setDetails(JSON.stringify(data)))}>
+    return <form onSubmit={handleSubmit(data => props.setDetails(data))}>
         <Controller
             name="tags"
             control={control}
@@ -105,7 +105,7 @@ export default function AutoSearch(props) {
                 <Autocomplete
                 multiple
                 id="tags-filled"
-                options={tagList.map((option) => option.id + " : " + option.tag_name)}
+                options={tagList.map((option) => option.id + ":" + option.tag_name)}
                 renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                     devChip (option, getTagProps, index)
@@ -135,7 +135,7 @@ export default function AutoSearch(props) {
             render={({ field: { onChange, value } }) => (
                 <Autocomplete
                 id="tags-filled"
-                options={userList.map((option) => option.id + " : " + option.display_name)}
+                options={userList.map((option) => option.id + ":" + option.display_name)}
                 renderInput={(params) => (
                     <TextField
                     {...params}

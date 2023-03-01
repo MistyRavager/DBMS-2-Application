@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useId, useImperativeHandle, useState} from 'react';
 import Sidebar from '../components/sidebar'
 import Head from 'next/head';
 import Avatar from '@mui/material/Avatar';
@@ -17,32 +17,75 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import AutoSearch from '../components/autoSearch';
-
-function devChip (arr, name, getTagProps, index) {
-  var result = arr.find(item => item.name == name)
-  return <Chip variant="outlined" label={result.id + " : " + name} {...getTagProps({ index })} color='primary'/>
-}
-
-// Tags
-const tags = [
-  { name: "Rust", id: 1},
-  { name: "C++", id: 2},
-  { name: "Java", id: 3},
-  { name: "Python", id: 4}
-]
-
-// Usernames
-const users = [
-  { name: "Rahul", id: 1 },
-  { name: "Rishit", id: 2},
-  { name: "Kushagra", id: 3},
-]
-
+import { formGroupClasses } from '@mui/material';
 
 export default function Explore() {
   /* State */
-  const [formData, setFormData] = useState({})
-  console.log(formData)
+  const [formData, setFormData] = useState()
+  const [tagPass, setTagPass] = useState()
+  const [userPass, setUserPass] = useState()
+
+  /* 
+  {posts?.map((post) => {
+                                return (
+                                    <Grid item xs={12}  key={post.id}>
+                                        <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }} >
+                                            <CardContent>
+                                                <Typography sx={{fontSize:20}} component="div">
+                                                QuestionID {post.id}: {post.title} 
+                                                </Typography>
+                                                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                                Tags: {post.tags}
+                                                </Typography>
+                                                <Typography variant="body2" dangerouslySetInnerHTML={{__html:post.body}}>
+                                                </Typography>
+                                                <Typography sx={{ mb: 1.5, fontSize:14 }} color="text.secondary">
+                                                Score: {post.score} Answers: {post.answer_count} View Count: {post.view_count} 
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <Button href={`/posts/${props.details?.id}/${post.id}`} size="small">Learn More</Button>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>)})}
+  */
+
+  /* useEffect: Tracks changes in formData */
+  useEffect(() => {
+
+    // Parse object to get tagSQL
+    const tagParse = formData?.tags.map((tag)=>{
+      return "&tags=<"+tag.split(":")[1]+">";
+    })
+    const tagSQL = tagParse?.join("")
+    console.log(tagSQL)
+
+    // Parse object to get userID
+    const userSQL = formData?.users.split(":")[0]
+
+    // Fetch
+    if(tagSQL != '' && tagSQL != undefined)
+    {
+      fetch(`http://localhost:5002/post/tags?score_flag=1&date_flag=0${tagSQL}&limit=5`,{
+                method: 'GET',
+                credentials: 'include'
+            }).then(
+                response => response.json()
+            ).then(
+                data => {
+                    setTagPass(data)
+                }
+            )
+    }
+  }, [formData])
+  
+  /* Test */
+  useEffect(()=>{
+  console.log("Current Tags: \n", tagPass)
+
+  },[tagPass])
+
+  /* Main Return */
   return (
   <>
   <Head>
@@ -91,6 +134,29 @@ export default function Explore() {
 
               </Paper>
             </Grid>
+
+            {tagPass?.map((post) => {
+                                return (
+                                    <Grid item xs={12}  key={post.id}>
+                                        <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }} >
+                                            <CardContent>
+                                                <Typography sx={{fontSize:20}} component="div">
+                                                QuestionID {post.id}: {post.title} 
+                                                </Typography>
+                                                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                                Tags: {post.tags}
+                                                </Typography>
+                                                <Typography variant="body2" dangerouslySetInnerHTML={{__html:post.body}}>
+                                                </Typography>
+                                                <Typography sx={{ mb: 1.5, fontSize:14 }} color="text.secondary">
+                                                Score: {post.score} Answers: {post.answer_count} View Count: {post.view_count} 
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <Button href={`/posts/${post.owner_user_id}/${post.id}`} size="small">Learn More</Button>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>)})}
             
             <Grid item xs={6} sx={{ml:"25%"}}>
               <Typography variant="h6" component="div" gutterBottom sx={{textAlign:'center'}}>
