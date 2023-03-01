@@ -19,6 +19,7 @@ import LabelIcon from '@mui/icons-material/Label';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
+import { useRouter } from 'next/router';
 const drawerWidth = 300;
 const mdTheme = createTheme({
   palette: {
@@ -59,6 +60,7 @@ export default function Sidebar(props) {
     const toggleDrawer = () => {
         setOpen(!open);
     };
+    const router=useRouter();
     const [tags, setTags] = React.useState([]);
     const [questions, setQuestion] = React.useState([]);
     const [userdetails, setUserDetails] = React.useState();
@@ -87,8 +89,13 @@ export default function Sidebar(props) {
       else {
         setLoggedIn(false);
       }
-      const x = await res.json();
-      setUserDetails(x);
+      try{
+        const x = await res.json();
+        setUserDetails(x);
+      }
+      catch(err){
+        console.log('err');
+      }
     }
     async function getTopTags() {
         const res = await fetch(`http://localhost:5002/question/top_tags/${questionsPerPage}`,{
@@ -112,7 +119,8 @@ export default function Sidebar(props) {
         method: "POST",
         credentials: 'include'
       });
-      console.log(await res.json());
+      // const x = await res.json();
+      router.push("/")
       }
       logOut();
     }
@@ -185,7 +193,7 @@ export default function Sidebar(props) {
                 {/* <ListItemButton href='/'> */}
                 {tags?.map((tag) => {
                   return (
-                    <ListItemButton key={tag.id} component="a" href={`/tags/${userdetails?.id}/${tag.tag_name}`}>
+                    <ListItemButton key={tag.id} component="a" href={`/tags/${tag.tag_name}`}>
                       <ListItemIcon>
                         <LabelIcon />
                       </ListItemIcon>
@@ -200,7 +208,7 @@ export default function Sidebar(props) {
                 {
                   questions?.map((question)=> {
                     return (
-                      <ListItemButton component="a" href={`/posts/${question.owner_user_id}/${question.id}`} key={question.id}>
+                      <ListItemButton component="a" href={`/posts/${question.id}`} key={question.id}>
                         <ListItemIcon>
                           <QuestionAnswerIcon />
                         </ListItemIcon>
@@ -212,7 +220,7 @@ export default function Sidebar(props) {
                 <Divider />
                 
                 {(loggedIn) ?
-                  <ListItemButton component="a" href="/" onClick={handleLogoutClick}>
+                  <ListItemButton component="a" onClick={handleLogoutClick}>
                     <ListItemIcon>
                       <LogoutIcon />
                     </ListItemIcon>

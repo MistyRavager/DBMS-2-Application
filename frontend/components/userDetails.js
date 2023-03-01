@@ -19,10 +19,19 @@ const mdTheme = createTheme({ palette: { mode: 'light' } });
 export default function UserDetails(props) {
     const [posts, setPosts] = React.useState([]);
     const [answers, setAnswers] = React.useState([]);
+    const [userdetails, setUserDetails] = React.useState();
     const questionsPerPage = 5;
     const answersPerPage = 5;
+    async function getUserDetails(){
+        const response = await fetch(`http://localhost:5002/user/id/${props?.id}`, {
+            method: "GET",
+            credentials: 'include'
+        });
+        const x = await response.json();
+        setUserDetails(x);
+    }
     async function getQuestions() {
-        const response = await fetch(`http://localhost:5002/question/userid/${props.details?.id}?sort_by=creation_date&limit=${questionsPerPage}`, {
+        const response = await fetch(`http://localhost:5002/question/userid/${props?.id}?sort_by=creation_date&limit=${questionsPerPage}`, {
             method: "GET",
             credentials: 'include'
         });
@@ -30,7 +39,7 @@ export default function UserDetails(props) {
         setPosts(x);
     }
     async function getAnswers() {
-        const response = await fetch(`http://localhost:5002/answer/userid/${props.details?.id}?sort_by=creation_date&limit=${answersPerPage}`,{
+        const response = await fetch(`http://localhost:5002/answer/userid/${props?.id}?sort_by=creation_date&limit=${answersPerPage}`,{
             method: "GET",
             credentials: 'include'
         });
@@ -40,6 +49,7 @@ export default function UserDetails(props) {
     React.useEffect(() => {
         getQuestions();
         getAnswers();
+        getUserDetails();
     },[props]);
 
     return (
@@ -74,37 +84,37 @@ export default function UserDetails(props) {
                         }}
                         >
                         <Typography variant="h4" component="div" gutterBottom> 
-                            Profile of {props.details?.display_name}
+                            Profile of {userdetails?.display_name}
                         </Typography>
                         <Typography sx={{fontSize:20}} component="div" gutterBottom color="text.secondary">
-                        About {props.details?.display_name}: 
-                                <Typography sx={{fontSize:15, marginTop:-2}} dangerouslySetInnerHTML={{__html: props.details?.about_me}} component="div" gutterBottom color="text.secondary">
+                        About {userdetails?.display_name}: 
+                                <Typography sx={{fontSize:15, marginTop:-2}} dangerouslySetInnerHTML={{__html: userdetails?.about_me}} component="div" gutterBottom color="text.secondary">
                                 </Typography>
                         </Typography>
                         <Grid container spacing={2}>
                             <Grid item xs={2}>
                                 <Typography sx={{fontSize:15}} component="div" gutterBottom color="text.secondary">
-                                    Reputation: {props.details?.reputation}
+                                    Reputation: {userdetails?.reputation}
                                 </Typography>
                             </Grid>
                             <Grid item xs={2}>
                                 <Typography sx={{fontSize:15}} component="div" gutterBottom color="text.secondary">
-                                    Views: {props.details?.views}
+                                    Views: {userdetails?.views}
                                 </Typography>
                             </Grid>
                             <Grid item xs={2}>
                                 <Typography sx={{fontSize:15}} component="div" gutterBottom color="text.secondary">
-                                    Upvotes: {props.details?.up_votes}
+                                    Upvotes: {userdetails?.up_votes}
                                 </Typography>
                             </Grid>
                             <Grid item xs={2}>
                                 <Typography sx={{fontSize:15}} component="div" gutterBottom color="text.secondary">
-                                    Downvotes: {props.details?.down_votes}
+                                    Downvotes: {userdetails?.down_votes}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
                                 <Typography sx={{fontSize:15}} component="div" gutterBottom color="text.secondary">
-                                    Website URL: <Link href={props.details?.website_url}>{props.details?.website_url}</Link>
+                                    Website URL: <Link href={userdetails?.website_url}>{userdetails?.website_url}</Link>
                                 </Typography>
                             </Grid>        
                         </Grid>
@@ -122,8 +132,8 @@ export default function UserDetails(props) {
                         }}
                         >
                         <Avatar
-                            alt={props.details?.display_name}
-                            src={props.details?.profile_image_url}
+                            alt={userdetails?.display_name}
+                            src={userdetails?.profile_image_url}
                             sx={{ width: '100%', height: '100%' }}
                         />
 
@@ -133,7 +143,7 @@ export default function UserDetails(props) {
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
                                 <Typography variant="h6" component="div" gutterBottom>
-                                Recent Posts
+                                {(posts?.length>0)?`Recent Posts`:`No posts`}
 
                                 </Typography>
                             </Grid>
@@ -155,7 +165,7 @@ export default function UserDetails(props) {
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
-                                                <Button href={`/posts/${props.details?.id}/${post.id}`} size="small">Learn More</Button>
+                                                <Button href={`/posts/${post.id}`} size="small">Learn More</Button>
                                             </CardActions>
                                         </Card>
                                     </Grid>)})}
@@ -166,7 +176,8 @@ export default function UserDetails(props) {
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
                                 <Typography variant="h6" component="div" gutterBottom>
-                                Recent Answers
+                                
+                                    {(answers?.length>0)?`Recent Answers`:`No answers`}
                                 </Typography>
                             </Grid>
                             {answers?.map((answer) => {
@@ -181,15 +192,6 @@ export default function UserDetails(props) {
                                                 Score: {answer?.score}
                                                 </Typography>
                                                 <Typography component={'div'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                                {/* {(answer?.id == post?.accepted_answer_id) ? 
-                                                    <Chip 
-                                                        label="Accepted Answer"
-                                                        sx={{color:"#00a152", fontWeight:"bold"}}
-                                                        disabled
-                                                        variant="outlined"
-                                                        icon = {<DoneIcon style={{color:"#00a152"}}/>}
-                                                    />
-                                                    :<></>} */}
                                                 </Typography>
                                                 <Typography component={'span'} variant="body2" dangerouslySetInnerHTML={{__html:answer.body}}>
                                                 </Typography>

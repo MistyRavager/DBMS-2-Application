@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Sidebar from '../../../components/sidebar'
+import Sidebar from '../../components/sidebar'
 import Head from 'next/head';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
@@ -18,11 +18,11 @@ import  Chip  from '@mui/material/Chip';
 import DoneIcon from '@mui/icons-material/Done';
 export default function Post() {
     const router = useRouter()
-    const {userid, postid} = router.query
+    const { postid} = router.query
     const [post,setPost] = React.useState();
     const [answers, setAnswers] = React.useState();
     const [userdetails,setUserDetails] = React.useState();
-
+    const [postuserdetails, setPostUserDetails] = React.useState();
 
     async function getAnswer() {
       const response = await fetch(`http://localhost:5002/answer/questionid/${postid}?sort_by=score`, {
@@ -41,19 +41,38 @@ export default function Post() {
       const x = await response.json();
       setPost(x);
     }
-    
-    async function getUser() {
-        const response = await fetch(`http://localhost:5002/user/id/${userid}`, {
+    async function actualGetUser() {
+      // e.preventDefault();
+        try {
+        const response = await fetch(`http://localhost:5002/me`, {
+          method: "GET",
+          credentials: 'include'
+        });
+        if (response.status === 401) {
+          console.log("Unauthorized");
+          router.push("/signin");
+        }
+        setUserDetails(await response.json());
+      } catch (err) {
+        console.log(err);
+      }
+  
+        return ;
+    }
+    async function getPostUser() {
+        const response = await fetch(`http://localhost:5002/user/id/${post?.owner_user_id}`, {
             method: "GET",
             credentials: 'include'
         });
         const x = await response.json();
-        setUserDetails(x);
+        // setUserDetails(x);
+        setPostUserDetails(x);
     }
 
     async function getAll() {
+      actualGetUser();
       getPost();
-      getUser();
+      // getUser();
       getAnswer();
     }
     
@@ -62,6 +81,9 @@ export default function Post() {
         console.log("loading");
         getAll();
     }, [router.isReady]);
+    React.useEffect(()=>{
+      getPostUser()
+    },[post])
     // console.log(post);
     // console.log(userdetails);
     // console.log(answers);
@@ -71,13 +93,14 @@ export default function Post() {
         const d = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
         return d.toLocaleString();
     }
+    
     return (
     <>
     <Head>
         <title>Post</title>
     </Head>
     <Box sx={{ display: 'flex' }}>
-      <Sidebar userid={userid}/>
+      <Sidebar/>
       
       <Box
           component="main"
@@ -138,8 +161,8 @@ export default function Post() {
                         <CardHeader
                             avatar={
                             <Avatar
-                              alt={userdetails?.display_name}
-                              src={userdetails?.profile_image_url}
+                              alt={postuserdetails?.display_name}
+                              src={postuserdetails?.profile_image_url}
                             />
                             }
                             // action={
@@ -147,7 +170,7 @@ export default function Post() {
                             //     <MoreVertIcon />
                             // </IconButton>
                             // }
-                            title={userdetails?.display_name}
+                            title={postuserdetails?.display_name}
                             subheader={makeDate(post?.creation_date)}
                         />
                     </Card>
@@ -164,9 +187,9 @@ export default function Post() {
                             <Grid item xs={12} key={answer?.id}>
                                 <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                                     <CardContent>
-                                        <Typography sx={{fontSize:20}} component="div">
+                                        {/* <Typography sx={{fontSize:20}} component="div">
                                         AnswerID: {answer?.id} 
-                                        </Typography>
+                                        </Typography> */}
                                         <Typography component={'span'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                         Score: {answer?.score}
                                         </Typography>
@@ -184,7 +207,7 @@ export default function Post() {
                                         <Typography component={'span'} variant="body2" dangerouslySetInnerHTML={{__html:answer.body}}>
                                         </Typography>
                                     </CardContent>
-                                    <CardHeader
+                                    {(answer?.last_editor_display_name)?<CardHeader
                                             avatar={
                                             <Avatar
                                             alt={answer?.last_editor_display_name}
@@ -196,9 +219,24 @@ export default function Post() {
                                             //     <MoreVertIcon />
                                             // </IconButton>
                                             // }
-                                            title={answer?.last_editor_user_id}
+                                            title={answer?.last_editor_display_name}
                                             subheader={makeDate(answer?.last_edit_date)}
-                                        />
+                                        />:
+                                        <CardHeader
+                                            avatar={
+                                            <Avatar
+                                            alt={answer?.last_editor_display_name}
+                                            src={answer?.last_editor_display_name}
+                                            />
+                                            }
+                                            // action={
+                                            // <IconButton aria-label="settings">
+                                            //     <MoreVertIcon />
+                                            // </IconButton>
+                                            // }
+                                            title="Deleted User"
+                                            subheader={makeDate(answer?.last_edit_date)}
+                                        />}
                                 </Card>
                             </Grid>)})}
                 </Grid>
