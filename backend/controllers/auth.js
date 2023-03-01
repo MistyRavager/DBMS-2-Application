@@ -86,17 +86,17 @@ export const Signout = async(req, res) => {
 
 export const Me = async(req, res) => {
     const accessToken = req.cookies.accessToken;
-    if(!accessToken) return res.sendStatus(204);
+    if(!accessToken) return res.sendStatus(401);
     const cred = await Credential.findAll({
         where:{
             access_token: accessToken
         }
     });
-    if(!cred[0]) return res.sendStatus(204);
-    const User = await User.findOne({
+    if(!cred[0]) return res.sendStatus(401);
+    const user = await User.findOne({
         where:{
             id: cred[0].id
         }
     });
-    return res.json(User);
+    return res.json(user);
 }

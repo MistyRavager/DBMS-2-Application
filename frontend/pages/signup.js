@@ -18,7 +18,7 @@ import MyEditor from "../components/editor"
 import { useRouter } from 'next/router';
 const theme = createTheme();
 
-export default function SignInSide() {
+export default function SignUpSide() {
   const [aboutme, setAboutMe] = React.useState("");
   const router = useRouter();
   const handleSubmit = (event) => {

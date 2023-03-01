@@ -65,8 +65,19 @@ export default function Sidebar(props) {
     const questionsPerPage = 5;
     const answersPerPage = 5;
     const [loggedIn, setLoggedIn] = React.useState(true);
+    // async function getUser() {
+    //   const response = await fetch(`http://localhost:5002/user/id/${props?.userid}`, {
+    //       method: "GET",
+    //       credentials: 'include'
+    //   });
+    //   const x = await response.json();
+    //   setUserDetails(x);
+    // }
+    // React.useEffect(() => {
+    //     getUser();
+    // }, [props]);
     async function getUser() {
-      const response = await fetch(`http://localhost:5002/user/id/${props?.userid}`, {
+      const response = await fetch(`http://localhost:5002/me`, {
           method: "GET",
           credentials: 'include'
       });
@@ -75,7 +86,7 @@ export default function Sidebar(props) {
     }
     React.useEffect(() => {
         getUser();
-    }, [props]);
+    }, []);
     async function getTopTags() {
         const res = await fetch(`http://localhost:5002/question/top_tags/${questionsPerPage}`,{
             method: 'GET',

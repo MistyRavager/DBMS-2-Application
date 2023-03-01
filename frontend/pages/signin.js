@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 // function Copyright(props) {
 //   return (
@@ -30,14 +31,41 @@ import Head from 'next/head';
 const theme = createTheme();
 
 export default function SignInSide() {
+  const router = useRouter();
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     username: data.get('username'),
+  //     password: data.get('password'),
+  //   });
+  // };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
+    async function postDetails(){
+      const response = await fetch(`http://localhost:5002/signin`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          user_name: data.get('username'),
+          password: data.get('password')
+        }),
+      });
+      console.log(await response.json());
+      if (response.status === 200) {
+        router.push("/dashboard");
+      }
+    }
+    postDetails();
   };
+  
+  
 
   return (
     <>
