@@ -141,30 +141,44 @@ export default function Sidebar(props) {
             </Toolbar>
             <Divider />
             <List component="nav">
-                <ListItemButton component="a" href="/dashboard">
-                  <ListItemIcon>
-                    <Avatar
-                      alt={userdetails?.display_name}
-                      src={userdetails?.profile_image_url}
-                      // sx={{ width: '100%', height: '100%' }}
-                    />
-                    </ListItemIcon>
-                  <ListItemText primary={userdetails?.display_name} />
-                </ListItemButton>
-                <Divider sx={{ my: 1 }}/>
-                <ListItemButton component="a" href={`/create/question/${userdetails?.id}`}>
+
+                {
+                  loggedIn 
+                  && 
+                  <ListItemButton component="a" href="/dashboard">
                     <ListItemIcon>
-                      <CreateIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Create Question" />
-                </ListItemButton>
-                <ListItemButton component="a" href="/explore">
-                    <ListItemIcon>
-                      <ExploreIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Explore" />
-                </ListItemButton>
-                <Divider sx={{ my: 1 }}/>
+                      <Avatar
+                        alt={userdetails?.display_name}
+                        src={userdetails?.profile_image_url}
+                        // sx={{ width: '100%', height: '100%' }}
+                      />
+                      </ListItemIcon>
+                    <ListItemText primary={userdetails?.display_name} />
+                  </ListItemButton>
+                }
+
+                {
+                  loggedIn 
+                  && 
+                  <>
+                  <Divider sx={{ my: 1 }}/>
+                    <ListItemButton component="a" href={`/create/question/${userdetails?.id}`}>
+                        <ListItemIcon>
+                          <CreateIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Create Question" />
+                    </ListItemButton>
+
+                    <ListItemButton component="a" href="/explore">
+                        <ListItemIcon>
+                          <ExploreIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Explore" />
+                    </ListItemButton>
+                  <Divider sx={{ my: 1 }}/> 
+                </>
+                }
+
                 <ListSubheader component="div" inset>
                   Top 5 Tags
                 </ListSubheader>
