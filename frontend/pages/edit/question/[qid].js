@@ -92,7 +92,7 @@ export default function question(props) {
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        const tagParse = Tags?.tags.map((tag)=>{
+        const tagParse = Tags?.tags?.map((tag)=>{
           return "<"+tag.split(":")[1]+">";
         })
         async function updatePost(){
@@ -106,7 +106,7 @@ export default function question(props) {
                     post_id: qid,
                     title: title,
                     body: data,
-                    tags: tagParse.join(""),
+                    tags: tagParse?.join(""),
                     user_id: actualuserdetails?.id
                 }),
             })
@@ -180,10 +180,9 @@ export default function question(props) {
                 <Stack spacing={3} sx={{ ml: "25%", width: "50%" }}>
                   <AutoTags setDetails={setTag}/>
                   <Button
-            type="submit"
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onSubmit={handleSubmit}
+            onClick={handleSubmit}
             >
             Edit Question
             </Button>

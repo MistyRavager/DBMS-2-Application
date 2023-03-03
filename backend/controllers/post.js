@@ -220,19 +220,22 @@ export const deletePost = async (req, res) => {
                 });
 
                 // Updating tag count
-                let tags_array = tags.split(">");
-                tags_array = tags_array.map(tag => tag.substring(1, tag.length));
-                tags_array.pop();
+                if (tags){
+                console.log("heher")
+		        let tags_array = tags.split(">");
+		        tags_array = tags_array.map(tag => tag.substring(1, tag.length));
+		        tags_array.pop();
 
-                for (let i = 0; i < tags_array.length; i++) { // For each tag in tags_array
-                    const tagU = await Tag.update({ // Update tag's count
-                        count: Sequelize.literal('count - 1')
-                    }, {
-                        where: {
-                            tag_name: tags_array[i]
-                        }
-                    });
-                }
+		        for (let i = 0; i < tags_array.length; i++) { // For each tag in tags_array
+		            const tagU = await Tag.update({ // Update tag's count
+		                count: Sequelize.literal('count - 1')
+		            }, {
+		                where: {
+		                    tag_name: tags_array[i]
+		                }
+		            });
+		        }
+		 }
             }
 
             // const dCom = await Comment.destroy({ // Deletes all comments to post

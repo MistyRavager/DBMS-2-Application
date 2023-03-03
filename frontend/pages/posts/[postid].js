@@ -16,6 +16,8 @@ import CardHeader  from '@mui/material/CardHeader';
 import {useRouter} from 'next/router'
 import  Chip  from '@mui/material/Chip';
 import DoneIcon from '@mui/icons-material/Done';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 export default function Post() {
     const router = useRouter()
     const { postid} = router.query
@@ -29,8 +31,10 @@ export default function Post() {
           method: "GET",
           credentials: 'include'
       });
-      const x = await response.json();
-      setAnswers(x);
+      if (response.status==200){
+	      const x = await response.json();
+	      setAnswers(x);      
+      }
     } 
 
     async function getPost() {
@@ -42,7 +46,6 @@ export default function Post() {
       setPost(x);
     }
     async function actualGetUser() {
-      // e.preventDefault();
         try {
         const response = await fetch(`http://localhost:5002/me`, {
           method: "GET",
@@ -64,11 +67,30 @@ export default function Post() {
             method: "GET",
             credentials: 'include'
         });
-        const x = await response.json();
+        if (response.status==200){
+        	const x = await response.json();
+		setPostUserDetails(x);
+        }
         // setUserDetails(x);
-        setPostUserDetails(x);
+       
     }
 
+
+      async function deletePost(id){
+	const response = await fetch(`http://localhost:5002/post/delete/${id}`, {
+	  method: "DELETE",
+	  headers: {
+	    'Content-Type': 'application/json',
+	  },
+	  credentials: 'include',
+	});
+	console.log(await response.json());
+	if (response.status === 200) {
+	  router.push("/dashboard");
+	}
+      }
+      	      
+    
     async function getAll() {
       actualGetUser();
       getPost();
@@ -154,7 +176,7 @@ export default function Post() {
                         </Grid>     
                     </Grid>
                   
-                  <Grid item xs={3} sx={{ml:"75%"}}>
+                  <Grid item xs={4} sx={{ml:"66%"}}>
                   
 
                     <Card sx={{ maxWidth: "100%"}}>
@@ -170,7 +192,8 @@ export default function Post() {
                               subheader={makeDate(post?.creation_date)}
                           />
                           {(actualuserdetails?.id == post?.owner_user_id)?<CardActions>
-                            <Button href={`/edit/question/${post?.id}`} size="small">Edit Question</Button>
+                            <Button href={`/edit/question/${post?.id}`} size="small">Edit Question <EditIcon/></Button>
+                            <Button sx={{color:"red", ml:3}} onClick={(e)=>{deletePost(post?.id)}} size="small">Delete Question <DeleteIcon/></Button>
                           </CardActions>:<></>}
                           </>
                           :
@@ -200,7 +223,7 @@ export default function Post() {
                   <Typography variant="h6" component="div" gutterBottom>
                     Answers
                     <Button component="a" href={`/create/answer/${post?.id}`}  sx={{float:"middle", ml:2}}>
-                      Add Answer
+                      Add Answer 
                     </Button>
                   </Typography>
                 </Grid>
@@ -238,9 +261,10 @@ export default function Post() {
                                             title={answer?.owner_display_name}
                                             subheader={makeDate(answer?.creation_date)}
                                         />
-                                        {(actualuserdetails?.id == post?.owner_user_id)?<CardActions>
-                            <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer</Button>
-                          </CardActions>:<></>}
+                                        {(actualuserdetails?.id == post?.owner_user_id)?<><CardActions>
+                            <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer  <EditIcon/></Button>
+                            <Button sx={{color:"red", ml:3}} onClick={(e)=>{deletePost(answer?.id)}} size="small">Delete Answer <DeleteIcon/></Button>
+                          </CardActions></>:<></>}
                                         </>:
                                         <>
                                         <CardHeader

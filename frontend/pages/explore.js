@@ -347,7 +347,7 @@ export default function Explore() {
                               </Typography>
                           </CardContent>
                           <CardActions>
-                              <Button href={`/posts/${post.owner_user_id}/${post.id}`} size="small">Learn More</Button>
+                              <Button href={`/posts/${post.id}`} size="small">Learn More</Button>
                           </CardActions>
                       </Card>
                   </Grid>)

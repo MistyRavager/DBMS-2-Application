@@ -85,17 +85,18 @@ export default function Sidebar(props) {
       });
       if(res.status === 200) {
         setLoggedIn(true);
+        try{
+        const x = await res.json();
+        setUserDetails(x);
+        }
+        catch(err){
+	console.log(err);
+        }
       }
       else {
         setLoggedIn(false);
       }
-      try{
-        const x = await res.json();
-        setUserDetails(x);
-      }
-      catch(err){
-        console.log('err');
-      }
+      
     }
     async function getTopTags() {
         const res = await fetch(`http://localhost:5002/question/top_tags/${questionsPerPage}`,{

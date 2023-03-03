@@ -80,7 +80,7 @@ export default function question(props) {
             owner_user_id: userid,
             title: title,
             body: data,
-            tags: tagParse.join("")
+            tags: tagParse?.join("")
           })
         })
         console.log(await res.json());

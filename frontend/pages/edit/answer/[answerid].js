@@ -145,23 +145,7 @@ export default function question(props) {
             Edit Answer Details
           </Typography>
           <Grid container spacing={3} sx={{mt:2}}>
-        <Grid item xs={12}>
-         {(answer?.title)?
-         <TextField
-                required
-                id="answerTitle"
-                name="answerTitle"
-                label="Answer Title"
-                fullWidth
-                autoComplete="given-title"
-                defaultValue={answer?.title}
-                variant="outlined"
-                onChange={(e)=>{setTitle(e.target.value)}}
-                multiline
-            />:<></>}
-            
-
-        </Grid>
+        
         <Grid item xs={12}>
           <Typography sx={{  fontSize:20 }} gutterBottom color="text.secondary">
             Answer Description

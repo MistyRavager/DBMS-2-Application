@@ -250,14 +250,15 @@ export const createQuestion = async (req, res) => {
         let owner_user_id = req.body.owner_user_id; // Expects "owner_user_id" in body of request
         let title = req.body.title; // Expects "title" in body of request
         let body = req.body.body; // Expects "body" in body of request
+        console.log("h")
         let tags = req.body.tags; // Expects "tags" in body of request in <tag1><tag2><tag3> format
-
+	console.log(tags)
         const user = await User.findOne({
             where: {
                 id: owner_user_id
             }
         });
-
+	console.log("e")
         if (user) { // If user exists
             const post = await Post.create({ // Creates a post
                 id: null, // ID is auto-incremented
@@ -273,7 +274,7 @@ export const createQuestion = async (req, res) => {
                 owner_display_name: user.display_name,
                 last_editor_display_name: null,
                 title: title,
-                tags: tags,
+                tags: tags || null,
                 content_license: "CC BY-SA 2.5",
                 body: body,
                 favorite_count: 0,
@@ -285,20 +286,21 @@ export const createQuestion = async (req, res) => {
             });
 
             // Updating tag count
-            let tags_array = tags.split(">");
-            tags_array = tags_array.map(tag => tag.substring(1, tag.length));
-            tags_array.pop();
+            if (tags){
+		    let tags_array = tags.split(">");
+		    tags_array = tags_array.map(tag => tag.substring(1, tag.length));
+		    tags_array.pop();
 
-            for (let i = 0; i < tags_array.length; i++) { // For each tag in tags_array
-                const tagU = await Tag.update({ // Update tag's count
-                    count: Sequelize.literal('count + 1')
-                }, {
-                    where: {
-                        tag_name: tags_array[i]
-                    }
-                });
-            }
-
+		    for (let i = 0; i < tags_array.length; i++) { // For each tag in tags_array
+		        const tagU = await Tag.update({ // Update tag's count
+		            count: Sequelize.literal('count + 1')
+		        }, {
+		            where: {
+		                tag_name: tags_array[i]
+		            }
+		        });
+		    }
+		}
             res.status(200).json("Created question"); // If successful, returns "question closed" in a json
         } else { // If user does not exist
             res.status(404).json("User not found");

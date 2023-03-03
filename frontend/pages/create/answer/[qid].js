@@ -128,7 +128,7 @@ export default function answer(props) {
   return (
     <>
         <Head>
-            <title>Create Question</title>
+            <title>Create Answer</title>
         </Head>
         <Box sx={{ display: 'flex' }}>
             <Sidebar />
@@ -244,9 +244,13 @@ export default function answer(props) {
               <Paper variant="outlined" sx={{ m:4, my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
 
               <Grid item xs={12}>
-                <Typography variant="h6" component="div" gutterBottom>
+              {(answers?.length>0)?<Typography variant="h6" component="div" gutterBottom>
                   Answers
-                </Typography>
+                </Typography>:<Typography variant="h6" component="div" gutterBottom>
+                  No Answers :(
+                </Typography>}
+                
+                
                 <Grid container spacing={3}>    
                     {answers?.map((answer) => {
                         return (

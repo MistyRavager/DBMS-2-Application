@@ -22,7 +22,7 @@ export default function MyEditor (props) {
   return editorLoaded ? (
     <CKEditor
       editor={ClassicEditor}
-      data={(props?.placeholder)? props.placeholder:''}
+      data={(props?.placeholder)?props?.placeholder:""}
       
       onReady={editor => {
         // You can store the "editor" and use when it is needed.
