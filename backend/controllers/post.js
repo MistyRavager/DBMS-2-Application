@@ -288,7 +288,7 @@ export const votePost = async (req, res) => {
         let vote_id = vote.id;
         let old_vote_type_id = vote.vote_type_id;
 
-        if(vote_flag == 2)  {
+        if(vote_type_id == 2)  {
             if(vote) {
                 const nvoteD = await Vote.destroy({ // Deletes vote
                     where: {
@@ -372,7 +372,7 @@ export const votePost = async (req, res) => {
                 }
             });
         }
-        else if(vote_flag == 3) {
+        else if(vote_type_id == 3) {
             if(vote) {
                 const nvoteD = await Vote.destroy({ // Deletes vote
                     where: {
