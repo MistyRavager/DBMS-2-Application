@@ -263,7 +263,7 @@ export const votePost = async (req, res) => {
         const vote = await Vote.findOne({ // Finds vote with post_id and voter_id
             where: {
                 post_id: post_id,
-                voter_id: voter_id
+                user_id: voter_id
             }
         });
 
