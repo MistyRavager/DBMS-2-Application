@@ -204,6 +204,6 @@ router.post("/user/create", createUser); // Tested
 
 // Get the vote given by a user to a post
 // Ex http://localhost:5002/user/vote/4/442654
-router.get("/post/answer/:post_id/:user_id", verifyToken, getAnswerByPostId);
+router.get("/post/answer/:post_id/:user_id", verifyToken, getVoteStatus);
 
 export default router;
