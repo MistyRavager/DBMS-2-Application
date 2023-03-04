@@ -245,7 +245,7 @@ export default function Post() {
                                   <Grid item xs={1} sx={{mt:"auto", mb:"auto"}}>
                                     <CardContent>
 
-                                    <Stack>
+                                    <Stack> 
                                       {(colourup)?<ThumbUpIcon sx={{color:"green"}} onClick={(e)=>{setColourUp(0)}}/>
                                       :<ThumbUpOutlinedIcon onClick={(e)=>{setColourUp(1)}}/>}
                                     {/* <EditIcon sx={{color:colourup}} onClick={(e)=>{setColourUp("green")}}/> */}
@@ -305,7 +305,7 @@ export default function Post() {
                                               title={"Deleted User"}
                                               subheader={makeDate(answer?.creation_date)}
                                           />
-                                          {(actualuserdetails?.id == post?.owner_user_id)?<CardActions>
+                                          {(actualuserdetails?.id == answer?.owner_user_id)?<CardActions>
                                             <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer</Button>
                                           </CardActions>:<></>}
                                           </>
