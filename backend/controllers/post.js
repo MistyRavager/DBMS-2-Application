@@ -477,12 +477,12 @@ export const getVoteStatus = async (req, res) => {
             if (vote) { // If vote exists
                 let v = parseInt(vote.vote_type_id);
                 if (v == 2) {
-                    res.status(200).json({"upvote": "1", "downvote": "0"});
+                    res.status(200).json({"upvote": "1", "downvote": "0", "post_id": post_id});
                 } else if (v == 3) {
-                    res.status(200).json({"upvote": "0", "downvote": "1"});
+                    res.status(200).json({"upvote": "0", "downvote": "1", "post_id": post_id});
                 }
             } else { // If vote does not exist
-                res.status(200).json({"upvote": "0", "downvote": "0"});
+                res.status(200).json({"upvote": "0", "downvote": "0", "post_id": post_id});
             }
         } else { // If post does not exist
             res.status(404).json({"message":"Post not found"});
