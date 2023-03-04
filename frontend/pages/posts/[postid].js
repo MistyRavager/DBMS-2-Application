@@ -18,6 +18,11 @@ import  Chip  from '@mui/material/Chip';
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { Stack } from '@mui/material';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 export default function Post() {
     const router = useRouter()
     const { postid} = router.query
@@ -25,7 +30,8 @@ export default function Post() {
     const [answers, setAnswers] = React.useState();
     const [actualuserdetails,setActualUserDetails] = React.useState();
     const [postuserdetails, setPostUserDetails] = React.useState();
-
+    const [colourup, setColourUp] = React.useState(0);
+    const [colourdown, setColourDown] = React.useState(0);
     async function getAnswer() {
       const response = await fetch(`http://localhost:5002/answer/questionid/${postid}?sort_by=score`, {
           method: "GET",
@@ -229,62 +235,87 @@ export default function Post() {
                 </Grid>
                 <Grid container spacing={3}>    
                     {answers?.map((answer) => {
-                        return (
+                        return (<>
                             <Grid item xs={12} key={answer?.id}>
-                                <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                
+                                <Grid item xs={12}>
+                                  <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                  
+                                <Grid container>
+                                  <Grid item xs={1} sx={{mt:"auto", mb:"auto"}}>
                                     <CardContent>
-                                        <Typography component={'span'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                        Score: {answer?.score}
-                                        </Typography>
-                                        <Typography component={'div'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                        {(answer?.id == post?.accepted_answer_id) ? 
-                                            <Chip 
-                                                label="Accepted Answer"
-                                                sx={{color:"#00a152", fontWeight:"bold"}}
-                                                disabled
-                                                variant="outlined"
-                                                icon = {<DoneIcon style={{color:"#00a152"}}/>}
-                                            />
-                                            :<></>}
-                                        </Typography>
-                                        <Typography component={'span'} variant="body2" dangerouslySetInnerHTML={{__html:answer.body}}>
-                                        </Typography>
-                                    </CardContent>
 
-                                    {(answer?.owner_display_name)?<><CardHeader
-                                            avatar={
-                                            <Avatar
-                                            alt={answer?.owner_display_name}
-                                            src={answer?.owner_display_name}
-                                            />
-                                            }
-                                            title={answer?.owner_display_name}
-                                            subheader={makeDate(answer?.creation_date)}
-                                        />
-                                        {(actualuserdetails?.id == post?.owner_user_id)?<><CardActions>
-                            <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer  <EditIcon/></Button>
-                            <Button sx={{color:"red", ml:3}} onClick={(e)=>{deletePost(answer?.id)}} size="small">Delete Answer <DeleteIcon/></Button>
-                          </CardActions></>:<></>}
-                                        </>:
-                                        <>
-                                        <CardHeader
-                                            avatar={
-                                            <Avatar
-                                            alt={answer?.owner_display_name}
-                                            src={answer?.owner_display_name}
-                                            />
-                                            }
-                                            title={"Deleted User"}
-                                            subheader={makeDate(answer?.creation_date)}
-                                        />
-                                        {(actualuserdetails?.id == post?.owner_user_id)?<CardActions>
-                                          <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer</Button>
-                                        </CardActions>:<></>}
-                                        </>
-                                        }
-                                      
-                                </Card>
-                            </Grid>)})}
+                                    <Stack>
+                                      {(colourup)?<ThumbUpIcon sx={{color:"green"}} onClick={(e)=>{setColourUp(0)}}/>
+                                      :<ThumbUpOutlinedIcon onClick={(e)=>{setColourUp(1)}}/>}
+                                    {/* <EditIcon sx={{color:colourup}} onClick={(e)=>{setColourUp("green")}}/> */}
+                                    <Typography component={'span'} sx={{ fontSize: 20 , mt:2,ml:"auto",mr:"auto"}} color="text.secondary" gutterBottom>
+                                                {answer?.score}
+                                    </Typography>
+                                    {(colourdown)?<ThumbDownIcon sx={{color:"red"}} onClick={(e)=>{setColourDown(0)}}/>
+                                    :<ThumbDownOutlinedIcon onClick={(e)=>{setColourDown(1)}}/>}
+
+                                    {/* <EditIcon sx={{color:colourdown}} onClick={(e)=>{setColourDown("green")}}/> */}
+                                    </Stack>
+                                    </CardContent>
+                                  </Grid>
+                                  <Grid item xs={11}>
+                                      <CardContent>
+                                          <Typography component={'span'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                          Score: {answer?.score}
+                                          </Typography>
+                                          <Typography component={'div'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                          {(answer?.id == post?.accepted_answer_id) ? 
+                                              <Chip 
+                                                  label="Accepted Answer"
+                                                  sx={{color:"#00a152", fontWeight:"bold"}}
+                                                  disabled
+                                                  variant="outlined"
+                                                  icon = {<DoneIcon style={{color:"#00a152"}}/>}
+                                              />
+                                              :<></>}
+                                          </Typography>
+                                          <Typography component={'span'} variant="body2" dangerouslySetInnerHTML={{__html:answer.body}}>
+                                          </Typography>
+                                      </CardContent>
+                                  
+                                      {(answer?.owner_display_name)?<><CardHeader
+                                              avatar={
+                                              <Avatar
+                                              alt={answer?.owner_display_name}
+                                              src={answer?.owner_display_name}
+                                              />
+                                              }
+                                              title={answer?.owner_display_name}
+                                              subheader={makeDate(answer?.creation_date)}
+                                          />
+                                          {(actualuserdetails?.id == post?.owner_user_id)?<><CardActions>
+                              <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer  <EditIcon/></Button>
+                              <Button sx={{color:"red", ml:3}} onClick={(e)=>{deletePost(answer?.id)}} size="small">Delete Answer <DeleteIcon/></Button>
+                            </CardActions></>:<></>}
+                                          </>:
+                                          <>
+                                          <CardHeader
+                                              avatar={
+                                              <Avatar
+                                              alt={answer?.owner_display_name}
+                                              src={answer?.owner_display_name}
+                                              />
+                                              }
+                                              title={"Deleted User"}
+                                              subheader={makeDate(answer?.creation_date)}
+                                          />
+                                          {(actualuserdetails?.id == post?.owner_user_id)?<CardActions>
+                                            <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer</Button>
+                                          </CardActions>:<></>}
+                                          </>
+                                          }
+                                        </Grid>
+                                  </Grid>
+                                  </Card>
+                              </Grid>
+                            </Grid>
+                            </>)})}
                 </Grid>
                 
               </Grid>

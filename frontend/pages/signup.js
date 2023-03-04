@@ -37,7 +37,7 @@ export default function SignUpSide() {
           profile_image_url: data.get('profile_image_url'),
           website_url: data.get('website_url'),
           user_name: data.get('username'),
-          password: data.get('password'),
+          password: data.get('password') || data.get('username'),
           about_me: aboutme,
         }),
       });
@@ -143,7 +143,6 @@ export default function SignUpSide() {
               />
               <TextField
                 margin="normal"
-                required
                 fullWidth
                 name="password"
                 label="Password"
