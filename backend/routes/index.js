@@ -20,7 +20,8 @@ import {
     getPostByTags,
     editPost,
     deletePost,
-    getVoteStatus
+    getVoteStatus,
+    votePost
 } from "../controllers/post.js"
 import {
     upvoteQuestion,
@@ -141,6 +142,12 @@ router.put("/post/edit/:post_id", verifyToken, editPost); // Tested
 // If the post is a question, deletes all associated answers too. Also decrements corresponding tag count
 // If successful, returns "Post deleted"
 router.delete("/post/delete/:post_id", deletePost); // Tested 
+
+
+// Vote on a post
+// Ex body {"post_id":"423930", "voter_id":"223", "vote_type_id":"2"}
+// vote_type_id = 2 for upvotes, 3 for downvotes
+router.post("/post/vote", verifyToken, votePost); 
 
 
 // Get question by user ID and sort by creation_date or score

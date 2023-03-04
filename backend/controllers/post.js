@@ -253,6 +253,208 @@ export const deletePost = async (req, res) => {
     }
 }
 
+
+export const votePost = async (req, res) => {
+    try {
+        let post_id = req.body.post_id;
+        let voter_id = req.body.user_id;
+        let vote_type_id = req.body.vote_type_id; // 2 for upvote, 3 for downvote
+
+        const vote = await Vote.findOne({ // Finds vote with post_id and voter_id
+            where: {
+                post_id: post_id,
+                voter_id: voter_id
+            }
+        });
+
+        const post = await Post.findOne({ // Finds post with post_id
+            where: {
+                id: post_id
+            }
+        });
+
+        const voter = await User.findOne({ // Finds user with user_id
+            where: {
+                id: voter_id
+            }
+        });
+
+        const owner = await User.findOne({ // Finds user with user_id
+            where: {
+                id: post.user_id
+            }
+        });
+
+        let vote_id = vote.id;
+        let old_vote_type_id = vote.vote_type_id;
+
+        if(vote_flag == 2)  {
+            if(vote) {
+                const nvoteD = await Vote.destroy({ // Deletes vote
+                    where: {
+                        id: vote_id
+                    }
+                });
+                if (old_vote_type_id == 2) {
+                    const npostU = await Post.update({ // Updates post's score
+                        score: Sequelize.literal('score - 1')
+                    }, {
+                        where: {
+                            id: post_id
+                        }
+                    });
+                    const nvoterU = await User.update({ // Updates voter's upvote count
+                        up_votes: Sequelize.literal('up_votes - 1')
+                    }, {
+                        where: {
+                            id: voter_id
+                        }
+                    });
+                    const nuserU = await User.update({ // Updates owner's reputation
+                        reputation: Sequelize.literal('reputation - 5')
+                    }, {
+                        where: {
+                            id: post.user_id
+                        }
+                    });
+                }
+                else if (old_vote_type_id == 3) {
+                    const npostU = await Post.update({ // Updates post's score
+                        score: Sequelize.literal('score + 1')
+                    }, {
+                        where: {
+                            id: post_id
+                        }
+                    });
+                    const nvoterU = await User.update({ // Updates voter's downvote count
+                        down_votes: Sequelize.literal('down_votes - 1')
+                    }, {
+                        where: {
+                            id: voter_id
+                        }
+                    });
+                    const nuserU = await User.update({ // Updates owner's reputation
+                        reputation: Sequelize.literal('reputation + 5')
+                    }, {
+                        where: {
+                            id: post.user_id
+                        }
+                    });
+                }
+            }
+            const nvoteC = await Vote.create({ // Creates vote
+                id: null, // Auto-incremented
+                post_id: post_id,
+                user_id: voter_id,
+                vote_type_id: vote_type_id,
+                bounty_amount: null,
+                creation_date: new Date()
+            });
+            const npostU2 = await Post.update({ // Updates post's score
+                score: Sequelize.literal('score + 1')
+            }, {
+                where: {
+                    id: post_id
+                }
+            });
+            const nvoterU2 = await User.update({ // Updates voter's upvote count
+                up_votes: Sequelize.literal('up_votes + 1')
+            }, {
+                where: {
+                    id: voter_id
+                }
+            });
+            const nuserU2 = await User.update({ // Updates owner's reputation
+                reputation: Sequelize.literal('reputation + 5')
+            }, {
+                where: {
+                    id: post.user_id
+                }
+            });
+        }
+        else if(vote_flag == 3) {
+            if(vote) {
+                const nvoteD = await Vote.destroy({ // Deletes vote
+                    where: {
+                        id: vote_id
+                    }
+                });
+                if (old_vote_type_id == 2) {
+                    const npostU = await Post.update({ // Updates post's score
+                        score: Sequelize.literal('score - 1')
+                    }, {
+                        where: {
+                            id: post_id
+                        }
+                    });
+                    const nvoterU = await User.update({ // Updates voter's upvote count
+                        up_votes: Sequelize.literal('up_votes - 1')
+                    }, {
+                        where: {
+                            id: voter_id
+                        }
+                    });
+                    const nuserU = await User.update({ // Updates owner's reputation
+                        reputation: Sequelize.literal('reputation - 5')
+                    }, {
+                        where: {
+                            id: post.user_id
+                        }
+                    });
+                }
+                else if (old_vote_type_id == 3) {
+                    const npostU = await Post.update({ // Updates post's score
+                        score: Sequelize.literal('score + 1')
+                    }, {
+                        where: {
+                            id: post_id
+                        }
+                    });
+                    const nvoterU = await User.update({ // Updates voter's downvote count
+                        down_votes: Sequelize.literal('down_votes - 1')
+                    }, {
+                        where: {
+                            id: voter_id
+                        }
+                    });
+                    const nuserU = await User.update({ // Updates owner's reputation
+                        reputation: Sequelize.literal('reputation + 5')
+                    }, {
+                        where: {
+                            id: post.user_id
+                        }
+                    });
+                }
+            }
+            const nvoteC = await Vote.create({ // Creates vote
+                id: null, // Auto-incremented
+                post_id: post_id,
+                user_id: voter_id,
+                vote_type_id: vote_type_id,
+                bounty_amount: null,
+                creation_date: new Date()
+            });
+            const npostU2 = await Post.update({ // Updates post's score
+                score: Sequelize.literal('score - 1')
+            }, {
+                where: {
+                    id: post_id
+                }
+            });
+            const nvoterU2 = await User.update({ // Updates voter's downvote count
+                down_votes: Sequelize.literal('down_votes + 1')
+            }, {
+                where: {
+                    id: voter_id
+                }
+            });
+        }
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
+
+
 export const getVoteStatus = async (req, res) => {
     try {
         let post_id = req.params.post_id; // Expects "post_id" in body of request
