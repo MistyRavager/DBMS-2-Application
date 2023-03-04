@@ -8,6 +8,9 @@ After the database was created, the backend was developed by creating various co
 - The `backend` folder consists of `controllers`, `db`, `middleware`, and `routes`, in addition to files like `./index.js` and `models.js`.
     - `controllers` has several files for the various backend APIs/functions. Examples of these include the APIs for creating answers (in `answer.js`), for signing in (in `auth.js`) and for autocomplete (in `autocomplete.js`).
     -  `db` has various database related files. `init.sql` defines the DDL, `data.sql` inserts data into the created tables, and `drop.sql` drops the created tables. The problem-statement also asked for accounts to be created for pre-existing users, with a username and the default password as the username. For this, `gen_cred.py` populates the *credentials* table with usernames (display_name concatenated with user ID) and passwords (same as username).
+    - `middleware` contains a single file with the API verifyToken. This API checks if the jwt is valid, and returns responses checked by the frontend to trigger redirection to relevant URLs
+    - `routes` contains the various backend routes. The various functions are imported from the controllers, and used in either put, delete, post or get methods.
+    - `index.js` 
 - 
 
 ### Programming Languages used for different components

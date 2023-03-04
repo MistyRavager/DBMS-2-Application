@@ -99,7 +99,7 @@ export default function Explore() {
     setStart(true)
     if(userSQL != '' && userSQL != undefined)
     {
-      fetch(`http://localhost:5002/post/userid/${userSQL}score_flag=${scoreFlag}&date_flag=2&limit=${recNum}`,{
+      fetch(`http://localhost:5002/post/userid/${userSQL}?score_flag=${scoreFlag}&date_flag=2&limit=${recNum}`,{
                 method: 'GET',
                 credentials: 'include'
             }).then(
