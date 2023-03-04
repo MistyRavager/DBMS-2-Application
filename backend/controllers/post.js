@@ -259,36 +259,41 @@ export const votePost = async (req, res) => {
         let post_id = req.body.post_id;
         let voter_id = req.body.user_id;
         let vote_type_id = req.body.vote_type_id; // 2 for upvote, 3 for downvote
-
+        console.log("here1")
         const vote = await Vote.findOne({ // Finds vote with post_id and voter_id
             where: {
                 post_id: post_id,
                 user_id: voter_id
             }
         });
+        console.log("here2")
 
         const post = await Post.findOne({ // Finds post with post_id
             where: {
                 id: post_id
             }
         });
+        console.log("here3")
 
         const voter = await User.findOne({ // Finds user with user_id
             where: {
                 id: voter_id
             }
         });
+        console.log("here4")
 
         const owner = await User.findOne({ // Finds user with user_id
             where: {
-                id: post.user_id
+                id: post.owner_user_id
             }
         });
+        console.log("here5")
 
         let vote_id = vote.id;
         let old_vote_type_id = vote.vote_type_id;
 
         if(vote_type_id == 2)  {
+            console.log("123")
             if(vote) {
                 const nvoteD = await Vote.destroy({ // Deletes vote
                     where: {
@@ -337,7 +342,7 @@ export const votePost = async (req, res) => {
                         reputation: Sequelize.literal('reputation + 5')
                     }, {
                         where: {
-                            id: post.user_id
+                            id: post.owner_user_id
                         }
                     });
                 }
@@ -368,7 +373,7 @@ export const votePost = async (req, res) => {
                 reputation: Sequelize.literal('reputation + 5')
             }, {
                 where: {
-                    id: post.user_id
+                    id: post.owner_user_id
                 }
             });
         }
@@ -398,7 +403,7 @@ export const votePost = async (req, res) => {
                         reputation: Sequelize.literal('reputation - 5')
                     }, {
                         where: {
-                            id: post.user_id
+                            id: post.owner_user_id
                         }
                     });
                 }
@@ -421,7 +426,7 @@ export const votePost = async (req, res) => {
                         reputation: Sequelize.literal('reputation + 5')
                     }, {
                         where: {
-                            id: post.user_id
+                            id: post.owner_user_id
                         }
                     });
                 }
