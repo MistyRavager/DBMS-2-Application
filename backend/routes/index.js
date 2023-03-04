@@ -19,7 +19,8 @@ import {
     getPostByTag,
     getPostByTags,
     editPost,
-    deletePost
+    deletePost,
+    getVoteStatus
 } from "../controllers/post.js"
 import {
     upvoteQuestion,
@@ -194,5 +195,8 @@ router.get("/user/name/:display_name",verifyToken, getUserByDisplayName); // Tes
 // Other body parameters (optional): website_url, profile_image_url
 router.post("/user/create", createUser); // Tested
 
+// Get the vote given by a user to a post
+// Ex http://localhost:5002/user/vote/4/442654
+router.get("/post/answer/:post_id/:user_id", verifyToken, getAnswerByPostId);
 
 export default router;

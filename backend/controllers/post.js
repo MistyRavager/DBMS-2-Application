@@ -1,5 +1,5 @@
 import { Sequelize, where } from "sequelize";
-import { Post, User, Comment, Tag } from "../models.js";
+import { Post, User, Comment, Tag, Vote } from "../models.js";
 
 
 
@@ -252,3 +252,40 @@ export const deletePost = async (req, res) => {
         res.status(500).json(error);
     }
 }
+
+export const getVoteStatus = async (req, res) => {
+    try {
+        let post_id = req.params.post_id; // Expects "post_id" in body of request
+        let user_id = req.body.user_id; // Expects "user_id" in body of request
+
+        const post = await Post.findOne({ // Finds post with post_id
+            where: {
+                id: post_id
+            }
+        });
+
+        if (post) { // If post exists
+            const vote = await Vote.findOne({ // Finds vote with post_id and user_id
+                where: {
+                    post_id: post_id,
+                    user_id: user_id
+                }
+            });
+
+            if (vote) { // If vote exists
+                let v = parseInt(vote.vote_type_id);
+                if (v == 2) {
+                    res.status(200).json({"upvote": "1", "downvote": "0"});
+                } else if (v == 3) {
+                    res.status(200).json({"upvote": "0", "downvote": "1"});
+                }
+            } else { // If vote does not exist
+                res.status(200).json({"upvote": "0", "downvote": "0"});
+            }
+        } else { // If post does not exist
+            res.status(404).json({"message":"Post not found"});
+        }
+    }  catch (error) {
+        res.status(500).json(error);
+    }
+};
