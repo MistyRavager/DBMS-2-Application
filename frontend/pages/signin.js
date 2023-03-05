@@ -61,6 +61,9 @@ export default function SignInSide() {
       if (response.status === 200) {
         router.push("/dashboard");
       }
+      else {
+        alert("Invalid Credentials!");
+      }
     }
     postDetails();
   };

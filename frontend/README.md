@@ -11,7 +11,7 @@ The frontend of this project has been written in Next.js, which is an open sourc
 - dashboard.js: This page shows the details of the user who has logged in and the questions he/she has created. The page also gives options to the user to edit or delete questions.
 - explore.js: This page allows users (even guest users) to serach for posts, linked to multiple tags (or) created by a particular user. This options can also increase the search result-set, and sort the results by score and time.
 - signin.js: Allows the user to login. Note that a cookie containing the access token is created. The access token allows the user to be logged  in for a maximum of 24 hours.
-- signup.js: Allows guest users to sign up and create an account. Creating an account enables the individual to create, edit and delete questions. It also allows the individuals to give and edit answers to previously existing questions. The password for the new user is the username by deafult.
+- signup.js: Allows guest users to sign up and create an account. Creating an account enables the individual to create, edit and delete questions. It also allows the individuals to give and edit answers to previously existing questions. The password for the new user is the username by default.
 
 # Components
 - autoTags.js: A form component using <Autocomplete> and <Controller> that fetches values from the database based on present tag values. The presently selected tags are shown in the <TextField> as <Chips>.
