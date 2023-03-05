@@ -37,8 +37,27 @@ export default function Explore() {
   const [dateFlag, setDateFlag] = useState(0)
   const [recNum, setRecNum] = useState(10)
   const [start, setStart] = useState(false)
-
+  const [actualuserdetails,setActualUserDetails] = React.useState();
+  useEffect(()=>{
+    actualGetUser();
+  },[])
   /* useEffect: Tracks changes in Tags */
+  async function actualGetUser() {
+    try {
+    const response = await fetch(`http://localhost:5002/me`, {
+      method: "GET",
+      credentials: 'include'
+    });
+    if (response.status === 401) {
+      console.log("Unauthorized");
+    }
+    setActualUserDetails(await response.json());
+  } catch (err) {
+    console.log(err);
+  }
+
+    return ;
+}
   useEffect(() => {
     // Parse object to get tagSQL
     const tagParse = formTagData?.tags.map((tag)=>{
@@ -80,7 +99,7 @@ export default function Explore() {
     setStart(true)
     if(userSQL != '' && userSQL != undefined)
     {
-      fetch(`http://localhost:5002/post/userid/${userSQL}score_flag=${scoreFlag}&date_flag=2&limit=${recNum}`,{
+      fetch(`http://localhost:5002/post/userid/${userSQL}?score_flag=${scoreFlag}&date_flag=2&limit=${recNum}`,{
                 method: 'GET',
                 credentials: 'include'
             }).then(
@@ -366,9 +385,13 @@ export default function Explore() {
                 Didn't find what you were looking for?
               </Typography>
               {/* <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }}> */}
-                  <Button variant="outlined" href="/signin" sx={{width:"100%"}}>
+                  
+                  {(actualuserdetails)?<Button variant="outlined" href={`/create/question/${actualuserdetails?.id}`} sx={{width:"100%"}}>
+                      Create a post
+                  </Button>:<Button variant="outlined" href="/signin" sx={{width:"100%"}}>
                       Login to create a post
-                  </Button>
+                  </Button>}
+                  
               {/* </Card> */}
             </Grid>
           </Grid>

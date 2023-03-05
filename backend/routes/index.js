@@ -145,7 +145,7 @@ router.delete("/post/delete/:post_id", deletePost); // Tested
 
 
 // Vote on a post
-// Ex body {"post_id":"423930", "voter_id":"223", "vote_type_id":"2"}
+// Ex body {"post_id":"423930", "user_id":"223", "vote_type_id":"2"}
 // vote_type_id = 2 for upvotes, 3 for downvotes
 router.post("/post/vote", verifyToken, votePost); 
 

@@ -32,6 +32,57 @@ export default function Post() {
     const [postuserdetails, setPostUserDetails] = React.useState();
     const [colourup, setColourUp] = React.useState(0);
     const [colourdown, setColourDown] = React.useState(0);
+    
+    async function getVote(postid, actualuserid){
+      const response = await fetch(`http://localhost:5002/post/answer/${postid}/${actualuserid}`,{
+        method:"GET",
+        credentials: 'include'
+      });
+      if (response.status=200){
+        const x = await response.json();
+        console.log(x);
+
+      }
+    }
+
+    async function postVote(postid,vote_type){
+      const response = await fetch(`http://localhost:5002/post/vote`,{
+        method: "POST",
+        credentials: "include",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          post_id: postid,
+          user_id: actualuserdetails?.id,
+          vote_type_id: vote_type
+        })
+      })
+      if (response.status==200){
+        const x = await response.json()
+        console.log(x)
+      }
+    }
+
+    function abcd(){
+      const [a, setA] = React.useState();
+      setVotes(answers.map((answer)=>{
+        async function getVote(){
+          const response = await fetch(`http://localhost:5002/post/answer/${postid}/${actualuserid}`,{
+            method:"GET",
+            credentials: 'include'
+          });
+          if (response.status=200){
+            const x = await response.json();
+            console.log("votes"+x);
+            setA(x);
+          }
+        }
+       getVote();
+       
+      }))
+    }
+    // console.log(votes)
     async function getAnswer() {
       const response = await fetch(`http://localhost:5002/answer/questionid/${postid}?sort_by=score`, {
           method: "GET",
@@ -39,10 +90,29 @@ export default function Post() {
       });
       if (response.status==200){
 	      const x = await response.json();
-	      setAnswers(x);      
+        console.log(x);
+
+        // async function getVote(){
+          
+        //   const response = await fetch(`http://localhost:5002/post/answer/${postid}/${actualuserdetails.id}`,{
+        //     method:"GET",
+        //     credentials: 'include'
+        //   });
+        //   if (response.status==200){
+        //     const y = await response.json();
+        //     console.log("votes"+y);
+        //   }
+        // }
+        // getVote();
+
+
+
+
+	      setAnswers(x);
+        // setVotes(votes,'b')
+
       }
     } 
-
     async function getPost() {
       const response = await fetch(`http://localhost:5002/post/id/${postid}`, {
           method: "GET",
@@ -68,6 +138,9 @@ export default function Post() {
   
         return ;
     }
+    React.useEffect(()=>{
+      actualGetUser();
+    },[])
     async function getPostUser() {
         const response = await fetch(`http://localhost:5002/user/id/${post?.owner_user_id}`, {
             method: "GET",
@@ -98,17 +171,17 @@ export default function Post() {
       	      
     
     async function getAll() {
-      actualGetUser();
       getPost();
       // getUser();
       getAnswer();
     }
     
     React.useEffect(() => {
-      if (!router.isReady) return;
+      if (!router.isReady && !actualuserdetails) return;
         console.log("loading");
         getAll();
-    }, [router.isReady]);
+    }, [router.isReady,actualuserdetails]);
+
     React.useEffect(()=>{
       getPostUser()
     },[post])
@@ -158,6 +231,22 @@ export default function Post() {
                     fontFamily: 'Roboto',
                   }}
                 >
+                  <Grid container spacing={1}>
+                    <Grid item xs={1} sx={{mt:"auto",mb:"auto"}}>
+                    <Stack > 
+                      {(colourup)?<ThumbUpIcon sx={{color:"green", ml:"33%"}} onClick={(e)=>{setColourUp(0);postVote(post?.id, 2)}}/>
+                      :<ThumbUpOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{setColourUp(1);postVote(post?.id, 2)}}/>}
+                    {/* <EditIcon sx={{color:colourup}} onClick={(e)=>{setColourUp("green")}}/> */}
+                    <Typography component={'span'} sx={{ fontSize: 20 , mt:2, ml:"33%"}} color="text.secondary" gutterBottom>
+                                {post?.score}
+                    </Typography>
+                    {(colourdown)?<ThumbDownIcon sx={{color:"red", ml:"33%"}} onClick={(e)=>{setColourDown(0);postVote(post?.id, 3)}}/>
+                    :<ThumbDownOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{setColourDown(1);postVote(post?.id, 3)}}/>}
+
+                    {/* <EditIcon sx={{color:colourdown}} onClick={(e)=>{setColourDown("green")}}/> */}
+                    </Stack>
+                    </Grid>
+                    <Grid item xs={11}>
                 <Typography variant="h2" component="div" sx={{fontSize:25}}>  
                 {post?.title}
                 </Typography>
@@ -221,6 +310,8 @@ export default function Post() {
                           }
                     </Card>
                   </Grid>
+                          </Grid>
+                  </Grid>
 
                 </Paper>
               </Grid>
@@ -245,15 +336,15 @@ export default function Post() {
                                   <Grid item xs={1} sx={{mt:"auto", mb:"auto"}}>
                                     <CardContent>
 
-                                    <Stack> 
-                                      {(colourup)?<ThumbUpIcon sx={{color:"green"}} onClick={(e)=>{setColourUp(0)}}/>
-                                      :<ThumbUpOutlinedIcon onClick={(e)=>{setColourUp(1)}}/>}
+                                    <Stack > 
+                                      {(colourup)?<ThumbUpIcon sx={{color:"green", ml:"33%"}} onClick={(e)=>{setColourUp(0);postVote(answer?.id, 2)}}/>
+                                      :<ThumbUpOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{setColourUp(1);postVote(answer?.id, 2)}}/>}
                                     {/* <EditIcon sx={{color:colourup}} onClick={(e)=>{setColourUp("green")}}/> */}
-                                    <Typography component={'span'} sx={{ fontSize: 20 , mt:2,ml:"auto",mr:"auto"}} color="text.secondary" gutterBottom>
+                                    <Typography component={'span'} sx={{ fontSize: 20 , mt:2, ml:"33%"}} color="text.secondary" gutterBottom>
                                                 {answer?.score}
                                     </Typography>
-                                    {(colourdown)?<ThumbDownIcon sx={{color:"red"}} onClick={(e)=>{setColourDown(0)}}/>
-                                    :<ThumbDownOutlinedIcon onClick={(e)=>{setColourDown(1)}}/>}
+                                    {(colourdown)?<ThumbDownIcon sx={{color:"red", ml:"33%"}} onClick={(e)=>{setColourDown(0);postVote(answer?.id, 3)}}/>
+                                    :<ThumbDownOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{setColourDown(1);postVote(answer?.id, 3)}}/>}
 
                                     {/* <EditIcon sx={{color:colourdown}} onClick={(e)=>{setColourDown("green")}}/> */}
                                     </Stack>
@@ -261,9 +352,9 @@ export default function Post() {
                                   </Grid>
                                   <Grid item xs={11}>
                                       <CardContent>
-                                          <Typography component={'span'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                          {/* <Typography component={'span'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                           Score: {answer?.score}
-                                          </Typography>
+                                          </Typography> */}
                                           <Typography component={'div'} sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                           {(answer?.id == post?.accepted_answer_id) ? 
                                               <Chip 
@@ -279,17 +370,17 @@ export default function Post() {
                                           </Typography>
                                       </CardContent>
                                   
-                                      {(answer?.owner_display_name)?<><CardHeader
+                                      {(answer?.owner_user_id)?<><CardHeader
                                               avatar={
                                               <Avatar
                                               alt={answer?.owner_display_name}
                                               src={answer?.owner_display_name}
                                               />
                                               }
-                                              title={answer?.owner_display_name}
+                                              title={answer?.owner_user_id}
                                               subheader={makeDate(answer?.creation_date)}
                                           />
-                                          {(actualuserdetails?.id == post?.owner_user_id)?<><CardActions>
+                                          {(actualuserdetails?.id == answer?.owner_user_id)?<><CardActions>
                               <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer  <EditIcon/></Button>
                               <Button sx={{color:"red", ml:3}} onClick={(e)=>{deletePost(answer?.id)}} size="small">Delete Answer <DeleteIcon/></Button>
                             </CardActions></>:<></>}
@@ -305,9 +396,10 @@ export default function Post() {
                                               title={"Deleted User"}
                                               subheader={makeDate(answer?.creation_date)}
                                           />
-                                          {(actualuserdetails?.id == answer?.owner_user_id)?<CardActions>
-                                            <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer</Button>
-                                          </CardActions>:<></>}
+                                           {(actualuserdetails?.id == answer?.owner_user_id)?<><CardActions>
+                              <Button href={`/edit/answer/${answer?.id}`} size="small">Edit Answer  <EditIcon/></Button>
+                              <Button sx={{color:"red", ml:3}} onClick={(e)=>{deletePost(answer?.id)}} size="small">Delete Answer <DeleteIcon/></Button>
+                            </CardActions></>:<></>}
                                           </>
                                           }
                                         </Grid>
