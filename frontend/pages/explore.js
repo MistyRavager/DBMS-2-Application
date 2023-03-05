@@ -42,7 +42,7 @@ export default function Explore() {
   useEffect(() => {
     // Parse object to get tagSQL
     const tagParse = formTagData?.tags.map((tag)=>{
-      return "&tags=<"+tag.split(":")[1]+">";
+      return "&tags=<"+encodeURIComponent(tag.split(":")[1])+">";
     })
     const tagSQL = tagParse?.join("")
     console.log(tagSQL)
@@ -72,7 +72,7 @@ export default function Explore() {
   useEffect(() => {
     // Parse object to get userID
     const userSQL = formUserData?.users.split(":")[0]
-    console.log(userSQL)
+    console.log("http://localhost:5002/post/userid/"+userSQL+"?score_flag="+scoreFlag+"&date_flag="+dateFlag+"&limit="+recNum)
 
     // Fetch
     setRecNum(10)
@@ -80,7 +80,7 @@ export default function Explore() {
     setStart(true)
     if(userSQL != '' && userSQL != undefined)
     {
-      fetch(`http://localhost:5002/post/userid/${userSQL}score_flag=${scoreFlag}&date_flag=2&limit=${recNum}`,{
+      fetch(`http://localhost:5002/post/userid/${userSQL}?score_flag=${scoreFlag}&date_flag=2&limit=${recNum}`,{
                 method: 'GET',
                 credentials: 'include'
             }).then(
@@ -101,7 +101,7 @@ export default function Explore() {
     {
       // Parse object to get tagSQL
       const tagParse = formTagData?.tags.map((tag)=>{
-        return "&tags=<"+tag.split(":")[1]+">";
+        return "&tags=<"+encodeURIComponent(tag.split(":")[1])+">";
       })
       const tagSQL = tagParse?.join("")
       console.log(tagSQL)
@@ -125,12 +125,12 @@ export default function Explore() {
     else{
       // Parse object to get userID
       const userSQL = formUserData?.users.split(":")[0]
-      console.log(userSQL)
+      console.log("http://localhost:5002/post/userid/"+userSQL+"?score_flag="+scoreFlag+"&date_flag="+dateFlag+"&limit="+recNum)
 
       // Fetch
       if(userSQL != '' && userSQL != undefined)
       {
-        fetch(`http://localhost:5002/post/userid/456?score_flag=${scoreFlag}&date_flag=2&limit=${recNum}`,{
+        fetch(`http://localhost:5002/post/userid/${userSQL}?score_flag=${scoreFlag}&date_flag=2&limit=${recNum}`,{
                   method: 'GET',
                   credentials: 'include'
               }).then(
@@ -152,7 +152,7 @@ export default function Explore() {
     {
       // Parse object to get tagSQL
       const tagParse = formTagData?.tags.map((tag)=>{
-        return "&tags=<"+tag.split(":")[1]+">";
+        return "&tags=<"+encodeURIComponent(tag.split(":")[1])+">";
       })
       const tagSQL = tagParse?.join("")
       console.log(tagSQL)
@@ -176,12 +176,12 @@ export default function Explore() {
     else{
       // Parse object to get userID
       const userSQL = formUserData?.users.split(":")[0]
-      console.log(userSQL)
+      console.log("http://localhost:5002/post/userid/"+userSQL+"?score_flag="+scoreFlag+"&date_flag="+dateFlag+"&limit="+recNum)
 
       // Fetch
       if(userSQL != '' && userSQL != undefined)
       {
-        fetch(`http://localhost:5002/post/userid/456?score_flag=2&date_flag=${dateFlag}&limit=${recNum}`,{
+        fetch(`http://localhost:5002/post/userid/${userSQL}?score_flag=2&date_flag=${dateFlag}&limit=${recNum}`,{
                   method: 'GET',
                   credentials: 'include'
               }).then(
@@ -202,7 +202,7 @@ export default function Explore() {
     {
       // Parse object to get tagSQL
       const tagParse = formTagData?.tags.map((tag)=>{
-        return "&tags=<"+tag.split(":")[1]+">";
+        return "&tags=<"+encodeURIComponent(tag.split(":")[1])+">";
       })
       const tagSQL = tagParse?.join("")
       console.log(tagSQL)
@@ -228,14 +228,14 @@ export default function Explore() {
     else{
       // Parse object to get userID
       const userSQL = formUserData?.users.split(":")[0]
-      console.log(userSQL)
+      console.log("http://localhost:5002/post/userid/"+userSQL+"?score_flag="+scoreFlag+"&date_flag="+dateFlag+"&limit="+recNum)
 
       // Fetch
       setScoreFlag(1)
       setDateFlag(0)
       if(userSQL != '' && userSQL != undefined)
       {
-        fetch(`http://localhost:5002/post/userid/456?score_flag=${scoreFlag}&date_flag=${dateFlag}&limit=${recNum}`,{
+        fetch(`http://localhost:5002/post/userid/${userSQL}?score_flag=${scoreFlag}&date_flag=${dateFlag}&limit=${recNum}`,{
                   method: 'GET',
                   credentials: 'include'
               }).then(
@@ -347,7 +347,7 @@ export default function Explore() {
                               </Typography>
                           </CardContent>
                           <CardActions>
-                              <Button href={`/posts/${post.id}`} size="small">Learn More</Button>
+                              <Button href={`/posts/${post.owner_user_id}/${post.id}`} size="small">Learn More</Button>
                           </CardActions>
                       </Card>
                   </Grid>)

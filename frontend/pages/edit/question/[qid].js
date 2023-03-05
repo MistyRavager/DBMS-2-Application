@@ -11,6 +11,7 @@ import MyEditor from "../../../components/editor"
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import AutoTags from '../../../components/autoTags';
+import { Card, CardContent, Chip } from '@mui/material';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -56,6 +57,18 @@ export default function question(props) {
     const [actualuserdetails, setActualUserDetails] = React.useState();
     const [title, setTitle] = React.useState("");
     const [oldTags,setOldTags] = React.useState();
+    console.log(question)
+    console.log("Question: ", tagParse(question?.tags))
+
+    // Tag Parse
+    function tagParse(t) {
+      if(t !== undefined){
+      var a = t.split("><")
+      a[0] = a[0].substr(1, a[0].length)
+      a[a.length - 1] = a[a.length - 1].substr(0, a[a.length - 1].length - 1)
+      return a
+      }
+    }
 
     async function actualGetUser() {
       // e.preventDefault();
@@ -151,6 +164,7 @@ export default function question(props) {
             Edit Question Details
           </Typography>
           <Grid container spacing={3} sx={{mt:2}}>
+        
         <Grid item xs={12}>
          {(question?.title)?
          <TextField
@@ -165,8 +179,6 @@ export default function question(props) {
                 onChange={(e)=>{setTitle(e.target.value)}}
                 multiline
             />:<></>}
-            
-
         </Grid>
         <Grid item xs={12}>
           <Typography sx={{  fontSize:20 }} gutterBottom color="text.secondary">
@@ -177,16 +189,29 @@ export default function question(props) {
 
         
         <Grid item xs={12}>
-                <Stack spacing={3} sx={{ ml: "25%", width: "50%" }}>
-                  <AutoTags setDetails={setTag}/>
-                  <Button
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleSubmit}
-            >
-            Edit Question
+          <Grid item xs={6} marginLeft='25%'>
+            <Card variant="outlined" sx={{ p: 2, display: 'flex', flexDirection: 'column' }} >
+              <CardContent>
+                  <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                    Present Tags: {tagParse(question?.tags)?.map((tag) => {
+                      return <Chip variant='outlined' label={tag} color='primary'/>
+                    })}
+                  </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <br/>
+          <Stack spacing={3} sx={{ ml: "25%", width: "50%" }}>
+            <AutoTags setDetails={setTag} default={question?.tags}/>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onSubmit={handleSubmit}
+              >
+              Edit Question
             </Button>
-                </Stack>
+          </Stack>
             
         </Grid>
       </Grid>

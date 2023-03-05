@@ -12,7 +12,6 @@ export default function AutoTags(props) {
     /* State variables */
     const [tagList, setTagList] = useState([{count: 0, excerpt_post_id: 0, id: 0, tag_name: "No options", wiki_post_id: 0}]);
     const [tagVal, setTagVal] = useState()
-    // console.log(props?.default.split("><"))
     /* useEffect */
 
 
