@@ -23,13 +23,20 @@ export const getAnswerByQuestionId = async (req, res) => {
             ]
         });
 
+        let x;
+        x.p = post;
+        let vote_status = [];
+
         for (i = 0; i< post.length(); i++) {
             let vote_s = getVoteStatus(post[i].post_id, user_id);
             
-            post[i].vote_status = vote_s;
+            // post[i].vote_status = vote_s;
+            vote_status.push(vote_s);
         }
 
-        res.status(200).json(post); // Returns posts
+        x.vote_status = vote_status;
+
+        res.status(200).json(x); // Returns posts
 
     } catch (error) {
         res.status(500).json(error); // Returns error
