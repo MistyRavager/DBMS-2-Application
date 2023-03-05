@@ -1,10 +1,12 @@
 import { Sequelize, where } from "sequelize";
 import { Post, User, Vote } from "../models.js";
+import { getVoteStatus } from "./post.js";
 
 
 export const getAnswerByQuestionId = async (req, res) => {
     try {
         let question_id = req.params.question_id; // Expects "question_id" in params of request
+        let user_id = req.params.user_id;
         let sort_by = req.query.sort_by;
 
         if (sort_by == null || sort_by == "undefined" || sort_by == NaN) {
@@ -20,6 +22,12 @@ export const getAnswerByQuestionId = async (req, res) => {
                 [sort_by, 'DESC']
             ]
         });
+
+        for (i = 0; i< post.length(); i++) {
+            let vote_s = getVoteStatus(post[i].post_id, user_id);
+            
+            post[i].vote_status = vote_s;
+        }
 
         res.status(200).json(post); // Returns posts
 

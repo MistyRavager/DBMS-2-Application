@@ -96,7 +96,8 @@ CREATE TABLE votes (
 	post_id INT NOT NULL,
 	vote_type_id TINYINT NOT NULL,
 	bounty_amount TINYINT,
-	creation_date TIMESTAMP(3) NOT NULL
+	creation_date TIMESTAMP(3) NOT NULL,
+	UNIQUE (user_id, post_id)
 );
 
 -- Badges

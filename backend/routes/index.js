@@ -19,7 +19,9 @@ import {
     getPostByTag,
     getPostByTags,
     editPost,
-    deletePost
+    deletePost,
+    getVoteStatus,
+    votePost
 } from "../controllers/post.js"
 import {
     upvoteQuestion,
@@ -142,6 +144,12 @@ router.put("/post/edit/:post_id", verifyToken, editPost); // Tested
 router.delete("/post/delete/:post_id", deletePost); // Tested 
 
 
+// Vote on a post
+// Ex body {"post_id":"423930", "user_id":"223", "vote_type_id":"2"}
+// vote_type_id = 2 for upvotes, 3 for downvotes
+router.post("/post/vote", verifyToken, votePost); 
+
+
 // Get question by user ID and sort by creation_date or score
 // Ex http://127.0.0.1:5002/question/userid/4?sort_by=score&limit=3
 // By default sorts by creation date and returns 10 answers
@@ -194,5 +202,8 @@ router.get("/user/name/:display_name",verifyToken, getUserByDisplayName); // Tes
 // Other body parameters (optional): website_url, profile_image_url
 router.post("/user/create", createUser); // Tested
 
+// Get the vote given by a user to a post
+// Ex http://localhost:5002/user/vote/4/442654
+router.get("/post/answer/:post_id/:user_id", verifyToken, getVoteStatus);
 
 export default router;
