@@ -104,10 +104,15 @@ export default function question(props) {
         setOldTags(json.tags)
     }
     const handleSubmit = (event) => {
+        console.log(Tags);
         event.preventDefault();
         const tagParse = Tags?.tags?.map((tag)=>{
           return "<"+tag.split(":")[1]+">";
         })
+        console.log(tagParse);
+        console.log(data);
+        console.log(qid);
+        console.log(title);
         async function updatePost(){
             const res = await fetch(`http://localhost:5002/post/edit/${qid}`, {
                 method: 'PUT',
@@ -135,6 +140,7 @@ export default function question(props) {
           console.log("loading");
           getQuestion();
     }, [router.isReady]);
+    console.log(Tags)
   return (
     <>
         <Head>
@@ -204,10 +210,9 @@ export default function question(props) {
           <Stack spacing={3} sx={{ ml: "25%", width: "50%" }}>
             <AutoTags setDetails={setTag} default={question?.tags}/>
             <Button
-              type="submit"
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onSubmit={handleSubmit}
+              onClick={handleSubmit}
               >
               Edit Question
             </Button>

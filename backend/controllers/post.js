@@ -460,6 +460,13 @@ export const votePost = async (req, res) => {
                         id: voter_id
                     }
                 });
+                const nuserU2 = await User.update({ // Updates owner's reputation
+                    reputation: Sequelize.literal('reputation - 5')
+                }, {
+                    where: {
+                        id: post.owner_user_id
+                    }
+                });
             }
             console.log("b1")
 

@@ -45,6 +45,9 @@ export default function SignUpSide() {
       if (response.status === 200) {
         router.push("/dashboard");
       }
+      else {
+        alert("Sign up failed. Try a different username.");
+      }
     }
     postDetails();
   };
@@ -69,7 +72,7 @@ export default function SignUpSide() {
             backgroundPosition: 'center',
           }}
         /> */}
-        <Grid item xs={12}  component={Paper} elevation={6} square>
+        <Grid item xs={12} component={Paper} elevation={6} square>
           <Box
             sx={{
               my: 8,
@@ -85,7 +88,7 @@ export default function SignUpSide() {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -100,7 +103,7 @@ export default function SignUpSide() {
               <TextField
                 margin="normal"
                 fullWidth
-
+                defaultValue={"Hyderabad"}
                 name="location"
                 label="Location"
                 type="text"
@@ -112,9 +115,9 @@ export default function SignUpSide() {
               <TextField
                 margin="normal"
                 fullWidth
-
+                defaultValue={""}
                 id="profile_image_url"
-                label="Profile image URL"
+                label="Profile image URL (Optional)"
                 name="profile_image_url"
                 autoComplete="current-profile-image-url"
                 autoFocus
@@ -123,9 +126,9 @@ export default function SignUpSide() {
               <TextField
                 margin="normal"
                 fullWidth
-
+                defaultValue={""}
                 id="website_url"
-                label="Website URL"
+                label="Website URL (Optional)"
                 name="website_url"
                 autoComplete="website-url"
                 type="url"
@@ -144,6 +147,7 @@ export default function SignUpSide() {
               <TextField
                 margin="normal"
                 fullWidth
+                required
                 name="password"
                 label="Password"
                 type="password"
@@ -153,10 +157,10 @@ export default function SignUpSide() {
 
               <MyEditor data={setAboutMe}/>
               
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me : Have not implemented"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
