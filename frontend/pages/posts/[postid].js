@@ -32,6 +32,7 @@ export default function Post() {
     const [postuserdetails, setPostUserDetails] = React.useState();
     const [colourup, setColourUp] = React.useState(0);
     const [colourdown, setColourDown] = React.useState(0);
+    const [votes, setVotes] = React.useState();
     
 
     async function postVote(postid,vote_type){
@@ -47,44 +48,26 @@ export default function Post() {
           vote_type_id: vote_type
         })
       })
-      if (response.status==200){
+      if (response.status!=500){
         const x = await response.json()
-        console.log(x)
+        // console.log("x "+x)
+        getAnswer()
       }
     }
 
     // console.log(votes)
     async function getAnswer() {
-      console.log(actualuserdetails);
       const response = await fetch(`http://localhost:5002/answer/questionid/${postid}/${actualuserdetails?.id}?sort_by=score`, {
           method: "GET",
           credentials: 'include'
       });
       if (response.status==200){
 
-	      const x = await response.json();
-        console.log(response)
-        console.log("Answers "+x);
-
-        // async function getVote(){
-          
-        //   const response = await fetch(`http://localhost:5002/post/answer/${postid}/${actualuserdetails.id}`,{
-        //     method:"GET",
-        //     credentials: 'include'
-        //   });
-        //   if (response.status==200){
-        //     const y = await response.json();
-        //     console.log("votes"+y);
-        //   }
-        // }
-        // getVote();
-
-
-
-
-	      setAnswers(x);
-        // setVotes(votes,'b')
-
+        const x = await response.json();
+	      setAnswers(x.p);
+        console.log(x.p);
+        setVotes(x.vote_status);
+        console.log(x.vote_status)
       }
     } 
     async function getPost() {
@@ -303,7 +286,7 @@ export default function Post() {
                   </Typography>
                 </Grid>
                 <Grid container spacing={3}>    
-                    {answers?.map((answer) => {
+                    {answers?.map((answer, index) => {
                         return (<>
                             <Grid item xs={12} key={answer?.id}>
                                 
@@ -315,14 +298,14 @@ export default function Post() {
                                     <CardContent>
 
                                     <Stack > 
-                                      {(colourup)?<ThumbUpIcon sx={{color:"green", ml:"33%"}} onClick={(e)=>{setColourUp(0);postVote(answer?.id, 2)}}/>
-                                      :<ThumbUpOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{setColourUp(1);postVote(answer?.id, 2)}}/>}
+                                      {(votes[index]==1)?<ThumbUpIcon sx={{color:"green", ml:"33%"}} onClick={(e)=>{setColourUp(0);postVote(answer?.id, 2)}}/>
+                                      :<ThumbUpOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{postVote(answer?.id, 2)}}/>}
                                     {/* <EditIcon sx={{color:colourup}} onClick={(e)=>{setColourUp("green")}}/> */}
                                     <Typography component={'span'} sx={{ fontSize: 20 , mt:2, ml:"33%"}} color="text.secondary" gutterBottom>
                                                 {answer?.score}
                                     </Typography>
-                                    {(colourdown)?<ThumbDownIcon sx={{color:"red", ml:"33%"}} onClick={(e)=>{setColourDown(0);postVote(answer?.id, 3)}}/>
-                                    :<ThumbDownOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{setColourDown(1);postVote(answer?.id, 3)}}/>}
+                                    {(votes[index]==-1)?<ThumbDownIcon sx={{color:"red", ml:"33%"}} onClick={(e)=>{setColourDown(0);postVote(answer?.id, 3)}}/>
+                                    :<ThumbDownOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{postVote(answer?.id, 3)}}/>}
 
                                     {/* <EditIcon sx={{color:colourdown}} onClick={(e)=>{setColourDown("green")}}/> */}
                                     </Stack>

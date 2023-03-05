@@ -119,7 +119,7 @@ export default function question(props) {
   return (
     <>
         <Head>
-            <title>Edit Question</title>
+            <title>Edit Answer</title>
         </Head>
         <Box sx={{ display: 'flex' }}>
             <Sidebar/>

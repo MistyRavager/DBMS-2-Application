@@ -289,6 +289,8 @@ export const votePost = async (req, res) => {
         // let vote_id = vote.id;
         // let old_vote_type_id = vote.vote_type_id;
         if(vote_type_id == 2)  {
+            console.log("a1")
+
             if(vote) {
                 let vote_id = vote.id;
                 let old_vote_type_id = vote.vote_type_id;   
@@ -375,8 +377,11 @@ export const votePost = async (req, res) => {
                     }
                 });
             }
+            console.log("a")
         }
         else if(vote_type_id == 3) {
+            console.log("b")
+
             if(vote) {
                 let vote_id = vote.id;
                 let old_vote_type_id = vote.vote_type_id;
@@ -456,7 +461,11 @@ export const votePost = async (req, res) => {
                     }
                 });
             }
+            console.log("b1")
+
         }
+        console.log("123")
+        return res.status(200).json("Vote made");
     } catch (error) {
         res.status(500).json(error);
     }

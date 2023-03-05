@@ -23,23 +23,23 @@ export const getAnswerByQuestionId = async (req, res) => {
             ]
         });
         console.log("3")
+        let x={};
+        x.p = post.map((a)=>{
+            return a.get()
+        });
+        let vote_status = [];
 
-        // let x={};
-        // x.p = post;
-        // let vote_status = [];
-        // console.log("2")
-
-        // for (let i = 0; i< post.length; i++) {
-        //     let vote_s = await getVoteStatus(post[i].id, user_id);
-            
-        //     // post[i].vote_status = vote_s;
-        //     vote_status.push(vote_s);
-        // }
-        // console.log("h1")
-        // x.vote_status = vote_status;
+        for (let i = 0; i< post.length; i++) {
+            let vote_s = await getVoteStatus(post[i].id, user_id);
+            // console.log(post[i])
+            // post[i].vote_status = vote_s;
+            vote_status.push(vote_s);
+        }
+        x.vote_status = vote_status;
         // console.log("abdcd")
         // console.log(x)
-        res.status(200).json(post); // Returns posts
+        // res.status(200).json(post); // Returns posts
+        res.status(200).json(x); // Returns posts
 
     } catch (error) {
         res.status(500).json(error); // Returns error

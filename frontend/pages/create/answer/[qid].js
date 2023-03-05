@@ -39,7 +39,6 @@ export default function answer(props) {
     const [answers, setAnswers] = React.useState();
     const [userdetails,setUserDetails] = React.useState();
     const [actualuserdetails, setActualUserDetails] = React.useState();
-
     async function getUser() {
       const response = await fetch(`http://localhost:5002/user/id/${post?.owner_user_id}`, {
           method: "GET",
@@ -62,8 +61,7 @@ export default function answer(props) {
           credentials: 'include'
       });
       const x = await response.json();
-      setAnswers(x);
-      console.log(x)
+      setAnswers(x.p);
     } 
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -112,16 +110,20 @@ export default function answer(props) {
       if (!router.isReady) return;
         console.log("loading");
         getPost();
+        
         // getUser();
         
     }, [router.isReady]);
+    // React.useEffect(()=>{
+    //   if (actualuserdetails)
+    //   getAnswer();
+    // },[actualuserdetails])
     React.useEffect(()=>{
+      if (!router.isReady) return;
       getAnswer();
       console.log("hi")
       
     },[actualuserdetails, router.isReady])
-    console.log(answers)
-    console.log(post)
     React.useEffect(() => {
       if (!post) return;
         console.log("loading");
@@ -207,11 +209,6 @@ export default function answer(props) {
                               src={userdetails?.profile_image_url}
                             />
                             }
-                            // action={
-                            // <IconButton aria-label="settings">
-                            //     <MoreVertIcon />
-                            // </IconButton>
-                            // }
                             title={userdetails?.display_name}
                             subheader={makeDate(post?.creation_date)}
                         />
