@@ -57,12 +57,13 @@ export default function answer(props) {
       setPost(x);
     }
     async function getAnswer() {
-      const response = await fetch(`http://localhost:5002/answer/questionid/${qid}?sort_by=score`, {
+      const response = await fetch(`http://localhost:5002/answer/questionid/${qid}/${actualuserdetails?.id}?sort_by=score`, {
           method: "GET",
           credentials: 'include'
       });
       const x = await response.json();
       setAnswers(x);
+      console.log(x)
     } 
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -111,9 +112,16 @@ export default function answer(props) {
       if (!router.isReady) return;
         console.log("loading");
         getPost();
-        getAnswer();
         // getUser();
+        
     }, [router.isReady]);
+    React.useEffect(()=>{
+      getAnswer();
+      console.log("hi")
+      
+    },[actualuserdetails, router.isReady])
+    console.log(answers)
+    console.log(post)
     React.useEffect(() => {
       if (!post) return;
         console.log("loading");
@@ -247,7 +255,7 @@ export default function answer(props) {
               {(answers?.length>0)?<Typography variant="h6" component="div" gutterBottom>
                   Answers
                 </Typography>:<Typography variant="h6" component="div" gutterBottom>
-                  No Answers :(
+                  No Answers 
                 </Typography>}
                 
                 

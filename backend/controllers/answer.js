@@ -12,7 +12,7 @@ export const getAnswerByQuestionId = async (req, res) => {
         if (sort_by == null || sort_by == "undefined" || sort_by == NaN) {
             sort_by = "score";
         }
-
+        console.log("h1")
         const post = await Post.findAll({ // Finds all posts with parent_id = question_id
             where: {
                 parent_id: question_id,
@@ -22,21 +22,24 @@ export const getAnswerByQuestionId = async (req, res) => {
                 [sort_by, 'DESC']
             ]
         });
+        console.log("3")
 
-        let x;
-        x.p = post;
-        let vote_status = [];
+        // let x={};
+        // x.p = post;
+        // let vote_status = [];
+        // console.log("2")
 
-        for (i = 0; i< post.length(); i++) {
-            let vote_s = getVoteStatus(post[i].post_id, user_id);
+        // for (let i = 0; i< post.length; i++) {
+        //     let vote_s = await getVoteStatus(post[i].id, user_id);
             
-            // post[i].vote_status = vote_s;
-            vote_status.push(vote_s);
-        }
-
-        x.vote_status = vote_status;
-
-        res.status(200).json(x); // Returns posts
+        //     // post[i].vote_status = vote_s;
+        //     vote_status.push(vote_s);
+        // }
+        // console.log("h1")
+        // x.vote_status = vote_status;
+        // console.log("abdcd")
+        // console.log(x)
+        res.status(200).json(post); // Returns posts
 
     } catch (error) {
         res.status(500).json(error); // Returns error

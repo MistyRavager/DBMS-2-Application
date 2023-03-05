@@ -33,17 +33,6 @@ export default function Post() {
     const [colourup, setColourUp] = React.useState(0);
     const [colourdown, setColourDown] = React.useState(0);
     
-    async function getVote(postid, actualuserid){
-      const response = await fetch(`http://localhost:5002/post/answer/${postid}/${actualuserid}`,{
-        method:"GET",
-        credentials: 'include'
-      });
-      if (response.status=200){
-        const x = await response.json();
-        console.log(x);
-
-      }
-    }
 
     async function postVote(postid,vote_type){
       const response = await fetch(`http://localhost:5002/post/vote`,{
@@ -64,33 +53,18 @@ export default function Post() {
       }
     }
 
-    function abcd(){
-      const [a, setA] = React.useState();
-      setVotes(answers.map((answer)=>{
-        async function getVote(){
-          const response = await fetch(`http://localhost:5002/post/answer/${postid}/${actualuserid}`,{
-            method:"GET",
-            credentials: 'include'
-          });
-          if (response.status=200){
-            const x = await response.json();
-            console.log("votes"+x);
-            setA(x);
-          }
-        }
-       getVote();
-       
-      }))
-    }
     // console.log(votes)
     async function getAnswer() {
-      const response = await fetch(`http://localhost:5002/answer/questionid/${postid}?sort_by=score`, {
+      console.log(actualuserdetails);
+      const response = await fetch(`http://localhost:5002/answer/questionid/${postid}/${actualuserdetails?.id}?sort_by=score`, {
           method: "GET",
           credentials: 'include'
       });
       if (response.status==200){
+
 	      const x = await response.json();
-        console.log(x);
+        console.log(response)
+        console.log("Answers "+x);
 
         // async function getVote(){
           
@@ -132,15 +106,22 @@ export default function Post() {
           router.push("/signin");
         }
         setActualUserDetails(await response.json());
-      } catch (err) {
-        console.log(err);
-      }
-  
+        // getPost();
+        // // getUser();
+        // getAnswer();
+        } catch (err) {
+          console.log(err);
+        }
+      
         return ;
     }
     React.useEffect(()=>{
       actualGetUser();
     },[])
+    React.useEffect(()=>{
+      getPost();
+      getAnswer();
+    },[actualuserdetails])
     async function getPostUser() {
         const response = await fetch(`http://localhost:5002/user/id/${post?.owner_user_id}`, {
             method: "GET",
@@ -170,17 +151,14 @@ export default function Post() {
       }
       	      
     
-    async function getAll() {
-      getPost();
-      // getUser();
-      getAnswer();
-    }
+   
     
     React.useEffect(() => {
-      if (!router.isReady && !actualuserdetails) return;
+      if (!router.isReady ) return;
         console.log("loading");
-        getAll();
-    }, [router.isReady,actualuserdetails]);
+        // getAll();
+        actualGetUser();
+    }, [router.isReady]);
 
     React.useEffect(()=>{
       getPostUser()

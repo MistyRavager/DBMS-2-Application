@@ -20,7 +20,6 @@ import {
     getPostByTags,
     editPost,
     deletePost,
-    getVoteStatus,
     votePost
 } from "../controllers/post.js"
 import {
@@ -65,7 +64,7 @@ router.get("/answer/userid/:user_id", verifyToken, getAnswerByUserId); // Tested
 // Get answer by question ID
 // Ex http://127.0.0.1:5002/answer/questionid/4?sort_by=score
 // By default sorts by score
-router.get("/answer/questionid/:question_id",verifyToken,  getAnswerByQuestionId); // Tested with frontend
+router.get("/answer/questionid/:question_id/:user_id",verifyToken,  getAnswerByQuestionId); // Tested with frontend
 // Answer a question
 // Ex http://localhost:5002/question/answer/442654
 // Ex body {"user_id":"2", "answer":"This is a test answer"}
@@ -202,8 +201,8 @@ router.get("/user/name/:display_name",verifyToken, getUserByDisplayName); // Tes
 // Other body parameters (optional): website_url, profile_image_url
 router.post("/user/create", createUser); // Tested
 
-// Get the vote given by a user to a post
-// Ex http://localhost:5002/user/vote/4/442654
-router.get("/post/answer/:post_id/:user_id", verifyToken, getVoteStatus);
+// // Get the vote given by a user to a post
+// // Ex http://localhost:5002/user/vote/4/442654
+// router.get("/post/answer/:post_id/:user_id", verifyToken, get);
 
 export default router;
