@@ -22,7 +22,32 @@ import styles from '../styles/Home.module.css'
 import Explore from '@mui/icons-material/Explore'
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import LockOpenRoundedIcon from '@mui/icons-material/LockOpenRounded';
+import * as React from 'react';
+import { useRouter } from 'next/router';
+
 export default function Home({ allPostsData }) {
+  const router = useRouter()
+
+  async function actualGetUser() {
+      try {
+      const response = await fetch(`http://localhost:5002/me`, {
+        method: "GET",
+        credentials: 'include'
+      });
+      if (response.status === 200) {
+        console.log("AutoLogin");
+        router.push("/dashboard");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+      return ;
+  }
+  React.useEffect(() => {
+    actualGetUser();
+  }, [])
+
   return (
     // <Layout home>
     <>

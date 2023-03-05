@@ -192,22 +192,6 @@ export default function Post() {
                     fontFamily: 'Roboto',
                   }}
                 >
-                  <Grid container spacing={1}>
-                    <Grid item xs={1} sx={{mt:"auto",mb:"auto"}}>
-                    <Stack > 
-                      {(colourup)?<ThumbUpIcon sx={{color:"green", ml:"33%"}} onClick={(e)=>{setColourUp(0);postVote(post?.id, 2)}}/>
-                      :<ThumbUpOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{setColourUp(1);postVote(post?.id, 2)}}/>}
-                    {/* <EditIcon sx={{color:colourup}} onClick={(e)=>{setColourUp("green")}}/> */}
-                    <Typography component={'span'} sx={{ fontSize: 20 , mt:2, ml:"33%"}} color="text.secondary" gutterBottom>
-                                {post?.score}
-                    </Typography>
-                    {(colourdown)?<ThumbDownIcon sx={{color:"red", ml:"33%"}} onClick={(e)=>{setColourDown(0);postVote(post?.id, 3)}}/>
-                    :<ThumbDownOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{setColourDown(1);postVote(post?.id, 3)}}/>}
-
-                    {/* <EditIcon sx={{color:colourdown}} onClick={(e)=>{setColourDown("green")}}/> */}
-                    </Stack>
-                    </Grid>
-                    <Grid item xs={11}>
                 <Typography variant="h2" component="div" sx={{fontSize:25}}>  
                 {post?.title}
                 </Typography>
@@ -271,8 +255,6 @@ export default function Post() {
                           }
                     </Card>
                   </Grid>
-                          </Grid>
-                  </Grid>
 
                 </Paper>
               </Grid>
@@ -298,13 +280,13 @@ export default function Post() {
                                     <CardContent>
 
                                     <Stack > 
-                                      {(votes[index]==1)?<ThumbUpIcon sx={{color:"green", ml:"33%"}} onClick={(e)=>{setColourUp(0);postVote(answer?.id, 2)}}/>
+                                      {(votes[index]==1)?<ThumbUpIcon sx={{color:"green", ml:"33%"}} onClick={(e)=>{postVote(answer?.id, 2)}}/>
                                       :<ThumbUpOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{postVote(answer?.id, 2)}}/>}
                                     {/* <EditIcon sx={{color:colourup}} onClick={(e)=>{setColourUp("green")}}/> */}
                                     <Typography component={'span'} sx={{ fontSize: 20 , mt:2, ml:"33%"}} color="text.secondary" gutterBottom>
                                                 {answer?.score}
                                     </Typography>
-                                    {(votes[index]==-1)?<ThumbDownIcon sx={{color:"red", ml:"33%"}} onClick={(e)=>{setColourDown(0);postVote(answer?.id, 3)}}/>
+                                    {(votes[index]==-1)?<ThumbDownIcon sx={{color:"red", ml:"33%"}} onClick={(e)=>{;postVote(answer?.id, 3)}}/>
                                     :<ThumbDownOutlinedIcon sx={{ml:"33%"}} onClick={(e)=>{postVote(answer?.id, 3)}}/>}
 
                                     {/* <EditIcon sx={{color:colourdown}} onClick={(e)=>{setColourDown("green")}}/> */}
@@ -373,7 +355,6 @@ export default function Post() {
                 
               </Grid>
             </Grid>
-            {/* <Copyright sx={{ pt: 4 }} /> */}
           </Container>
         </Box>
     </Box>
